@@ -60,7 +60,10 @@ export const api = {
     etlStatus: () => apiFetch<EtlRun[]>("/admin/etl/status"),
 };
 
-// Types
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+export type RiskLevel = "LOW" | "MEDIUM" | "HIGH" | "UNKNOWN";
+
 export interface DashboardItem {
     lot_id: number;
     lot_name: string;
@@ -71,25 +74,82 @@ export interface DashboardItem {
     tender_number: string;
     publish_date: string;
     risk_score: number;
-    risk_level: "LOW" | "MEDIUM" | "HIGH" | "UNKNOWN";
+    risk_level: RiskLevel;
     top_reasons: { code: string; description: string; weight: number }[];
 }
 
 export interface LotDetail {
-    lot: { id: number; name_ru: string; amount: number; customer_bin: string; customer_name: string; trd_buy_id: number; dumping_flag: boolean };
-    tender: { id: number; number_anno: string; name_ru: string; publish_date: string; start_date: string; end_date: string } | null;
-    contract: { id: number; supplier_biin: string; contract_sum_wnds: number; sign_date: string; plan_exec_date: string; parent_id: number | null } | null;
-    risk: { score: number; level: string; top_reasons: { code: string; description: string }[]; computed_at: string };
-    flags: { code: string; triggered: boolean; value: number | null; evidence: Record<string, unknown> }[];
+    lot: {
+        id: number;
+        name_ru: string;
+        amount: number;
+        customer_bin: string;
+        customer_name: string;
+        trd_buy_id: number;
+        dumping_flag: boolean;
+    };
+    tender: {
+        id: number;
+        number_anno: string;
+        name_ru: string;
+        publish_date: string;
+        start_date: string;
+        end_date: string;
+    } | null;
+    contract: {
+        id: number;
+        supplier_biin: string;
+        contract_sum_wnds: number;
+        sign_date: string;
+        plan_exec_date: string;
+        parent_id: number | null;
+    } | null;
+    risk: {
+        score: number;
+        level: string;
+        top_reasons: { code: string; description: string }[];
+        computed_at: string;
+    };
+    flags: {
+        code: string;
+        triggered: boolean;
+        value: number | null;
+        evidence: Record<string, unknown>;
+    }[];
 }
 
 export interface TenderDetail {
-    tender: { id: number; number_anno: string; name_ru: string; org_bin: string; total_sum: number; publish_date: string; ref_trade_methods_id: number };
-    lots: { lot_id: number; name_ru: string; amount: number; customer_bin: string; risk_score: number; risk_level: string; top_reasons: unknown[] }[];
+    tender: {
+        id: number;
+        number_anno: string;
+        name_ru: string;
+        org_bin: string;
+        total_sum: number;
+        publish_date: string;
+        ref_trade_methods_id: number;
+    };
+    lots: {
+        lot_id: number;
+        name_ru: string;
+        amount: number;
+        customer_bin: string;
+        risk_score: number;
+        risk_level: string;
+        top_reasons: unknown[];
+    }[];
 }
 
 export interface SupplierProfile {
-    company: { biin: string; name_ru: string; regdate: string; type_supplier: number; mark_small_employer: number; mark_resident: number; email: string; phone: string };
+    company: {
+        biin: string;
+        name_ru: string;
+        regdate: string;
+        type_supplier: number;
+        mark_small_employer: number;
+        mark_resident: number;
+        email: string;
+        phone: string;
+    };
     stats: { total_contracts: number; total_sum: number; unique_customers: number };
     top_customers: { customer_bin: string; contract_count: number; total_sum: number }[];
     rnu: { is_active: boolean; reason?: string; start_date?: string };
