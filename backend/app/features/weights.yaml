@@ -1,0 +1,88 @@
+# Risk Indicator Weights (sum doesn't need to equal 100)
+# Score = sum(weight * flag) normalized to 0-100
+
+indicators:
+  SHORT_DEADLINE:
+    weight: 8
+    level_contribution: medium
+    description: "Срок приёма заявок менее 3 рабочих дней"
+
+  FEW_BIDS:
+    weight: 12
+    level_contribution: high
+    description: "Количество заявок 1-2 при открытом конкурсе"
+
+  LOT_SPLITTING:
+    weight: 10
+    level_contribution: medium
+    description: "Разбивка крупной закупки на мелкие лоты"
+
+  RECURRING_WINNER:
+    weight: 15
+    level_contribution: high
+    description: "Один поставщик выигрывает >70% тендеров у заказчика"
+
+  SUPPLIER_CONCENTRATION:
+    weight: 10
+    level_contribution: medium
+    description: ">80% контрактов поставщика с одним заказчиком"
+
+  ADDENDUM_VALUE_INCREASE:
+    weight: 12
+    level_contribution: high
+    description: "Допсоглашение увеличило сумму договора >20%"
+
+  WIN_MIN_THEN_ADDENDUM:
+    weight: 15
+    level_contribution: high
+    description: "Выигрыш по минимальной цене, затем немедленное допсоглашение"
+
+  WEIRD_EXECUTION_TIME:
+    weight: 8
+    level_contribution: medium
+    description: "Аномально короткий или длинный срок выполнения"
+
+  RNU_FLAG:
+    weight: 20
+    level_contribution: high
+    description: "Поставщик в реестре недобросовестных поставщиков"
+
+  DUMPING_FLAG:
+    weight: 10
+    level_contribution: medium
+    description: "Зафиксирован демпинг цены"
+
+  NEW_COMPANY_BIG_CONTRACT:
+    weight: 12
+    level_contribution: high
+    description: "Компания зарегистрирована <1 года назад, контракт >10M тенге"
+
+  PAYMENT_WITHOUT_ACT:
+    weight: 15
+    level_contribution: high
+    description: "Казначейский платёж без акта выполнения работ"
+
+  HIGH_WIN_RATE_FEW_BIDS:
+    weight: 12
+    level_contribution: high
+    description: "Win-rate >90% при малом числе заявок (<3)"
+
+  CAROUSEL_PATTERN:
+    weight: 18
+    level_contribution: high
+    description: "Паттерн чередования победителей А→В→С→А"
+
+  LAST_MINUTE_CHANGES:
+    weight: 10
+    level_contribution: medium
+    description: "Изменение условий тендера за <24ч до дедлайна"
+
+  COMMON_REQUISITES:
+    weight: 14
+    level_contribution: high
+    description: "Участники конкурса имеют общий адрес или телефон"
+
+thresholds:
+  low_max: 30
+  medium_max: 60
+  high_min: 61
