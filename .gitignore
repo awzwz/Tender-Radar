@@ -36,3 +36,7 @@ Thumbs.db
 
 # Alembic
 backend/alembic/versions/*.pyc
+
+# Database dumps
+*.dump
+*.sql.gz
