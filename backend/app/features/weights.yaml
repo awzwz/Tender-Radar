@@ -83,6 +83,6 @@ indicators:
     description: "Участники конкурса имеют общий адрес или телефон"
 
 thresholds:
-  low_max: 30
-  medium_max: 60
-  high_min: 61
+  low_max: 8
+  medium_max: 15
+  high_min: 16

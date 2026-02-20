@@ -21,6 +21,77 @@ function formatMoney(n: number) {
     return new Intl.NumberFormat("ru-KZ", { style: "currency", currency: "KZT", maximumFractionDigits: 0 }).format(n);
 }
 
+const EVIDENCE_LABELS: Record<string, string> = {
+    // Dates & Timings
+    start_date: "Дата начала",
+    end_date: "Дата окончания",
+    sign_date: "Дата подписания",
+    contract_sign_date: "Дата подписания договора",
+    addendum_sign_date: "Дата допсоглашения",
+    plan_exec_date: "Плановая дата исполнения",
+    regdate: "Дата регистрации",
+    last_update: "Последнее обновление",
+    deadline_days: "Дней до дедлайна",
+    days_to_addendum: "Дней до допсоглашения",
+    execution_days: "Срок исполнения (дней)",
+    company_age_days: "Возраст компании (дней)",
+    hours_before_deadline: "Часов до дедлайна",
+
+    // Counts & Stats
+    bid_count: "Кол-во заявок",
+    lot_count: "Кол-во лотов",
+    supplier_contracts: "Контрактов поставщика",
+    total_contracts: "Всего контрактов",
+    top_customer_contracts: "Контрактов с топ-заказчиком",
+    payment_count: "Кол-во платежей",
+    act_count: "Кол-во актов",
+    total_participated: "Всего участий",
+    total_won: "Всего побед",
+    avg_bids_per_tender: "Среднее кол-во заявок",
+    unique_winners: "Уникальных победителей",
+    rotation_count: "Кол-во ротаций",
+    bidder_count: "Кол-во участников",
+
+    // Financials
+    total_sum: "Общая сумма",
+    avg_lot_amount: "Средняя сумма лота",
+    original_sum: "Исходная сумма",
+    current_sum: "Текущая сумма",
+    addendum_sum: "Сумма допсоглашения",
+    lot_amount: "Сумма лота",
+    contract_sum: "Сумма контракта",
+    total_paid: "Всего оплачено",
+
+    // Identifiers & Entities
+    customer_bin: "БИН заказчика",
+    supplier_biin: "БИН/ИИН поставщика",
+    top_customer_bin: "БИН топ-заказчика",
+    root_contract_id: "ID корневого договора",
+    contract_id: "ID договора",
+    lot_id: "ID лота",
+    rnu_id: "ID в РНУ",
+    system_id: "ID в системе",
+    company_name: "Название компании",
+
+    // Ratios & Thresholds
+    win_rate_pct: "Процент побед (%)",
+    concentration_pct: "Концентрация (%)",
+    increase_pct: "Процент увеличения (%)",
+    threshold: "Порог",
+    threshold_pct: "Порог (%)",
+    threshold_sum: "Пороговая сумма",
+
+    // Misc
+    anomaly: "Аномалия",
+    reason: "Причина",
+    dumping_flag: "Флаг демпинга",
+    winner_sequence: "Последовательность победителей",
+    common_phones: "Общие телефоны",
+    common_emails: "Общие email",
+    method: "Метод закупки",
+    region: "Регион",
+};
+
 export default function LotDetailPage() {
     const router = useRouter();
     const params = useParams();
@@ -80,8 +151,8 @@ export default function LotDetailPage() {
                     {risk.top_reasons.length > 0 && (
                         <div className="mt-4 space-y-1">
                             <div className="text-xs text-gray-400 mb-2">Основные причины:</div>
-                            {risk.top_reasons.map(r => (
-                                <div key={r.code} className="text-sm text-gray-200">• {r.description || r.code}</div>
+                            {risk.top_reasons.map((r, i) => (
+                                <div key={`${r.code}-${i}`} className="text-sm text-gray-200">• {r.description || r.code}</div>
                             ))}
                         </div>
                     )}
@@ -121,8 +192,8 @@ export default function LotDetailPage() {
                     <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
                         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Сработавшие индикаторы ({triggeredFlags.length})</h2>
                         <div className="space-y-3">
-                            {triggeredFlags.map(f => (
-                                <div key={f.code} className="bg-red-900/20 border border-red-800/50 rounded-xl p-4">
+                            {triggeredFlags.map((f, i) => (
+                                <div key={`${f.code}-${i}`} className="bg-red-900/20 border border-red-800/50 rounded-xl p-4">
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="font-mono text-sm font-bold text-red-400">{f.code}</span>
                                         {f.value !== null && <span className="text-xs text-gray-400">Значение: {f.value}</span>}
@@ -130,7 +201,7 @@ export default function LotDetailPage() {
                                     {f.evidence && Object.keys(f.evidence).length > 0 && (
                                         <div className="text-xs text-gray-500 space-y-0.5">
                                             {Object.entries(f.evidence).slice(0, 5).map(([k, v]) => (
-                                                <div key={k}><span className="text-gray-600">{k}:</span> {String(v)}</div>
+                                                <div key={k}><span className="text-gray-600">{EVIDENCE_LABELS[k] || k}:</span> {String(v)}</div>
                                             ))}
                                         </div>
                                     )}

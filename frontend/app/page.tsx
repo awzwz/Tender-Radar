@@ -165,6 +165,35 @@ function DashboardView({
         <StatCard label="Avg risk" value={stats.avg} tone="neutral" />
       </div>
 
+      {/* Risk Distribution Chart */}
+      <div className="rounded-3xl border border-white/10 bg-slate-950/40 p-5">
+        <div className="mb-4 flex items-center justify-between">
+          <SectionTitle
+            icon={<Sparkles className="h-4 w-4 text-emerald-200" />}
+            title="Risk Distribution"
+            hint="Распределение лотов по уровням риска"
+          />
+        </div>
+
+        <div className="flex h-4 w-full overflow-hidden rounded-full bg-white/5">
+          <div style={{ width: `${(stats.high / total) * 100}%` }} className="bg-rose-500 h-full transition-all duration-500" />
+          <div style={{ width: `${(stats.med / total) * 100}%` }} className="bg-amber-500 h-full transition-all duration-500" />
+          <div style={{ width: `${(stats.low / total) * 100}%` }} className="bg-emerald-500 h-full transition-all duration-500" />
+        </div>
+
+        <div className="mt-3 flex items-center justify-between text-xs text-white/60">
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-rose-500" /> HIGH ({((stats.high / total) * 100).toFixed(1)}%)
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-amber-500" /> MEDIUM ({((stats.med / total) * 100).toFixed(1)}%)
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-emerald-500" /> LOW ({((stats.low / total) * 100).toFixed(1)}%)
+          </div>
+        </div>
+      </div>
+
       <div className="rounded-3xl border border-white/10 bg-slate-950/40 p-4">
         <div className="flex items-center justify-between">
           <div>
@@ -253,8 +282,8 @@ function RiskListView({
                     </div>
                     {l.top_reasons.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-1.5">
-                        {l.top_reasons.slice(0, 3).map((r) => (
-                          <Chip key={r.code}>{r.code}</Chip>
+                        {l.top_reasons.slice(0, 3).map((r, i) => (
+                          <Chip key={`${r.code}-${i}`}>{r.code}</Chip>
                         ))}
                       </div>
                     )}
@@ -289,6 +318,77 @@ function RiskListView({
 }
 
 // ── Lot Detail View ───────────────────────────────────────────────────────────
+
+const EVIDENCE_LABELS: Record<string, string> = {
+  // Dates & Timings
+  start_date: "Дата начала",
+  end_date: "Дата окончания",
+  sign_date: "Дата подписания",
+  contract_sign_date: "Дата подписания договора",
+  addendum_sign_date: "Дата допсоглашения",
+  plan_exec_date: "Плановая дата исполнения",
+  regdate: "Дата регистрации",
+  last_update: "Последнее обновление",
+  deadline_days: "Дней до дедлайна",
+  days_to_addendum: "Дней до допсоглашения",
+  execution_days: "Срок исполнения (дней)",
+  company_age_days: "Возраст компании (дней)",
+  hours_before_deadline: "Часов до дедлайна",
+
+  // Counts & Stats
+  bid_count: "Кол-во заявок",
+  lot_count: "Кол-во лотов",
+  supplier_contracts: "Контрактов поставщика",
+  total_contracts: "Всего контрактов",
+  top_customer_contracts: "Контрактов с топ-заказчиком",
+  payment_count: "Кол-во платежей",
+  act_count: "Кол-во актов",
+  total_participated: "Всего участий",
+  total_won: "Всего побед",
+  avg_bids_per_tender: "Среднее кол-во заявок",
+  unique_winners: "Уникальных победителей",
+  rotation_count: "Кол-во ротаций",
+  bidder_count: "Кол-во участников",
+
+  // Financials
+  total_sum: "Общая сумма",
+  avg_lot_amount: "Средняя сумма лота",
+  original_sum: "Исходная сумма",
+  current_sum: "Текущая сумма",
+  addendum_sum: "Сумма допсоглашения",
+  lot_amount: "Сумма лота",
+  contract_sum: "Сумма контракта",
+  total_paid: "Всего оплачено",
+
+  // Identifiers & Entities
+  customer_bin: "БИН заказчика",
+  supplier_biin: "БИН/ИИН поставщика",
+  top_customer_bin: "БИН топ-заказчика",
+  root_contract_id: "ID корневого договора",
+  contract_id: "ID договора",
+  lot_id: "ID лота",
+  rnu_id: "ID в РНУ",
+  system_id: "ID в системе",
+  company_name: "Название компании",
+
+  // Ratios & Thresholds
+  win_rate_pct: "Процент побед (%)",
+  concentration_pct: "Концентрация (%)",
+  increase_pct: "Процент увеличения (%)",
+  threshold: "Порог",
+  threshold_pct: "Порог (%)",
+  threshold_sum: "Пороговая сумма",
+
+  // Misc
+  anomaly: "Аномалия",
+  reason: "Причина",
+  dumping_flag: "Флаг демпинга",
+  winner_sequence: "Последовательность победителей",
+  common_phones: "Общие телефоны",
+  common_emails: "Общие email",
+  method: "Метод закупки",
+  region: "Регион",
+};
 
 function LotDetailView({
   lotId, onCreateCase,
@@ -392,8 +492,8 @@ function LotDetailView({
               <div className="text-xs text-white/40 py-4 text-center">Сигналов риска нет</div>
             ) : (
               <div className="space-y-2">
-                {triggeredFlags.map((f) => (
-                  <div key={f.code} className="rounded-2xl border border-white/10 bg-slate-950/40 p-3">
+                {triggeredFlags.map((f, i) => (
+                  <div key={`${f.code}-${i}`} className="rounded-2xl border border-white/10 bg-slate-950/40 p-3">
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-white/70 font-mono">{f.code}</span>
@@ -402,10 +502,14 @@ function LotDetailView({
                             Evidence: <span className="font-mono text-white/70">{String(f.value)}</span>
                           </div>
                         )}
+
+
                         {f.evidence && Object.keys(f.evidence).length > 0 && (
                           <div className="mt-1 text-xs text-white/50 space-y-0.5">
                             {Object.entries(f.evidence).slice(0, 3).map(([k, v]) => (
-                              <div key={k}><span className="text-white/40">{k}:</span> {String(v)}</div>
+                              <div key={k}>
+                                <span className="text-white/40">{EVIDENCE_LABELS[k] || k}:</span> {String(v)}
+                              </div>
                             ))}
                           </div>
                         )}
@@ -433,8 +537,8 @@ function LotDetailView({
               <span className="text-xs text-white/50">из модели</span>
             </div>
             <div className="space-y-2">
-              {risk.top_reasons.map((r) => (
-                <div key={r.code} className="rounded-2xl border border-white/10 bg-slate-950/40 px-3 py-2">
+              {risk.top_reasons.map((r, i) => (
+                <div key={`${r.code}-${i}`} className="rounded-2xl border border-white/10 bg-slate-950/40 px-3 py-2">
                   <span className="text-xs font-mono text-indigo-300">{r.code}</span>
                   {r.description && <div className="text-xs text-white/70 mt-0.5">{r.description}</div>}
                 </div>
@@ -650,8 +754,8 @@ function AIAssistant({
           <div
             key={i}
             className={`rounded-2xl border px-3 py-2.5 text-sm leading-relaxed ${m.role === "assistant"
-                ? "border-white/10 bg-slate-950/40"
-                : "border-indigo-500/20 bg-indigo-500/10"
+              ? "border-white/10 bg-slate-950/40"
+              : "border-indigo-500/20 bg-indigo-500/10"
               }`}
           >
             <div className="whitespace-pre-wrap text-white/90">{m.text}</div>
@@ -712,7 +816,7 @@ export default function AIProcurePage() {
   // UI state
   const [nav, setNav] = useState<Nav>("dashboard");
   const [search, setSearch] = useState("");
-  const [minRisk, setMinRisk] = useState(40);
+  const [minRisk, setMinRisk] = useState(0);
   const [levelFilter, setLevelFilter] = useState("");
   const [selectedLotId, setSelectedLotId] = useState<number | null>(null);
   const [cases, setCases] = useState<CaseItem[]>([]);

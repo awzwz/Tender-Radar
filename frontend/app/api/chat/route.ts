@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta";
 // Try models in order, fallback to next if unavailable
 const MODEL_PRIORITY = [
+    "gemini-2.5-flash",
     "gemini-2.0-flash",
-    "gemini-2.0-flash-lite",
     "gemini-flash-latest",
 ];
 
@@ -93,15 +93,9 @@ export async function POST(req: NextRequest) {
                 return NextResponse.json({ text: data.candidates[0].content.parts[0].text });
             }
 
-            // If 404 (model not found), try next; if quota, return error immediately
-            if (data.error?.code === 429) {
-                return NextResponse.json(
-                    { error: `Превышен лимит запросов Gemini API. Подожди немного и повтори (429).` },
-                    { status: 429 }
-                );
-            }
+            // Continue to next model on error (404, 429, etc.)
             lastError = data.error?.message || JSON.stringify(data);
-            if (data.error?.code !== 404) break;
+            console.warn(`Model ${model} failed:`, lastError);
         }
 
         return NextResponse.json({ error: `Gemini API: ${lastError}` }, { status: 500 });
