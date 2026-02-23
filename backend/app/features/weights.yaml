@@ -1,0 +1,196 @@
+# Risk Indicator Weights (sum doesn't need to equal 100)
+# Score = sum(weight * flag) normalized to 0-100
+
+indicators:
+  LOT_SPLITTING:
+    weight: 10
+    level_contribution: medium
+    description: "Разбивка крупной закупки на мелкие лоты"
+    description_en: "Splitting a large procurement into many smaller lots"
+
+  SHORT_DEADLINE:
+    weight: 8
+    level_contribution: medium
+    description: "Срок приёма заявок менее 3 рабочих дней"
+    description_en: "Bid submission window is too short (< 3 days)"
+
+  FEW_BIDS:
+    weight: 12
+    level_contribution: high
+    description: "Количество заявок 1-2 при открытом конкурсе"
+    description_en: "Very low competition: only 1-2 bids"
+
+  RECURRING_WINNER:
+    weight: 15
+    level_contribution: high
+    description: "Один поставщик выигрывает >70% тендеров у заказчика"
+    description_en: "Same supplier repeatedly wins (>70%, min 5 contracts)"
+
+  COMMON_REQUISITES:
+    weight: 14
+    level_contribution: high
+    description: "Участники конкурса имеют общий телефон или email"
+    description_en: "Different bidders share contact details (phone/email)"
+
+  NEW_COMPANY_BIG_CONTRACT:
+    weight: 12
+    level_contribution: high
+    description: "Компания зарегистрирована <1 года, контракт >10M"
+    description_en: "Recently registered company wins large contract"
+
+  CAROUSEL_PATTERN:
+    weight: 18
+    level_contribution: high
+    description: "Паттерн чередования победителей А→В→С→А"
+    description_en: "Winner rotation pattern between small group"
+
+  RNU_FLAG:
+    weight: 20
+    level_contribution: high
+    description: "Поставщик в реестре недобросовестных поставщиков"
+    description_en: "Supplier is in unreliable suppliers registry (RNU)"
+
+  DUMPING_FLAG:
+    weight: 10
+    level_contribution: medium
+    description: "Зафиксирован демпинг цены"
+    description_en: "Strong price dumping detected"
+
+  IDENTICAL_BID_PRICES:
+    weight: 10
+    level_contribution: medium
+    description: "Одинаковые цены у разных участников"
+    description_en: "Different suppliers submit identical prices"
+
+  TINY_WIN_MARGIN:
+    weight: 10
+    level_contribution: medium
+    description: "Минимальная разница между лучшей и второй ценой (<1%)"
+    description_en: "Very small win margin (< 1%)"
+
+  LATE_BID_SUBMISSION:
+    weight: 7
+    level_contribution: low
+    description: "Заявки поданы за <60 минут до дедлайна"
+    description_en: "Bids submitted very close to deadline (last 60 min)"
+
+  REPEAT_TENDER:
+    weight: 8
+    level_contribution: medium
+    description: "Тендер является повторным (есть parentId)"
+    description_en: "Tender is a repeat/restart"
+
+  CANCELLED_TENDER:
+    weight: 10
+    level_contribution: medium
+    description: "Тендер отменён"
+    description_en: "Tender has cancellation records"
+
+  PAUSED_TENDER:
+    weight: 8
+    level_contribution: medium
+    description: "Тендер был приостановлен"
+    description_en: "Tender was paused"
+
+  NIGHT_OR_WEEKEND_PUBLISH:
+    weight: 6
+    level_contribution: low
+    description: "Публикация в нерабочее время или выходные"
+    description_en: "Tender published at unusual time (night/weekend)"
+
+  SHORT_DISCUSSION_WINDOW:
+    weight: 6
+    level_contribution: low
+    description: "Слишком короткий срок обсуждения (<2 дня)"
+    description_en: "Discussion window is too short (< 2 days)"
+
+  LAST_MINUTE_CHANGES:
+    weight: 10
+    level_contribution: medium
+    description: "Изменение условий за <24ч до дедлайна"
+    description_en: "Tender updated shortly before deadline"
+
+  SUPPLIER_CONCENTRATION:
+    weight: 10
+    level_contribution: medium
+    description: ">80% контрактов поставщика с одним заказчиком"
+    description_en: "Supplier depends heavily on one customer"
+
+  CUSTOMER_WINNER_CONCENTRATION:
+    weight: 10
+    level_contribution: medium
+    description: "Топ-3 поставщика получают >80% контрактов клиента"
+    description_en: "Customer has very narrow winner set"
+
+  HIGH_WIN_RATE_FEW_BIDS:
+    weight: 12
+    level_contribution: high
+    description: "Win-rate >90% при малом числе заявок (<3)"
+    description_en: "Very high win-rate with low average competition"
+
+  ADDENDUM_VALUE_INCREASE:
+    weight: 12
+    level_contribution: high
+    description: "Допсоглашение увеличило сумму >20%"
+    description_en: "Contract value increased >20% via addendum"
+
+  WIN_MIN_THEN_ADDENDUM:
+    weight: 15
+    level_contribution: high
+    description: "Допсоглашение в течение 30 дней после подписания"
+    description_en: "Quick addendum soon after signing (within 30 days)"
+
+  WEIRD_EXECUTION_TIME:
+    weight: 8
+    level_contribution: medium
+    description: "Аномально короткий (<7д) или длинный (>730д) срок"
+    description_en: "Unrealistically short/long execution time"
+
+  HIGH_PREPAY:
+    weight: 10
+    level_contribution: medium
+    description: "Аванс >50% от суммы контракта"
+    description_en: "Advance payment > 50% of contract sum"
+
+  PAYMENTS_EXCEED_CONTRACT:
+    weight: 15
+    level_contribution: high
+    description: "Сумма платежей превышает сумму контракта"
+    description_en: "Sum of payments exceeds contract value"
+
+  PAYMENT_WITHOUT_ACT:
+    weight: 15
+    level_contribution: high
+    description: "Платежи без акта выполнения работ"
+    description_en: "Payments exist but no acceptance acts"
+
+  OVERDUE_EXECUTION:
+    weight: 12
+    level_contribution: high
+    description: "Просрочка исполнения контракта"
+    description_en: "Actual completion later than planned"
+
+  FINES_PRESENT:
+    weight: 14
+    level_contribution: high
+    description: "Штрафные санкции в актах"
+    description_en: "Fines/penalties exist in acts"
+
+  LOW_EXECUTION_RATE:
+    weight: 10
+    level_contribution: medium
+    description: "Степень исполнения <50%"
+    description_en: "Poor execution: factSum < 50% of totalSum"
+
+  BANK_DETAILS_REUSE:
+    weight: 12
+    level_contribution: high
+    description: "Одинаковые банковские реквизиты у разных компаний"
+    description_en: "Same bank details across different companies"
+
+thresholds:
+  # Градация для более сбалансированного распределения (было: 15/40/41)
+  # LOW 0-12, MEDIUM 13-28, HIGH 29+
+  low_max: 12
+  medium_max: 28
+  high_min: 29
