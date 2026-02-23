@@ -21,7 +21,7 @@ import {
   Play,
   X,
 } from "lucide-react";
-import { api, DashboardItem, LotDetail, RiskLevel, ExplanationResponse } from "@/lib/api";
+import { api, DashboardItem, LotDetail, RiskLevel, ExplanationResponse, IndicatorDetails } from "@/lib/api";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -31,8 +31,8 @@ const money = (n: number) =>
 const clamp = (n: number, min = 0, max = 100) => Math.max(min, Math.min(max, n));
 
 function levelFromScore(score: number): RiskLevel {
-  if (score >= 29) return "HIGH";
-  if (score >= 13) return "MEDIUM";
+  if (score >= 20) return "HIGH";
+  if (score >= 7) return "MEDIUM";
   return "LOW";
 }
 
@@ -137,21 +137,28 @@ function NavBtn({
 // ── Dashboard View ─────────────────────────────────────────────────────────────
 
 function DashboardView({
-  items, total, loading, onOpenLot,
+  items, total, loading, onOpenLot, globalStats,
 }: {
   items: DashboardItem[]; total: number; loading: boolean; onOpenLot: (id: number) => void;
+  globalStats?: { high: number; medium: number; low: number; avg_score: number; scored_lots: number } | null;
 }) {
   const stats = useMemo(() => {
-    const high = items.filter((x) => x.risk_level === "HIGH").length;
-    const med = items.filter((x) => x.risk_level === "MEDIUM").length;
-    const low = items.filter((x) => x.risk_level === "LOW").length;
-    const sc = (x: DashboardItem) => x.risk_score ?? (x.risk_level === "HIGH" ? 29 : x.risk_level === "MEDIUM" ? 13 : 0);
-    const scored = items.filter((x) => sc(x) > 0);
-    const avg = scored.length > 0 ? Math.round(scored.reduce((s, x) => s + sc(x), 0) / scored.length) : 0;
-    return { high, med, low, avg };
-  }, [items]);
+    if (globalStats) {
+      return {
+        high: globalStats.high,
+        med: globalStats.medium,
+        low: globalStats.low,
+        avg: Math.round(globalStats.avg_score),
+        scored: globalStats.scored_lots,
+      };
+    }
+    return { high: 0, med: 0, low: 0, avg: 0, scored: 0 };
+  }, [globalStats]);
 
   const top = [...items].sort((a, b) => (b.risk_score ?? 0) - (a.risk_score ?? 0)).slice(0, 5);
+  const distTotal = stats.scored || 1;
+  const pct = (n: number) => (distTotal > 0 ? ((n / distTotal) * 100).toFixed(1) : "0");
+  const w = (n: number) => (distTotal > 0 ? (n / distTotal) * 100 : 0);
 
   return (
     <div className="space-y-4">
@@ -179,20 +186,20 @@ function DashboardView({
         </div>
 
         <div className="flex h-4 w-full overflow-hidden rounded-full bg-white/5">
-          <div style={{ width: `${(stats.high / total) * 100}%` }} className="bg-rose-500 h-full transition-all duration-500" />
-          <div style={{ width: `${(stats.med / total) * 100}%` }} className="bg-amber-500 h-full transition-all duration-500" />
-          <div style={{ width: `${(stats.low / total) * 100}%` }} className="bg-emerald-500 h-full transition-all duration-500" />
+          <div style={{ width: `${w(stats.high)}%` }} className="bg-rose-500 h-full transition-all duration-500" />
+          <div style={{ width: `${w(stats.med)}%` }} className="bg-amber-500 h-full transition-all duration-500" />
+          <div style={{ width: `${w(stats.low)}%` }} className="bg-emerald-500 h-full transition-all duration-500" />
         </div>
 
         <div className="mt-3 flex items-center justify-between text-xs text-white/60">
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-rose-500" /> HIGH ({((stats.high / total) * 100).toFixed(1)}%)
+            <div className="h-2 w-2 rounded-full bg-rose-500" /> HIGH ({pct(stats.high)}%)
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-amber-500" /> MEDIUM ({((stats.med / total) * 100).toFixed(1)}%)
+            <div className="h-2 w-2 rounded-full bg-amber-500" /> MEDIUM ({pct(stats.med)}%)
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-emerald-500" /> LOW ({((stats.low / total) * 100).toFixed(1)}%)
+            <div className="h-2 w-2 rounded-full bg-emerald-500" /> LOW ({pct(stats.low)}%)
           </div>
         </div>
       </div>
@@ -216,9 +223,9 @@ function DashboardView({
           </div>
         ) : (
           <div className="mt-3 space-y-2">
-            {top.map((l) => (
+            {top.map((l, idx) => (
               <button
-                key={l.lot_id}
+                key={`${l.lot_id}-${idx}`}
                 onClick={() => onOpenLot(l.lot_id)}
                 className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-left hover:bg-white/10 transition"
               >
@@ -273,8 +280,8 @@ function RiskListView({
           </div>
         ) : (
           <div className="space-y-2">
-            {items.map((l) => (
-              <div key={l.lot_id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+            {items.map((l, idx) => (
+              <div key={`${l.lot_id}-${idx}`} className="rounded-2xl border border-white/10 bg-white/5 p-3">
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -393,6 +400,20 @@ const EVIDENCE_LABELS: Record<string, string> = {
   region: "Регион",
 };
 
+function BinLink({ bin, label, isCustomer = false }: { bin: string; label?: string; isCustomer?: boolean }) {
+  const router = useRouter();
+  const href = isCustomer ? `/customers/${bin}` : `/suppliers/${bin}`;
+  return (
+    <button
+      onClick={() => router.push(href)}
+      className="text-indigo-300 hover:text-indigo-200 hover:underline font-mono text-xs"
+      title="Открыть карточку компании"
+    >
+      {label ?? bin}
+    </button>
+  );
+}
+
 function LotDetailView({
   lotId, onCreateCase,
 }: {
@@ -403,7 +424,25 @@ function LotDetailView({
   const [note, setNote] = useState("Проверить ТЗ/обоснование цены и историю побед поставщика у заказчика.");
   const [explanation, setExplanation] = useState<ExplanationResponse | null>(null);
   const [explainLoading, setExplainLoading] = useState(false);
+  const [indicatorDetail, setIndicatorDetail] = useState<IndicatorDetails | null>(null);
+  const [indicatorDetailCode, setIndicatorDetailCode] = useState<string | null>(null);
+  const [indicatorDetailLoading, setIndicatorDetailLoading] = useState(false);
   const router = useRouter();
+
+  async function openIndicatorDetail(code: string) {
+    if (!lotId) return;
+    setIndicatorDetailCode(code);
+    setIndicatorDetailLoading(true);
+    setIndicatorDetail(null);
+    try {
+      const d = await api.lotIndicatorDetails(lotId, code);
+      setIndicatorDetail(d);
+    } catch {
+      setIndicatorDetail(null);
+    } finally {
+      setIndicatorDetailLoading(false);
+    }
+  }
 
   async function handleExplain(force = false) {
     if (!lotId) return;
@@ -535,17 +574,22 @@ function LotDetailView({
             ) : (
               <div className="space-y-2">
                 {triggeredFlags.map((f, i) => (
-                  <div key={`${f.code}-${i}`} className="rounded-2xl border border-white/10 bg-slate-950/40 p-3">
+                  <button
+                    key={`${f.code}-${i}`}
+                    onClick={() => openIndicatorDetail(f.code)}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/40 p-3 text-left hover:bg-slate-900/60 hover:border-indigo-500/30 transition group"
+                  >
                     <div className="flex items-start justify-between gap-2">
-                      <div>
+                      <div className="flex-1 min-w-0">
                         <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-white/70 font-mono">{f.code}</span>
+                        {f.code !== "CUSTOMER_WINNER_CONCENTRATION" && (
+                          <span className="ml-2 text-[10px] text-white/40 group-hover:text-indigo-400">Подробнее →</span>
+                        )}
                         {f.value !== null && (
                           <div className="mt-1 text-xs text-white/60">
                             Evidence: <span className="font-mono text-white/70">{String(f.value)}</span>
                           </div>
                         )}
-
-
                         {f.evidence && Object.keys(f.evidence).length > 0 && (
                           <div className="mt-1 text-xs text-white/50 space-y-0.5">
                             {Object.entries(f.evidence).slice(0, 3).map(([k, v]) => (
@@ -556,8 +600,9 @@ function LotDetailView({
                           </div>
                         )}
                       </div>
+                      <ChevronRight className="h-4 w-4 text-white/30 group-hover:text-indigo-400 flex-shrink-0" />
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
@@ -688,6 +733,113 @@ function LotDetailView({
           </div>
         </div>
       </div>
+
+      {/* Indicator Detail Modal */}
+      {indicatorDetailCode && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={() => { setIndicatorDetailCode(null); setIndicatorDetail(null); }}
+        >
+          <div
+            className="rounded-3xl border border-white/10 bg-slate-950 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-white/10">
+              <h3 className="text-sm font-semibold text-white font-mono">{indicatorDetailCode}</h3>
+              <button
+                onClick={() => { setIndicatorDetailCode(null); setIndicatorDetail(null); }}
+                className="rounded-lg p-1.5 text-white/60 hover:text-white hover:bg-white/10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="p-4 overflow-auto flex-1">
+              {indicatorDetailLoading ? (
+                <div className="flex items-center justify-center py-12 text-white/50">
+                  <RefreshCw className="h-6 w-6 animate-spin mr-2" /> Загрузка...
+                </div>
+              ) : indicatorDetail?.code === "CAROUSEL_PATTERN" && indicatorDetail.contracts ? (
+                <div className="space-y-4">
+                  <div className="text-xs text-white/60 space-y-1">
+                    <p>Заказчик: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_name || indicatorDetail.customer_bin} isCustomer /> ({indicatorDetail.customer_bin})</p>
+                    <p>Ротаций: <span className="text-white/80 font-mono">{indicatorDetail.rotation_count}</span> · Уникальных победителей: <span className="font-mono">{indicatorDetail.unique_winners}</span></p>
+                  </div>
+                  <div className="text-xs font-medium text-white/80 mb-2">Цепочка контрактов (хронологически):</div>
+                  <div className="overflow-x-auto rounded-xl border border-white/10">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-white/10 text-white/60 text-left">
+                          <th className="px-3 py-2">№ контракта</th>
+                          <th className="px-3 py-2">Дата</th>
+                          <th className="px-3 py-2">Поставщик (БИН)</th>
+                          <th className="px-3 py-2">Сумма</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {indicatorDetail.contracts.map((c, i) => (
+                          <tr key={i} className="border-b border-white/5 hover:bg-white/5">
+                            <td className="px-3 py-2 font-mono text-white/90">{c.contract_number}</td>
+                            <td className="px-3 py-2 text-white/70">{c.sign_date?.slice(0, 10) ?? "—"}</td>
+                            <td className="px-3 py-2">
+                              {c.supplier_biin ? (
+                                <BinLink bin={c.supplier_biin} label={c.supplier_name ? `${c.supplier_name} (${c.supplier_biin})` : c.supplier_biin} />
+                              ) : "—"}
+                            </td>
+                            <td className="px-3 py-2 text-white/80">{money(c.contract_sum)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : indicatorDetail?.code === "RECURRING_WINNER" && indicatorDetail.contracts ? (
+                <div className="space-y-4">
+                  <div className="text-xs text-white/60 space-y-1">
+                    <p>Заказчик: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_bin} isCustomer /></p>
+                    <p>Поставщик: <BinLink bin={indicatorDetail.supplier_biin!} label={indicatorDetail.supplier_name || indicatorDetail.supplier_biin} /> ({indicatorDetail.supplier_biin})</p>
+                  </div>
+                  <div className="text-xs font-medium text-white/80 mb-2">Контракты поставщика у заказчика:</div>
+                  <div className="overflow-x-auto rounded-xl border border-white/10">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-white/10 text-white/60 text-left">
+                          <th className="px-3 py-2">№ контракта</th>
+                          <th className="px-3 py-2">Дата</th>
+                          <th className="px-3 py-2">Сумма</th>
+                          <th className="px-3 py-2">Тендер</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {indicatorDetail.contracts.map((c, i) => (
+                          <tr key={i} className="border-b border-white/5 hover:bg-white/5">
+                            <td className="px-3 py-2 font-mono text-white/90">{c.contract_number}</td>
+                            <td className="px-3 py-2 text-white/70">{c.sign_date?.slice(0, 10) ?? "—"}</td>
+                            <td className="px-3 py-2 text-white/80">{money(c.contract_sum)}</td>
+                            <td className="px-3 py-2 text-white/60">{c.tender_number ?? "—"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : indicatorDetail?.evidence && Object.keys(indicatorDetail.evidence).length > 0 ? (
+                <div className="space-y-2 text-xs">
+                  {Object.entries(indicatorDetail.evidence).map(([k, v]) => (
+                    <div key={k} className="flex gap-2">
+                      <span className="text-white/40 shrink-0">{EVIDENCE_LABELS[k] || k}:</span>
+                      <span className="text-white/80 break-all">
+                        {Array.isArray(v) ? v.join(", ") : typeof v === "object" ? JSON.stringify(v) : String(v)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-sm text-white/50 py-8 text-center">Нет расширенных данных для этого индикатора</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -923,6 +1075,7 @@ export default function AIProcurePage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [globalStats, setGlobalStats] = useState<{ total_lots: number; scored_lots: number; high: number; medium: number; low: number; avg_score: number } | null>(null);
 
   // UI state
   const [nav, setNav] = useState<Nav>("dashboard");
@@ -933,9 +1086,15 @@ export default function AIProcurePage() {
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
 
+  // Load dashboard stats (global HIGH/MEDIUM/LOW counts)
+  const loadStats = useCallback(() => {
+    api.dashboardStats().then(setGlobalStats).catch(() => setGlobalStats(null));
+  }, []);
+
   // Load dashboard data
   const loadData = useCallback(async (pg = 1, append = false, levelF = levelFilter, minR = minRisk) => {
     setLoading(true);
+    loadStats(); // Refresh global stats
     try {
       const params: Record<string, string | number> = {
         page: pg,
@@ -947,7 +1106,7 @@ export default function AIProcurePage() {
       setTotal(data.total);
       setItems((prev) => {
         const scoreOrFallback = (x: { risk_score?: number | null; risk_level?: string }) =>
-          x.risk_score ?? (x.risk_level === "HIGH" ? 29 : x.risk_level === "MEDIUM" ? 13 : 0);
+          x.risk_score ?? (x.risk_level === "HIGH" ? 20 : x.risk_level === "MEDIUM" ? 10 : 0);
         const incoming = data.items.filter((x) => scoreOrFallback(x) >= minR);
         return append ? [...prev, ...incoming] : incoming;
       });
@@ -956,11 +1115,15 @@ export default function AIProcurePage() {
     } finally {
       setLoading(false);
     }
-  }, [levelFilter, minRisk]);
+  }, [levelFilter, minRisk, loadStats]);
 
   useEffect(() => {
     loadData(1, false, levelFilter, minRisk);
   }, [levelFilter]);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
 
   // Onboarding: show once on first visit
   useEffect(() => {
@@ -1012,7 +1175,7 @@ export default function AIProcurePage() {
   const filteredItems = useMemo(() => {
     const q = search.trim().toLowerCase();
     const scoreOr = (l: DashboardItem) =>
-      l.risk_score ?? (l.risk_level === "HIGH" ? 29 : l.risk_level === "MEDIUM" ? 13 : 0);
+      l.risk_score ?? (l.risk_level === "HIGH" ? 20 : l.risk_level === "MEDIUM" ? 10 : 0);
     return items
       .filter((l) => {
         const passRisk = scoreOr(l) >= minRisk;
@@ -1113,7 +1276,7 @@ export default function AIProcurePage() {
             <div className="hidden md:flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
               <BadgeInfo className="h-4 w-4" style={{ color: "rgba(255,255,255,0.5)" }} />
               <span className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>
-                {total > 0 ? `${total.toLocaleString("ru")} лотов · Обновляется ежедневно` : "ETL загружает данные..."}
+                {(total > 0 || globalStats?.total_lots) ? `${(total || globalStats?.total_lots || 0).toLocaleString("ru")} лотов · Обновляется ежедневно` : "ETL загружает данные..."}
               </span>
             </div>
             <button
@@ -1232,6 +1395,7 @@ export default function AIProcurePage() {
                 total={total}
                 loading={loading}
                 onOpenLot={openLot}
+                globalStats={globalStats}
               />
             )}
             {nav === "risk-list" && (

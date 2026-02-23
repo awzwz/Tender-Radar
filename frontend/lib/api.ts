@@ -43,7 +43,15 @@ export const api = {
         );
     },
 
+    dashboardStats: () =>
+        apiFetch<{ total_lots: number; scored_lots: number; high: number; medium: number; low: number; avg_score: number }>(
+            "/dashboard/stats"
+        ),
+
     lot: (id: number) => apiFetch<LotDetail>(`/lots/${id}`),
+
+    lotIndicatorDetails: (lotId: number, code: string) =>
+        apiFetch<IndicatorDetails>(`/lots/${lotId}/indicators/${code}/details`),
     tender: (id: number) => apiFetch<TenderDetail>(`/tenders/${id}`),
     supplier: (biin: string) => apiFetch<SupplierProfile>(`/suppliers/${biin}`),
     customer: (bin: string) => apiFetch<CustomerProfile>(`/customers/${bin}`),
@@ -213,4 +221,24 @@ export interface EtlRun {
     finished_at: string | null;
     status: string;
     summary: Record<string, unknown>;
+}
+
+export interface IndicatorDetails {
+    code: string;
+    customer_bin?: string;
+    customer_name?: string;
+    supplier_biin?: string;
+    supplier_name?: string;
+    rotation_count?: number;
+    unique_winners?: number;
+    contracts?: {
+        contract_id: number;
+        contract_number: string;
+        sign_date: string | null;
+        supplier_biin?: string;
+        supplier_name?: string;
+        contract_sum: number;
+        tender_number?: string;
+    }[];
+    evidence?: Record<string, unknown>;
 }

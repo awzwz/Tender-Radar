@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { api, LotDetail } from "@/lib/api";
+import { api, LotDetail, IndicatorDetails } from "@/lib/api";
 
 const LEVEL_COLORS: Record<string, string> = {
     HIGH: "text-red-400",
@@ -92,6 +92,16 @@ const EVIDENCE_LABELS: Record<string, string> = {
     region: "Регион",
 };
 
+function BinLink({ bin, label, isCustomer = false }: { bin: string; label?: string; isCustomer?: boolean }) {
+    const router = useRouter();
+    const href = isCustomer ? `/customers/${bin}` : `/suppliers/${bin}`;
+    return (
+        <button onClick={() => router.push(href)} className="text-blue-400 hover:underline font-mono text-xs" title="Открыть карточку компании">
+            {label ?? bin}
+        </button>
+    );
+}
+
 export default function LotDetailPage() {
     const router = useRouter();
     const params = useParams();
@@ -101,6 +111,25 @@ export default function LotDetailPage() {
     const [noteText, setNoteText] = useState("");
     const [noteLabel, setNoteLabel] = useState("NEEDS_REVIEW");
     const [noteSaving, setNoteSaving] = useState(false);
+    const [indicatorDetail, setIndicatorDetail] = useState<IndicatorDetails | null>(null);
+    const [indicatorDetailCode, setIndicatorDetailCode] = useState<string | null>(null);
+    const [indicatorDetailLoading, setIndicatorDetailLoading] = useState(false);
+
+    async function openIndicatorDetail(code: string) {
+        if (!params.id) return;
+        const lotId = Number(params.id);
+        setIndicatorDetailCode(code);
+        setIndicatorDetailLoading(true);
+        setIndicatorDetail(null);
+        try {
+            const d = await api.lotIndicatorDetails(lotId, code);
+            setIndicatorDetail(d);
+        } catch {
+            setIndicatorDetail(null);
+        } finally {
+            setIndicatorDetailLoading(false);
+        }
+    }
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -162,7 +191,7 @@ export default function LotDetailPage() {
                 <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
                     <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Информация о лоте</h2>
                     <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div><span className="text-gray-500">Заказчик:</span> <span className="text-gray-200">{lot.customer_name || lot.customer_bin}</span></div>
+                        <div><span className="text-gray-500">Заказчик:</span> {lot.customer_bin ? <BinLink bin={lot.customer_bin} label={lot.customer_name || lot.customer_bin} isCustomer /> : <span className="text-gray-200">{lot.customer_name || lot.customer_bin}</span>}</div>
                         <div><span className="text-gray-500">Сумма:</span> <span className="text-gray-200 font-medium">{formatMoney(lot.amount)}</span></div>
                         {tender && <>
                             <div><span className="text-gray-500">Тендер №:</span> <button onClick={() => router.push(`/tenders/${tender.id}`)} className="text-blue-400 hover:underline">{tender.number_anno}</button></div>
@@ -193,11 +222,18 @@ export default function LotDetailPage() {
                         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Сработавшие индикаторы ({triggeredFlags.length})</h2>
                         <div className="space-y-3">
                             {triggeredFlags.map((f, i) => (
-                                <div key={`${f.code}-${i}`} className="bg-red-900/20 border border-red-800/50 rounded-xl p-4">
+                                <button
+                                    key={`${f.code}-${i}`}
+                                    onClick={() => openIndicatorDetail(f.code)}
+                                    className="w-full text-left bg-red-900/20 border border-red-800/50 rounded-xl p-4 hover:bg-red-900/30 hover:border-red-700 transition"
+                                >
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="font-mono text-sm font-bold text-red-400">{f.code}</span>
-                                        {f.value !== null && <span className="text-xs text-gray-400">Значение: {f.value}</span>}
+                                        {f.code !== "CUSTOMER_WINNER_CONCENTRATION" && (
+                                          <span className="text-xs text-blue-400 ml-2">Подробнее →</span>
+                                        )}
                                     </div>
+                                    {f.value !== null && <div className="text-xs text-gray-400 mb-1">Значение: {f.value}</div>}
                                     {f.evidence && Object.keys(f.evidence).length > 0 && (
                                         <div className="text-xs text-gray-500 space-y-0.5">
                                             {Object.entries(f.evidence).slice(0, 5).map(([k, v]) => (
@@ -205,7 +241,7 @@ export default function LotDetailPage() {
                                             ))}
                                         </div>
                                     )}
-                                </div>
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -237,6 +273,111 @@ export default function LotDetailPage() {
                     </button>
                 </div>
             </main>
+
+            {/* Indicator Detail Modal */}
+            {indicatorDetailCode && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+                    onClick={() => { setIndicatorDetailCode(null); setIndicatorDetail(null); }}
+                >
+                    <div
+                        className="rounded-2xl border border-gray-700 bg-gray-900 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between p-4 border-b border-gray-700">
+                            <h3 className="text-sm font-semibold text-white font-mono">{indicatorDetailCode}</h3>
+                            <button
+                                onClick={() => { setIndicatorDetailCode(null); setIndicatorDetail(null); }}
+                                className="text-gray-400 hover:text-white px-2 py-1"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <div className="p-4 overflow-auto flex-1">
+                            {indicatorDetailLoading ? (
+                                <div className="py-12 text-center text-gray-400">Загрузка...</div>
+                            ) : indicatorDetail?.code === "CAROUSEL_PATTERN" && indicatorDetail.contracts ? (
+                                <div className="space-y-4">
+                                    <div className="text-xs text-gray-400 space-y-1">
+                                        <p>Заказчик: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_name || indicatorDetail.customer_bin} isCustomer /> ({indicatorDetail.customer_bin})</p>
+                                        <p>Ротаций: <span className="text-gray-200 font-mono">{indicatorDetail.rotation_count}</span> · Уникальных победителей: <span className="font-mono">{indicatorDetail.unique_winners}</span></p>
+                                    </div>
+                                    <div className="text-xs font-medium text-gray-300 mb-2">Цепочка контрактов (хронологически):</div>
+                                    <div className="overflow-x-auto rounded-lg border border-gray-700">
+                                        <table className="w-full text-xs">
+                                            <thead>
+                                                <tr className="border-b border-gray-700 text-gray-400 text-left">
+                                                    <th className="px-3 py-2">№ контракта</th>
+                                                    <th className="px-3 py-2">Дата</th>
+                                                    <th className="px-3 py-2">Поставщик (БИН)</th>
+                                                    <th className="px-3 py-2">Сумма</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {indicatorDetail.contracts.map((c, i) => (
+                                                    <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/50">
+                                                        <td className="px-3 py-2 font-mono text-gray-200">{c.contract_number}</td>
+                                                        <td className="px-3 py-2 text-gray-400">{c.sign_date?.slice(0, 10) ?? "—"}</td>
+                                                        <td className="px-3 py-2">
+                                                            {c.supplier_biin ? (
+                                                                <BinLink bin={c.supplier_biin} label={c.supplier_name ? `${c.supplier_name} (${c.supplier_biin})` : c.supplier_biin} />
+                                                            ) : "—"}
+                                                        </td>
+                                                        <td className="px-3 py-2 text-gray-300">{formatMoney(c.contract_sum)}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            ) : indicatorDetail?.code === "RECURRING_WINNER" && indicatorDetail.contracts ? (
+                                <div className="space-y-4">
+                                    <div className="text-xs text-gray-400 space-y-1">
+                                        <p>Заказчик: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_bin} isCustomer /></p>
+                                        <p>Поставщик: <BinLink bin={indicatorDetail.supplier_biin!} label={indicatorDetail.supplier_name || indicatorDetail.supplier_biin} /> ({indicatorDetail.supplier_biin})</p>
+                                    </div>
+                                    <div className="text-xs font-medium text-gray-300 mb-2">Контракты поставщика у заказчика:</div>
+                                    <div className="overflow-x-auto rounded-lg border border-gray-700">
+                                        <table className="w-full text-xs">
+                                            <thead>
+                                                <tr className="border-b border-gray-700 text-gray-400 text-left">
+                                                    <th className="px-3 py-2">№ контракта</th>
+                                                    <th className="px-3 py-2">Дата</th>
+                                                    <th className="px-3 py-2">Сумма</th>
+                                                    <th className="px-3 py-2">Тендер</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {indicatorDetail.contracts.map((c, i) => (
+                                                    <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/50">
+                                                        <td className="px-3 py-2 font-mono text-gray-200">{c.contract_number}</td>
+                                                        <td className="px-3 py-2 text-gray-400">{c.sign_date?.slice(0, 10) ?? "—"}</td>
+                                                        <td className="px-3 py-2 text-gray-300">{formatMoney(c.contract_sum)}</td>
+                                                        <td className="px-3 py-2 text-gray-500">{c.tender_number ?? "—"}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            ) : indicatorDetail?.evidence && Object.keys(indicatorDetail.evidence).length > 0 ? (
+                                <div className="space-y-2 text-xs">
+                                    {Object.entries(indicatorDetail.evidence).map(([k, v]) => (
+                                        <div key={k} className="flex gap-2">
+                                            <span className="text-gray-500 shrink-0">{EVIDENCE_LABELS[k] || k}:</span>
+                                            <span className="text-gray-300 break-all">
+                                                {Array.isArray(v) ? v.join(", ") : typeof v === "object" ? JSON.stringify(v) : String(v)}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-sm text-gray-500 py-8 text-center">Нет расширенных данных для этого индикатора</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

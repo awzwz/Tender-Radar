@@ -189,8 +189,8 @@ indicators:
     description_en: "Same bank details across different companies"
 
 thresholds:
-  # Градация для более сбалансированного распределения (было: 15/40/41)
-  # LOW 0-12, MEDIUM 13-28, HIGH 29+
-  low_max: 12
-  medium_max: 28
+  # Градация: LOW 0-6, MEDIUM 7-19, HIGH 20+
+  # (было low_max: 9 — часть LOW переехала в MEDIUM для лучшего охвата)
+  low_max: 6
+  medium_max: 19
   high_min: 29
