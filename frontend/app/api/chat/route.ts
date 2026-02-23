@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta";
-// Try models in order, fallback to next if unavailable
-const MODEL_PRIORITY = [
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-flash-latest",
-];
+const OPENAI_API_BASE = "https://api.openai.com/v1";
+const MODEL = "gpt-4o-mini";
 
 const SYSTEM_PROMPT = `Ты — AI-ассистент аналитика по государственным закупкам Казахстана (система Goszakup.kz).
 
@@ -35,72 +30,55 @@ const SYSTEM_PROMPT = `Ты — AI-ассистент аналитика по г
 6. Будь кратким и по делу — не более 5-7 предложений на ответ`;
 
 export async function POST(req: NextRequest) {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-        return NextResponse.json({ error: "GEMINI_API_KEY not configured" }, { status: 500 });
+        return NextResponse.json({ error: "OPENAI_API_KEY not configured" }, { status: 500 });
     }
 
     try {
         const { messages, lotsContext } = await req.json();
 
-        // Build conversation as a flat list of turns (Gemini requires alternating user/model)
-        const userMessages = messages.filter((m: { role: string }) => m.role === "user");
-        const assistantMessages = messages.filter((m: { role: string }) => m.role === "assistant");
+        const contextBlock = "\n\nТекущие топ-лоты системы:\n" + (lotsContext || "Данные загружаются.");
 
-        // Build contents array: system context first, then conversation
-        const contents: { role: string; parts: { text: string }[] }[] = [
-            {
-                role: "user",
-                parts: [{ text: SYSTEM_PROMPT + "\n\nТекущие топ-лоты системы:\n" + (lotsContext || "Данные загружаются.") }],
-            },
-            {
-                role: "model",
-                parts: [{ text: "Понял контекст! Готов анализировать тендеры. Чем могу помочь?" }],
-            },
+        const openaiMessages: { role: "system" | "user" | "assistant"; content: string }[] = [
+            { role: "system", content: SYSTEM_PROMPT + contextBlock },
         ];
 
-        // Add conversation history (interleaved user/model)
-        const conversationLength = Math.max(userMessages.length, assistantMessages.length - 1);
-        for (let i = 0; i < conversationLength; i++) {
-            if (userMessages[i]) {
-                contents.push({ role: "user", parts: [{ text: userMessages[i].text }] });
-            }
-            // Skip first assistant message (it's the welcome message, already covered)
-            if (assistantMessages[i + 1]) {
-                contents.push({ role: "model", parts: [{ text: assistantMessages[i + 1].text }] });
+        for (const m of messages as { role: string; text: string }[]) {
+            if (m.role === "user") {
+                openaiMessages.push({ role: "user", content: m.text });
+            } else if (m.role === "assistant" && m.text) {
+                openaiMessages.push({ role: "assistant", content: m.text });
             }
         }
 
-        const requestBody = {
-            contents,
-            generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 1024,
+        const response = await fetch(`${OPENAI_API_BASE}/chat/completions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${apiKey}`,
             },
-        };
+            body: JSON.stringify({
+                model: MODEL,
+                messages: openaiMessages,
+                temperature: 0.7,
+                max_tokens: 1024,
+            }),
+        });
 
-        // Try models in priority order
-        let lastError = "";
-        for (const model of MODEL_PRIORITY) {
-            const url = `${GEMINI_API_BASE}/models/${model}:generateContent?key=${apiKey}`;
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(requestBody),
-            });
+        const data = await response.json();
 
-            const data = await response.json();
-
-            if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                return NextResponse.json({ text: data.candidates[0].content.parts[0].text });
-            }
-
-            // Continue to next model on error (404, 429, etc.)
-            lastError = data.error?.message || JSON.stringify(data);
-            console.warn(`Model ${model} failed:`, lastError);
+        if (!response.ok) {
+            const errMsg = data.error?.message || JSON.stringify(data);
+            return NextResponse.json({ error: `OpenAI API: ${errMsg}` }, { status: 500 });
         }
 
-        return NextResponse.json({ error: `Gemini API: ${lastError}` }, { status: 500 });
+        const text = data.choices?.[0]?.message?.content?.trim();
+        if (!text) {
+            return NextResponse.json({ error: "Empty response from OpenAI" }, { status: 500 });
+        }
+
+        return NextResponse.json({ text });
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "Unknown error";
         return NextResponse.json({ error: message }, { status: 500 });

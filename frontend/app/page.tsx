@@ -781,7 +781,7 @@ function AIAssistant({
   const [msgs, setMsgs] = useState<AssistantMsg[]>([
     {
       role: "assistant",
-      text: "Привет! Я AI‑ассистент на базе Gemini 1.5 Flash. Задай вопрос о тендере, поставщике или попроси объяснить риски. Например: «Что значит флаг SINGLE_BIDDER?» или «Объясни риски лота с высоким скором».",
+      text: "Привет! Я AI‑ассистент на базе OpenAI. Задай вопрос о тендере, поставщике или попроси объяснить риски. Например: «Что значит флаг SINGLE_BIDDER?» или «Объясни риски лота с высоким скором».",
     },
   ]);
   const [busy, setBusy] = useState(false);
@@ -875,7 +875,7 @@ function AIAssistant({
         ))}
         {busy && (
           <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-3 py-2.5 text-sm text-white/40">
-            <RefreshCw className="h-4 w-4 animate-spin inline mr-2" />Gemini думает...
+            <RefreshCw className="h-4 w-4 animate-spin inline mr-2" />AI думает...
           </div>
         )}
         <div ref={bottomRef} />
@@ -899,7 +899,7 @@ function AIAssistant({
       </div>
 
       <p className="mt-2 text-xs text-white/40">
-        Gemini 1.5 Flash · знает топ-10 лотов системы · контекст обновляется
+        OpenAI · знает топ-10 лотов системы · контекст обновляется
       </p>
     </aside>
   );

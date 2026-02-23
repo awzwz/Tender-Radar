@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
     llm_max_tokens: int = 1000
-    llm_risk_threshold: float = 60.0  # Only explain if risk_final >= this
+    llm_risk_threshold: float = 0.0  # 0 = explain for all lots
     llm_uncertainty_low: float = 0.45
     llm_uncertainty_high: float = 0.55
 
