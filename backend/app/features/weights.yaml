@@ -193,4 +193,3 @@ thresholds:
   # (было low_max: 9 — часть LOW переехала в MEDIUM для лучшего охвата)
   low_max: 6
   medium_max: 19
-  high_min: 29
