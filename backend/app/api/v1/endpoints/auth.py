@@ -10,6 +10,11 @@ from app.models.user import User
 router = APIRouter()
 
 
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+
 class RegisterRequest(BaseModel):
     username: str
     email: str
@@ -20,6 +25,20 @@ class RegisterRequest(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+@router.post("/login/json", response_model=TokenResponse)
+async def login_json(req: LoginRequest, db: AsyncSession = Depends(get_db)):
+    """Login via JSON body — avoids OAuth2 form validation (grant_type pattern)."""
+    result = await db.execute(select(User).where(User.username == req.username))
+    user = result.scalar_one_or_none()
+    if not user or not verify_password(req.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+        )
+    token = create_access_token({"sub": str(user.id), "role": user.role})
+    return {"access_token": token, "token_type": "bearer"}
 
 
 @router.post("/login", response_model=TokenResponse)

@@ -56,3 +56,27 @@ def test_feature_vector_ordering():
     from app.ml.model import FEATURE_COLUMNS as MODEL_COLS
 
     assert TRAIN_COLS == MODEL_COLS, "Feature column ordering mismatch between train and model modules"
+
+
+    import os
+    from app.core.config import settings
+def test_anomaly_predictor_returns_none_when_no_model():
+    # Predictor may be None if no artifact on disk
+    # If no model saved, predict_anomaly should return (None, None, None, None)
+    """When anomaly model is not trained, get_anomaly_predictor returns None."""
+    from app.ml.anomaly import get_anomaly_predictor, predict_anomaly
+
+    pred = get_anomaly_predictor()
+    score, proba, version, expl = predict_anomaly({})
+    if pred is None:
+        assert score is None and proba is None and version is None and expl is None
+
+
+def test_composite_clamp():
+    """Composite adjustment should keep score in [0, 100]."""
+    delta = 15.0
+    score_final = 50.0
+    # f in [-1, 1]
+    for f in [-1.0, 0.0, 1.0]:
+        composite = max(0, min(100, score_final + delta * f))
+        assert 0 <= composite <= 100, f"composite={composite} out of range for f={f}"

@@ -24,12 +24,15 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
 
 export const api = {
     login: (username: string, password: string) => {
-        const form = new URLSearchParams({ username, password });
-        return fetch(`${API_BASE}/auth/login`, {
+        return fetch(`${API_BASE}/auth/login/json`, {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: form,
-        }).then((r) => r.json());
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+        }).then(async (r) => {
+            const data = await r.json();
+            if (!r.ok) throw new Error(Array.isArray(data.detail) ? data.detail[0]?.msg : data.detail || "Ошибка входа");
+            return data;
+        });
     },
 
     me: () => apiFetch<{ id: number; username: string; role: string }>("/auth/me"),

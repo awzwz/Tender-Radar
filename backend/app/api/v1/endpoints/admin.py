@@ -43,6 +43,17 @@ async def trigger_incremental(
     return {"message": "Incremental ETL started", "task_id": task.id}
 
 
+@router.post("/etl/q1-2024")
+async def trigger_q1_2024_etl(
+    step: str = "all",
+    _=Depends(require_admin),
+):
+    """Trigger Q1 2024 ETL (lots, contracts, trd_app, subject) with checkpoints. step: all | lots | contracts | trd_app | subject."""
+    from app.etl.tasks import run_q1_2024_etl_task
+    task = run_q1_2024_etl_task.delay(step=step)
+    return {"message": "Q1 2024 ETL started", "task_id": task.id}
+
+
 @router.get("/etl/status")
 async def get_etl_status(
     limit: int = 10,

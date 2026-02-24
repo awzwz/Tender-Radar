@@ -132,3 +132,18 @@ def run_ml_train():
     except Exception as exc:
         logger.error(f"ML training failed: {exc}")
         raise
+
+
+@celery_app.task(name="app.etl.tasks.run_q1_2024_etl", bind=True)
+def run_q1_2024_etl_task(self, step: str = "all"):
+    """Celery task: Q1 2024 ETL (lots, contracts, trd_app, subject) with checkpoints. No retry on failure."""
+    from app.etl.etl_q1_2024 import run_q1_2024_etl
+
+    logger.info("Starting Q1 2024 ETL step=%s...", step)
+    try:
+        summary = run_async(run_q1_2024_etl(step=step))
+        logger.info("Q1 2024 ETL complete: %s", summary)
+        return summary
+    except Exception as e:
+        logger.exception("Q1 2024 ETL failed: %s", e)
+        raise RuntimeError(f"Q1 2024 ETL failed: {type(e).__name__}: {e}") from None
