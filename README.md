@@ -36,13 +36,30 @@
 
 ### Score Formula
 
-```
-risk_final = round(100 × (0.6 × risk_rules/100 + 0.4 × risk_ml))
-```
+- **risk_scoring_mode** (env `RISK_SCORING_MODE`, default `hybrid`):
+  - `rules`: score = rule_score only
+  - `hybrid` / `ml`: risk_final = 0.6×rule_score + 0.4×score_ml (current behaviour)
+  - `composite`: score = rule_score + delta × f(anomaly_score, weak_score, graph_score), clamp 0–100 (delta ≤ 15)
 
-- **risk_rules** (0-100): weighted sum of 31 boolean indicators
-- **risk_ml** (0-1): P(risky) from local Logistic Regression
+- **risk_rules** (0-100): weighted sum of 31 boolean indicators (unchanged)
+- **risk_ml** (0-1): P(risky) from Logistic Regression
+- **anomaly_score** / **weak_score** / **graph_score**: optional 0–100 signals; only affect `score` when mode=composite
 - **LLM**: only for explanation, NEVER for scoring
+
+### Anomaly & weak supervision (optional)
+
+- **Anomaly model** (IsolationForest): unsupervised; train on tender features, outputs anomaly_score 0–100.  
+  - Train: `POST /api/v1/admin/ml/train-anomaly` or Celery weekly task.  
+  - Artifacts: `artifacts/isoforest_v1/v1/`.
+- **Weak labeling**: 20+ labeling functions → weak_proba per lot.  
+  - Run: `POST /api/v1/admin/ml/weak-labeling`.  
+  - **Weak model** (HistGradientBoosting): trained on weak_proba.  
+  - Train: `POST /api/v1/admin/ml/train-weak-model` (run weak-labeling first).  
+  - Artifacts: `artifacts/weak_gbm_v1/v1/`.
+- **Graph features**: co-bidding, rotation; computed daily.  
+  - Run: `POST /api/v1/admin/ml/compute-graph-features`.
+
+To use composite scoring: set `RISK_SCORING_MODE=composite` in `.env`. To revert: `RISK_SCORING_MODE=rules` or `hybrid`.
 
 ## Quick Start
 
@@ -108,7 +125,13 @@ open http://localhost:3000
 | GET    | `/suppliers/{biin}`            | Supplier profile + RNU         |
 | GET    | `/customers/{bin}`             | Customer profile + risk lots   |
 | POST   | `/notes`                       | Create analyst note/label      |
+| GET    | `/notes?entity_type=&entity_id=`| List notes (analyst)           |
 | POST   | `/admin/etl/backfill`          | Trigger ETL backfill           |
+| POST   | `/admin/etl/q1-2024`           | Q1 2024 ETL (checkpoints)      |
+| POST   | `/admin/ml/train-anomaly`      | Train IsolationForest          |
+| POST   | `/admin/ml/weak-labeling`      | Run weak labeling              |
+| POST   | `/admin/ml/train-weak-model`   | Train weak GBM                 |
+| POST   | `/admin/ml/compute-graph-features` | Compute graph features   |
 | POST   | `/admin/etl/incremental`       | Trigger incremental ETL        |
 | GET    | `/admin/etl/status`            | ETL run history                |
 | POST   | `/admin/features/recompute`    | Recompute all features         |

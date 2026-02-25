@@ -29,6 +29,22 @@ celery_app.conf.update(
             "task": "app.etl.tasks.run_feature_recompute",
             "schedule": crontab(hour=4, minute=0),
         },
+        "daily-graph-features": {
+            "task": "app.etl.tasks.compute_graph_features",
+            "schedule": crontab(hour=3, minute=30),
+        },
+        "daily-weak-labeling": {
+            "task": "app.etl.tasks.run_weak_labeling",
+            "schedule": crontab(hour=5, minute=0),
+        },
+        "weekly-train-anomaly": {
+            "task": "app.etl.tasks.train_anomaly_model",
+            "schedule": crontab(hour=6, minute=0, day_of_week=0),
+        },
+        "weekly-train-weak-model": {
+            "task": "app.etl.tasks.train_weak_model",
+            "schedule": crontab(hour=7, minute=0, day_of_week=0),
+        },
     },
 )
 
@@ -90,17 +106,30 @@ def run_incremental(self, date_from: str = None, date_to: str = None):
 
 
 @celery_app.task(name="app.etl.tasks.run_feature_recompute")
-def run_feature_recompute(entity_ids: list = None):
-    """Celery task: recompute risk features and scores."""
+def run_feature_recompute(entity_ids: list = None, limit: int = None):
+    """Celery task: recompute risk features and scores. Optional limit to process only N lots."""
     from app.features.engine import FeatureEngine
+    from app.core.database import AsyncSessionLocal
+    from sqlalchemy import select
+    from app.models.procurement import Lot
 
-    logger.info(f"Starting feature recompute for: {entity_ids or 'all'}")
+    async def _run():
+        if limit is not None and limit > 0 and not entity_ids:
+            async with AsyncSessionLocal() as db:
+                r = await db.execute(
+                    select(Lot.id).where(Lot.is_deleted == False).limit(limit)
+                )
+                ids = [row[0] for row in r.all()]
+            return await FeatureEngine().run(entity_ids=ids)
+        return await FeatureEngine().run(entity_ids=entity_ids)
+
+    logger.info("Starting feature recompute for: %s", entity_ids or ("limit=%s" % limit) or "all")
     try:
-        summary = run_async(FeatureEngine().run(entity_ids=entity_ids))
-        logger.info(f"Feature recompute complete: {summary}")
+        summary = run_async(_run())
+        logger.info("Feature recompute complete: %s", summary)
         return summary
     except Exception as exc:
-        logger.error(f"Feature recompute failed: {exc}")
+        logger.error("Feature recompute failed: %s", exc)
         raise
 
 
@@ -147,3 +176,120 @@ def run_q1_2024_etl_task(self, step: str = "all"):
     except Exception as e:
         logger.exception("Q1 2024 ETL failed: %s", e)
         raise RuntimeError(f"Q1 2024 ETL failed: {type(e).__name__}: {e}") from None
+
+
+@celery_app.task(name="app.etl.tasks.train_anomaly_model")
+def train_anomaly_model():
+    """Celery task: train IsolationForest anomaly model on tender features (unlabeled)."""
+    from app.ml.anomaly import train_anomaly_model as _train
+    from app.core.database import AsyncSessionLocal
+    from app.models.procurement import TenderFeature
+    from sqlalchemy import select
+    import numpy as np
+    from app.ml.train import FEATURE_COLUMNS
+
+    logger.info("Building anomaly dataset...")
+    async def _build():
+        async with AsyncSessionLocal() as db:
+            r = await db.execute(
+                select(TenderFeature.entity_id, TenderFeature.features_jsonb).where(
+                    TenderFeature.entity_type == "lot"
+                )
+            )
+            rows = r.all()
+        if not rows:
+            raise ValueError("No tender features; run feature recompute first.")
+        X = []
+        for row in rows:
+            features = row.features_jsonb or {}
+            vec = []
+            for col in FEATURE_COLUMNS:
+                v = features.get(col)
+                if v is None:
+                    vec.append(0.0)
+                elif isinstance(v, bool):
+                    vec.append(1.0 if v else 0.0)
+                else:
+                    try:
+                        vec.append(float(v))
+                    except (ValueError, TypeError):
+                        vec.append(0.0)
+            X.append(vec)
+        return np.array(X, dtype=np.float64)
+
+    X = run_async(_build())
+    logger.info("Training anomaly model on %s samples...", X.shape[0])
+    result = _train(X)
+    return result
+
+
+@celery_app.task(name="app.etl.tasks.run_weak_labeling")
+def run_weak_labeling(version: str = None):
+    """Celery task: run weak labeling pipeline and save to weak_labels."""
+    from app.ml.weak_labeling import run_weak_labeling as _run
+    logger.info("Starting weak labeling...")
+    summary = run_async(_run(version=version))
+    logger.info("Weak labeling complete: %s", summary)
+    return summary
+
+
+@celery_app.task(name="app.etl.tasks.train_weak_model")
+def train_weak_model():
+    """Celery task: train weak model (GBM) on weak labels."""
+    from app.ml.weak_model import train_weak_model as _train
+    from app.core.database import AsyncSessionLocal
+    from app.models.procurement import TenderFeature, WeakLabel
+    from sqlalchemy import select
+    import numpy as np
+    from app.ml.train import FEATURE_COLUMNS
+
+    logger.info("Building weak model dataset...")
+    async def _build():
+        async with AsyncSessionLocal() as db:
+            r = await db.execute(
+                select(TenderFeature.entity_id, TenderFeature.features_jsonb).where(
+                    TenderFeature.entity_type == "lot"
+                )
+            )
+            tf_rows = {row.entity_id: row.features_jsonb for row in r.all()}
+            w = await db.execute(
+                select(WeakLabel.entity_id, WeakLabel.weak_proba).where(WeakLabel.entity_type == "lot")
+            )
+            w_rows = {row.entity_id: row.weak_proba for row in w.all()}
+        entity_ids = [eid for eid in tf_rows if eid in w_rows]
+        if len(entity_ids) < 50:
+            raise ValueError("Insufficient weak labels; run weak labeling first.")
+        X = []
+        probs = []
+        for eid in entity_ids:
+            features = tf_rows.get(eid) or {}
+            vec = []
+            for col in FEATURE_COLUMNS:
+                v = features.get(col)
+                if v is None:
+                    vec.append(0.0)
+                elif isinstance(v, bool):
+                    vec.append(1.0 if v else 0.0)
+                else:
+                    try:
+                        vec.append(float(v))
+                    except (ValueError, TypeError):
+                        vec.append(0.0)
+            X.append(vec)
+            probs.append(w_rows[eid])
+        return np.array(X, dtype=np.float64), np.array(probs, dtype=np.float64)
+
+    X, weak_proba = run_async(_build())
+    logger.info("Training weak model on %s samples...", X.shape[0])
+    result = _train(X, weak_proba)
+    return result
+
+
+@celery_app.task(name="app.etl.tasks.compute_graph_features")
+def compute_graph_features(batch_size: int = 5000):
+    """Celery task: compute graph features (co-bidding, rotation) and upsert graph_features."""
+    from app.features.graph_features import compute_graph_features as _compute
+    logger.info("Computing graph features...")
+    summary = run_async(_compute(batch_size=batch_size))
+    logger.info("Graph features complete: %s", summary)
+    return summary

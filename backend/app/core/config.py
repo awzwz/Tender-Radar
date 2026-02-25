@@ -53,6 +53,11 @@ class Settings(BaseSettings):
     ml_rules_weight: float = 0.6
     ml_ml_weight: float = 0.4
 
+    # Risk scoring mode: rules | ml | hybrid | composite
+    # rules = score = rule_score only; hybrid = current (rules + ML); composite = rule + delta*f(anomaly, weak, graph)
+    risk_scoring_mode: str = "hybrid"
+    composite_delta_max: float = 15.0  # max adjustment from composite components
+
     @property
     def cors_origins_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",")]

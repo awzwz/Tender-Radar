@@ -21,7 +21,7 @@ import {
   Play,
   X,
 } from "lucide-react";
-import { api, DashboardItem, LotDetail, RiskLevel, ExplanationResponse, IndicatorDetails } from "@/lib/api";
+import { api, DashboardItem, DashboardTenderItem, LotDetail, RiskLevel, ExplanationResponse, IndicatorDetails } from "@/lib/api";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -137,11 +137,23 @@ function NavBtn({
 // ── Dashboard View ─────────────────────────────────────────────────────────────
 
 function DashboardView({
-  items, total, loading, onOpenLot, globalStats,
+  items, total, loading, onOpenLot, globalStats, tenderStats, tenderItems, tenderLoading,
 }: {
   items: DashboardItem[]; total: number; loading: boolean; onOpenLot: (id: number) => void;
   globalStats?: { high: number; medium: number; low: number; avg_score: number; scored_lots: number } | null;
+  tenderStats?: {
+    high: number;
+    medium: number;
+    low: number;
+    avg_score: number;
+    scored_tenders: number;
+    main_high: number;
+    single_case_alerts: number;
+  } | null;
+  tenderItems: DashboardTenderItem[];
+  tenderLoading: boolean;
 }) {
+  const [entityMode, setEntityMode] = useState<"lots" | "tenders">("lots");
   const stats = useMemo(() => {
     if (globalStats) {
       return {
@@ -154,9 +166,25 @@ function DashboardView({
     }
     return { high: 0, med: 0, low: 0, avg: 0, scored: 0 };
   }, [globalStats]);
+  const tenderStatsUi = useMemo(() => {
+    if (tenderStats) {
+      return {
+        high: tenderStats.high,
+        med: tenderStats.medium,
+        low: tenderStats.low,
+        avg: Math.round(tenderStats.avg_score),
+        scored: tenderStats.scored_tenders,
+        mainHigh: tenderStats.main_high,
+        singleCase: tenderStats.single_case_alerts,
+      };
+    }
+    return { high: 0, med: 0, low: 0, avg: 0, scored: 0, mainHigh: 0, singleCase: 0 };
+  }, [tenderStats]);
+  const activeStats = entityMode === "lots" ? stats : tenderStatsUi;
 
-  const top = [...items].sort((a, b) => (b.risk_score ?? 0) - (a.risk_score ?? 0)).slice(0, 5);
-  const distTotal = stats.scored || 1;
+  const topLots = [...items].sort((a, b) => (b.risk_score ?? 0) - (a.risk_score ?? 0)).slice(0, 5);
+  const topTenders = [...tenderItems].sort((a, b) => (b.risk_score ?? 0) - (a.risk_score ?? 0)).slice(0, 5);
+  const distTotal = activeStats.scored || 1;
   const pct = (n: number) => (distTotal > 0 ? ((n / distTotal) * 100).toFixed(1) : "0");
   const w = (n: number) => (distTotal > 0 ? (n / distTotal) * 100 : 0);
 
@@ -165,15 +193,49 @@ function DashboardView({
       <SectionTitle
         icon={<LayoutDashboard className="h-4 w-4 text-indigo-200" />}
         title="Dashboard"
-        hint="Общий обзор рисков и быстрый доступ к top‑risk лотам"
+        hint="Общий обзор рисков и быстрый доступ к top‑risk лотам и тендерам"
       />
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard label="HIGH" value={stats.high} tone="danger" />
-        <StatCard label="MEDIUM" value={stats.med} tone="warn" />
-        <StatCard label="LOW" value={stats.low} tone="ok" />
-        <StatCard label="Avg risk" value={stats.avg} tone="neutral" />
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setEntityMode("lots")}
+          className={`rounded-full border px-3 py-1.5 text-xs transition ${entityMode === "lots"
+            ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-200"
+            : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+        >
+          Лоты
+        </button>
+        <button
+          onClick={() => setEntityMode("tenders")}
+          className={`rounded-full border px-3 py-1.5 text-xs transition ${entityMode === "tenders"
+            ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-200"
+            : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+        >
+          Тендеры
+        </button>
       </div>
+
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatCard label="HIGH" value={activeStats.high} tone="danger" />
+        <StatCard label="MEDIUM" value={activeStats.med} tone="warn" />
+        <StatCard label="LOW" value={activeStats.low} tone="ok" />
+        <StatCard label="Avg risk" value={activeStats.avg} tone="neutral" />
+      </div>
+
+      {entityMode === "tenders" && (
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-3">
+            <div className="text-xs text-white/60">HIGH (2+ high lots)</div>
+            <div className="mt-1 text-lg font-semibold text-white">{tenderStatsUi.mainHigh}</div>
+          </div>
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-3">
+            <div className="text-xs text-white/60">Single-case alerts</div>
+            <div className="mt-1 text-lg font-semibold text-white">{tenderStatsUi.singleCase}</div>
+          </div>
+        </div>
+      )}
 
       {/* Risk Distribution Chart */}
       <div className="rounded-3xl border border-white/10 bg-slate-950/40 p-5">
@@ -181,25 +243,25 @@ function DashboardView({
           <SectionTitle
             icon={<Sparkles className="h-4 w-4 text-emerald-200" />}
             title="Risk Distribution"
-            hint="Распределение лотов по уровням риска"
+            hint={entityMode === "lots" ? "Распределение лотов по уровням риска" : "Распределение тендеров по уровням риска"}
           />
         </div>
 
         <div className="flex h-4 w-full overflow-hidden rounded-full bg-white/5">
-          <div style={{ width: `${w(stats.high)}%` }} className="bg-rose-500 h-full transition-all duration-500" />
-          <div style={{ width: `${w(stats.med)}%` }} className="bg-amber-500 h-full transition-all duration-500" />
-          <div style={{ width: `${w(stats.low)}%` }} className="bg-emerald-500 h-full transition-all duration-500" />
+          <div style={{ width: `${w(activeStats.high)}%` }} className="bg-rose-500 h-full transition-all duration-500" />
+          <div style={{ width: `${w(activeStats.med)}%` }} className="bg-amber-500 h-full transition-all duration-500" />
+          <div style={{ width: `${w(activeStats.low)}%` }} className="bg-emerald-500 h-full transition-all duration-500" />
         </div>
 
         <div className="mt-3 flex items-center justify-between text-xs text-white/60">
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-rose-500" /> HIGH ({pct(stats.high)}%)
+            <div className="h-2 w-2 rounded-full bg-rose-500" /> HIGH ({pct(activeStats.high)}%)
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-amber-500" /> MEDIUM ({pct(stats.med)}%)
+            <div className="h-2 w-2 rounded-full bg-amber-500" /> MEDIUM ({pct(activeStats.med)}%)
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-emerald-500" /> LOW ({pct(stats.low)}%)
+            <div className="h-2 w-2 rounded-full bg-emerald-500" /> LOW ({pct(activeStats.low)}%)
           </div>
         </div>
       </div>
@@ -207,45 +269,80 @@ function DashboardView({
       <div className="rounded-3xl border border-white/10 bg-slate-950/40 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-sm font-semibold">Top risky lots</div>
-            <div className="text-xs text-white/60">Нажми, чтобы открыть карточку лота</div>
+            <div className="text-sm font-semibold">{entityMode === "lots" ? "Top risky lots" : "Top risky tenders"}</div>
+            <div className="text-xs text-white/60">
+              {entityMode === "lots" ? "Нажми, чтобы открыть карточку лота" : "Агрегированные риски на уровне тендера"}
+            </div>
           </div>
-          <div className="text-xs text-white/60">Total: {total}</div>
+          <div className="text-xs text-white/60">Total: {entityMode === "lots" ? total : (tenderStats?.total_tenders ?? 0)}</div>
         </div>
 
-        {loading ? (
+        {entityMode === "lots" && loading ? (
           <div className="mt-4 flex items-center justify-center py-8 text-white/40">
             <RefreshCw className="h-5 w-5 animate-spin mr-2" /> Загрузка...
           </div>
-        ) : top.length === 0 ? (
+        ) : entityMode === "tenders" && tenderLoading ? (
+          <div className="mt-4 flex items-center justify-center py-8 text-white/40">
+            <RefreshCw className="h-5 w-5 animate-spin mr-2" /> Загрузка...
+          </div>
+        ) : entityMode === "lots" && topLots.length === 0 ? (
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/50 text-center">
             Данных пока нет — ETL ещё загружает лоты
           </div>
+        ) : entityMode === "tenders" && topTenders.length === 0 ? (
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/50 text-center">
+            Данных по тендерам пока нет
+          </div>
         ) : (
           <div className="mt-3 space-y-2">
-            {top.map((l, idx) => (
-              <button
-                key={`${l.lot_id}-${idx}`}
-                onClick={() => onOpenLot(l.lot_id)}
-                className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-left hover:bg-white/10 transition"
-              >
-                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-white truncate">{l.lot_name || "Без названия"}</div>
-                    <div className="mt-1 text-xs text-white/60 truncate">
-                      {l.tender_number} · {l.customer_name || l.customer_bin}
+            {entityMode === "lots" ? (
+              topLots.map((l, idx) => (
+                <button
+                  key={`${l.lot_id}-${idx}`}
+                  onClick={() => onOpenLot(l.lot_id)}
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-left hover:bg-white/10 transition"
+                >
+                  <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-white truncate">{l.lot_name || "Без названия"}</div>
+                      <div className="mt-1 text-xs text-white/60 truncate">
+                        {l.tender_number} · {l.customer_name || l.customer_bin}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <div className="text-xs text-white/60">{money(l.amount)}</div>
+                      <Badge level={l.risk_level} score={Math.round(l.risk_score)} />
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    <div className="text-xs text-white/60">{money(l.amount)}</div>
-                    <Badge level={l.risk_level} score={Math.round(l.risk_score)} />
+                  <div className="mt-2">
+                    <ProgressBar value={l.risk_score} />
                   </div>
+                </button>
+              ))
+            ) : (
+              topTenders.map((t, idx) => (
+                <div
+                  key={`${t.trd_buy_id}-${idx}`}
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 p-3"
+                >
+                  <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-white truncate">{t.tender_name || "Без названия"}</div>
+                      <div className="mt-1 text-xs text-white/60 truncate">
+                        {t.tender_number} · Лотов: {t.lots_count} · HIGH-лотов: {t.high_lots_count}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <div className="text-xs text-white/60">{money(t.total_sum)}</div>
+                      <Badge level={t.risk_level} score={Math.round(t.risk_score)} />
+                    </div>
                 </div>
                 <div className="mt-2">
-                  <ProgressBar value={l.risk_score} />
+                    <ProgressBar value={t.risk_score} />
                 </div>
-              </button>
-            ))}
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
@@ -1072,10 +1169,22 @@ export default function AIProcurePage() {
 
   // Data state
   const [items, setItems] = useState<DashboardItem[]>([]);
+  const [tenderItems, setTenderItems] = useState<DashboardTenderItem[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [globalStats, setGlobalStats] = useState<{ total_lots: number; scored_lots: number; high: number; medium: number; low: number; avg_score: number } | null>(null);
+  const [globalTenderStats, setGlobalTenderStats] = useState<{
+    total_tenders: number;
+    scored_tenders: number;
+    high: number;
+    medium: number;
+    low: number;
+    avg_score: number;
+    main_high: number;
+    single_case_alerts: number;
+  } | null>(null);
+  const [tenderLoading, setTenderLoading] = useState(false);
 
   // UI state
   const [nav, setNav] = useState<Nav>("dashboard");
@@ -1090,11 +1199,31 @@ export default function AIProcurePage() {
   const loadStats = useCallback(() => {
     api.dashboardStats().then(setGlobalStats).catch(() => setGlobalStats(null));
   }, []);
+  const loadTenderStats = useCallback(() => {
+    api.dashboardTenderStats().then(setGlobalTenderStats).catch(() => setGlobalTenderStats(null));
+  }, []);
+  const loadTenderData = useCallback(async () => {
+    setTenderLoading(true);
+    try {
+      const data = await api.dashboardTenders({
+        page: 1,
+        limit: 50,
+        category: "all",
+        sort_by: "score",
+      });
+      setTenderItems(data.items || []);
+    } catch {
+      setTenderItems([]);
+    } finally {
+      setTenderLoading(false);
+    }
+  }, []);
 
   // Load dashboard data
   const loadData = useCallback(async (pg = 1, append = false, levelF = levelFilter, minR = minRisk) => {
     setLoading(true);
     loadStats(); // Refresh global stats
+    loadTenderStats();
     try {
       const params: Record<string, string | number> = {
         page: pg,
@@ -1115,7 +1244,7 @@ export default function AIProcurePage() {
     } finally {
       setLoading(false);
     }
-  }, [levelFilter, minRisk, loadStats]);
+  }, [levelFilter, minRisk, loadStats, loadTenderStats]);
 
   useEffect(() => {
     loadData(1, false, levelFilter, minRisk);
@@ -1123,7 +1252,9 @@ export default function AIProcurePage() {
 
   useEffect(() => {
     loadStats();
-  }, [loadStats]);
+    loadTenderStats();
+    loadTenderData();
+  }, [loadStats, loadTenderStats, loadTenderData]);
 
   // Onboarding: show once on first visit
   useEffect(() => {
@@ -1396,6 +1527,9 @@ export default function AIProcurePage() {
                 loading={loading}
                 onOpenLot={openLot}
                 globalStats={globalStats}
+                tenderStats={globalTenderStats}
+                tenderItems={tenderItems}
+                tenderLoading={tenderLoading}
               />
             )}
             {nav === "risk-list" && (

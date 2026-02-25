@@ -103,7 +103,7 @@ services:
     env_file:
       - .env
     environment:
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     ports:
       - "3002:3000"

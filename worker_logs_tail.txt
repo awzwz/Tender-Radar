@@ -1,0 +1,153 @@
+tender_radar_worker  | /usr/local/lib/python3.11/site-packages/celery/platforms.py:829: SecurityWarning: You're running the worker with superuser privileges: this is
+tender_radar_worker  | absolutely not recommended!
+tender_radar_worker  | 
+tender_radar_worker  | Please specify a different user using the --uid option.
+tender_radar_worker  | 
+tender_radar_worker  | User information: uid=0 euid=0 gid=0 egid=0
+tender_radar_worker  | 
+tender_radar_worker  |   warnings.warn(SecurityWarning(ROOT_DISCOURAGED.format(
+tender_radar_worker  |  
+tender_radar_worker  |  -------------- celery@4acc43646ccf v5.3.6 (emerald-rush)
+tender_radar_worker  | --- ***** ----- 
+tender_radar_worker  | -- ******* ---- Linux-6.12.68-linuxkit-aarch64-with-glibc2.41 2026-02-24 21:43:37
+tender_radar_worker  | - *** --- * --- 
+tender_radar_worker  | - ** ---------- [config]
+tender_radar_worker  | - ** ---------- .> app:         tender_radar:0xffff84e3e990
+tender_radar_worker  | - ** ---------- .> transport:   redis://redis:6379/0
+tender_radar_worker  | - ** ---------- .> results:     redis://redis:6379/1
+tender_radar_worker  | - *** --- * --- .> concurrency: 2 (prefork)
+tender_radar_worker  | -- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+tender_radar_worker  | --- ***** ----- 
+tender_radar_worker  |  -------------- [queues]
+tender_radar_worker  |                 .> celery           exchange=celery(direct) key=celery
+tender_radar_worker  |                 
+tender_radar_worker  | 
+tender_radar_worker  | [tasks]
+tender_radar_worker  |   . app.etl.tasks.compute_graph_features
+tender_radar_worker  |   . app.etl.tasks.run_backfill
+tender_radar_worker  |   . app.etl.tasks.run_feature_recompute
+tender_radar_worker  |   . app.etl.tasks.run_incremental
+tender_radar_worker  |   . app.etl.tasks.run_ml_train
+tender_radar_worker  |   . app.etl.tasks.run_q1_2024_etl
+tender_radar_worker  |   . app.etl.tasks.run_score_lot
+tender_radar_worker  |   . app.etl.tasks.run_weak_labeling
+tender_radar_worker  |   . app.etl.tasks.train_anomaly_model
+tender_radar_worker  |   . app.etl.tasks.train_weak_model
+tender_radar_worker  | 
+tender_radar_worker  | [2026-02-24 21:43:37,821: WARNING/MainProcess] /usr/local/lib/python3.11/site-packages/celery/worker/consumer/consumer.py:507: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+tender_radar_worker  | whether broker connection retries are made during startup in Celery 6.0 and above.
+tender_radar_worker  | If you wish to retain the existing behavior for retrying connections on startup,
+tender_radar_worker  | you should set broker_connection_retry_on_startup to True.
+tender_radar_worker  |   warnings.warn(
+tender_radar_worker  | 
+tender_radar_worker  | [2026-02-24 21:43:37,828: INFO/MainProcess] Connected to redis://redis:6379/0
+tender_radar_worker  | [2026-02-24 21:43:37,828: WARNING/MainProcess] /usr/local/lib/python3.11/site-packages/celery/worker/consumer/consumer.py:507: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+tender_radar_worker  | whether broker connection retries are made during startup in Celery 6.0 and above.
+tender_radar_worker  | If you wish to retain the existing behavior for retrying connections on startup,
+tender_radar_worker  | you should set broker_connection_retry_on_startup to True.
+tender_radar_worker  |   warnings.warn(
+tender_radar_worker  | 
+tender_radar_worker  | [2026-02-24 21:43:37,831: INFO/MainProcess] mingle: searching for neighbors
+tender_radar_worker  | [2026-02-24 21:43:38,838: INFO/MainProcess] mingle: all alone
+tender_radar_worker  | [2026-02-24 21:43:38,842: INFO/MainProcess] celery@4acc43646ccf ready.
+tender_radar_worker  | [2026-02-24 21:43:38,844: INFO/MainProcess] Task app.etl.tasks.run_q1_2024_etl[2c16a9d5-169c-4830-a4c7-a18ec7228274] received
+tender_radar_worker  | [2026-02-24 21:43:39,051: INFO/ForkPoolWorker-2] Starting Q1 2024 ETL step=all...
+tender_radar_worker  | [2026-02-24 21:43:39,157: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,157 INFO sqlalchemy.engine.Engine select pg_catalog.version()
+tender_radar_worker  | [2026-02-24 21:43:39,157: INFO/ForkPoolWorker-2] select pg_catalog.version()
+tender_radar_worker  | [2026-02-24 21:43:39,158: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,158 INFO sqlalchemy.engine.Engine [raw sql] ()
+tender_radar_worker  | [2026-02-24 21:43:39,158: INFO/ForkPoolWorker-2] [raw sql] ()
+tender_radar_worker  | [2026-02-24 21:43:39,159: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,159 INFO sqlalchemy.engine.Engine select current_schema()
+tender_radar_worker  | [2026-02-24 21:43:39,159: INFO/ForkPoolWorker-2] select current_schema()
+tender_radar_worker  | [2026-02-24 21:43:39,160: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,160 INFO sqlalchemy.engine.Engine [raw sql] ()
+tender_radar_worker  | [2026-02-24 21:43:39,160: INFO/ForkPoolWorker-2] [raw sql] ()
+tender_radar_worker  | [2026-02-24 21:43:39,161: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,161 INFO sqlalchemy.engine.Engine show standard_conforming_strings
+tender_radar_worker  | [2026-02-24 21:43:39,161: INFO/ForkPoolWorker-2] show standard_conforming_strings
+tender_radar_worker  | [2026-02-24 21:43:39,162: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,162 INFO sqlalchemy.engine.Engine [raw sql] ()
+tender_radar_worker  | [2026-02-24 21:43:39,162: INFO/ForkPoolWorker-2] [raw sql] ()
+tender_radar_worker  | [2026-02-24 21:43:39,163: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,163 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+tender_radar_worker  | [2026-02-24 21:43:39,163: INFO/ForkPoolWorker-2] BEGIN (implicit)
+tender_radar_worker  | [2026-02-24 21:43:39,181: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,181 INFO sqlalchemy.engine.Engine SELECT trd_buy.id 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.publish_date >= $1::TIMESTAMP WITHOUT TIME ZONE AND trd_buy.publish_date <= $2::TIMESTAMP WITHOUT TIME ZONE
+tender_radar_worker  | [2026-02-24 21:43:39,181: INFO/ForkPoolWorker-2] SELECT trd_buy.id 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.publish_date >= $1::TIMESTAMP WITHOUT TIME ZONE AND trd_buy.publish_date <= $2::TIMESTAMP WITHOUT TIME ZONE
+tender_radar_worker  | [2026-02-24 21:43:39,182: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,182 INFO sqlalchemy.engine.Engine [generated in 0.00035s] (datetime.datetime(2024, 1, 1, 0, 0), datetime.datetime(2024, 3, 31, 0, 0))
+tender_radar_worker  | [2026-02-24 21:43:39,182: INFO/ForkPoolWorker-2] [generated in 0.00035s] (datetime.datetime(2024, 1, 1, 0, 0), datetime.datetime(2024, 3, 31, 0, 0))
+tender_radar_worker  | [2026-02-24 21:43:39,446: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,446 INFO sqlalchemy.engine.Engine ROLLBACK
+tender_radar_worker  | [2026-02-24 21:43:39,446: INFO/ForkPoolWorker-2] ROLLBACK
+tender_radar_worker  | [2026-02-24 21:43:39,447: INFO/ForkPoolWorker-2] Q1 2024 ETL: 60365 tenders (publish_date 2024-01-01..2024-03-31)
+tender_radar_worker  | [2026-02-24 21:43:39,448: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,448 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+tender_radar_worker  | [2026-02-24 21:43:39,448: INFO/ForkPoolWorker-2] BEGIN (implicit)
+tender_radar_worker  | [2026-02-24 21:43:39,448: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,448 INFO sqlalchemy.engine.Engine SELECT etl_cursors.cursor_value 
+tender_radar_worker  | FROM etl_cursors 
+tender_radar_worker  | WHERE etl_cursors.source_name = $1::VARCHAR
+tender_radar_worker  | [2026-02-24 21:43:39,448: INFO/ForkPoolWorker-2] SELECT etl_cursors.cursor_value 
+tender_radar_worker  | FROM etl_cursors 
+tender_radar_worker  | WHERE etl_cursors.source_name = $1::VARCHAR
+tender_radar_worker  | [2026-02-24 21:43:39,448: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,448 INFO sqlalchemy.engine.Engine [generated in 0.00010s] ('q1_2024_lots',)
+tender_radar_worker  | [2026-02-24 21:43:39,448: INFO/ForkPoolWorker-2] [generated in 0.00010s] ('q1_2024_lots',)
+tender_radar_worker  | [2026-02-24 21:43:39,450: WARNING/ForkPoolWorker-2] 2026-02-24 21:43:39,450 INFO sqlalchemy.engine.Engine ROLLBACK
+tender_radar_worker  | [2026-02-24 21:43:39,450: INFO/ForkPoolWorker-2] ROLLBACK
+tender_radar_worker  | [2026-02-24 21:43:40,304: INFO/ForkPoolWorker-2] HTTP Request: POST https://ows.goszakup.gov.kz/v3/graphql "HTTP/1.1 500 Internal Server Error"
+tender_radar_worker  | [2026-02-24 21:43:45,610: INFO/ForkPoolWorker-2] HTTP Request: POST https://ows.goszakup.gov.kz/v3/graphql "HTTP/1.1 500 Internal Server Error"
+tender_radar_worker  | [2026-02-24 21:43:50,938: INFO/ForkPoolWorker-2] HTTP Request: POST https://ows.goszakup.gov.kz/v3/graphql "HTTP/1.1 500 Internal Server Error"
+tender_radar_worker  | [2026-02-24 21:43:50,938: ERROR/ForkPoolWorker-2] GraphQL error for Lots: RetryError[<Future at 0xffff81cab2d0 state=finished raised HTTPStatusError>]
+tender_radar_worker  | [2026-02-24 21:43:50,946: ERROR/ForkPoolWorker-2] Q1 2024 ETL failed: RetryError[<Future at 0xffff81cab2d0 state=finished raised HTTPStatusError>]
+tender_radar_worker  | Traceback (most recent call last):
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/tenacity/_asyncio.py", line 61, in __call__
+tender_radar_worker  |     result = await fn(*args, **kwargs)
+tender_radar_worker  |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/app/app/etl/client.py", line 436, in _post_with_retry
+tender_radar_worker  |     response.raise_for_status()
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/httpx/_models.py", line 761, in raise_for_status
+tender_radar_worker  |     raise HTTPStatusError(message, request=request, response=self)
+tender_radar_worker  | httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'https://ows.goszakup.gov.kz/v3/graphql'
+tender_radar_worker  | For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+tender_radar_worker  | 
+tender_radar_worker  | The above exception was the direct cause of the following exception:
+tender_radar_worker  | 
+tender_radar_worker  | Traceback (most recent call last):
+tender_radar_worker  |   File "/app/app/etl/tasks.py", line 173, in run_q1_2024_etl_task
+tender_radar_worker  |     summary = run_async(run_q1_2024_etl(step=step))
+tender_radar_worker  |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/app/app/etl/tasks.py", line 57, in run_async
+tender_radar_worker  |     return loop.run_until_complete(coro)
+tender_radar_worker  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+tender_radar_worker  |     return future.result()
+tender_radar_worker  |            ^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/app/app/etl/etl_q1_2024.py", line 509, in run_q1_2024_etl
+tender_radar_worker  |     summary["lots"] = await _load_lots(client, buy_ids)
+tender_radar_worker  |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/app/app/etl/etl_q1_2024.py", line 357, in _load_lots
+tender_radar_worker  |     async for batch in client.graphql_paginate(
+tender_radar_worker  |   File "/app/app/etl/client.py", line 472, in graphql_paginate
+tender_radar_worker  |     result = await self._post_with_retry(url, headers=headers, json=payload)
+tender_radar_worker  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/tenacity/_asyncio.py", line 142, in async_wrapped
+tender_radar_worker  |     return await fn(*args, **kwargs)
+tender_radar_worker  |            ^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/tenacity/_asyncio.py", line 58, in __call__
+tender_radar_worker  |     do = await self.iter(retry_state=retry_state)
+tender_radar_worker  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/tenacity/_asyncio.py", line 110, in iter
+tender_radar_worker  |     result = await action(retry_state)
+tender_radar_worker  |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/tenacity/_asyncio.py", line 78, in inner
+tender_radar_worker  |     return fn(*args, **kwargs)
+tender_radar_worker  |            ^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/tenacity/__init__.py", line 411, in exc_check
+tender_radar_worker  |     raise retry_exc from fut.exception()
+tender_radar_worker  | tenacity.RetryError: RetryError[<Future at 0xffff81cab2d0 state=finished raised HTTPStatusError>]
+tender_radar_worker  | [2026-02-24 21:43:50,966: ERROR/ForkPoolWorker-2] Task app.etl.tasks.run_q1_2024_etl[2c16a9d5-169c-4830-a4c7-a18ec7228274] raised unexpected: RuntimeError('Q1 2024 ETL failed: RetryError: RetryError[<Future at 0xffff81cab2d0 state=finished raised HTTPStatusError>]')
+tender_radar_worker  | Traceback (most recent call last):
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/celery/app/trace.py", line 477, in trace_task
+tender_radar_worker  |     R = retval = fun(*args, **kwargs)
+tender_radar_worker  |                  ^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/usr/local/lib/python3.11/site-packages/celery/app/trace.py", line 760, in __protected_call__
+tender_radar_worker  |     return self.run(*args, **kwargs)
+tender_radar_worker  |            ^^^^^^^^^^^^^^^^^^^^^^^^^
+tender_radar_worker  |   File "/app/app/etl/tasks.py", line 178, in run_q1_2024_etl_task
+tender_radar_worker  |     raise RuntimeError(f"Q1 2024 ETL failed: {type(e).__name__}: {e}") from None
+tender_radar_worker  | RuntimeError: Q1 2024 ETL failed: RetryError: RetryError[<Future at 0xffff81cab2d0 state=finished raised HTTPStatusError>]

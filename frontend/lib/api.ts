@@ -1,4 +1,11 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+// Только локальная работа: тот же hostname, что и у страницы (localhost или 127.0.0.1), порт 8000
+const getApiBase = (): string => {
+    if (typeof window === "undefined")
+        return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+    const host = window.location.hostname;
+    return `http://${host}:8000/api/v1`;
+};
+const API_BASE = getApiBase();
 
 function getToken(): string | null {
     if (typeof window === "undefined") return null;
@@ -50,6 +57,25 @@ export const api = {
         apiFetch<{ total_lots: number; scored_lots: number; high: number; medium: number; low: number; avg_score: number }>(
             "/dashboard/stats"
         ),
+    dashboardTenderStats: () =>
+        apiFetch<{
+            total_tenders: number;
+            scored_tenders: number;
+            high: number;
+            medium: number;
+            low: number;
+            avg_score: number;
+            main_high: number;
+            single_case_alerts: number;
+        }>("/dashboard/tenders/stats"),
+    dashboardTenders: (params: Record<string, string | number>) => {
+        const qs = new URLSearchParams(
+            Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)]))
+        ).toString();
+        return apiFetch<{ total: number; page: number; limit: number; items: DashboardTenderItem[] }>(
+            `/dashboard/tenders?${qs}`
+        );
+    },
 
     lot: (id: number) => apiFetch<LotDetail>(`/lots/${id}`),
 
@@ -100,6 +126,22 @@ export interface DashboardItem {
     score_final: number | null;
     risk_level: RiskLevel;
     top_reasons: { code: string; description: string; weight: number }[];
+}
+
+export interface DashboardTenderItem {
+    trd_buy_id: number;
+    tender_number: string;
+    tender_name: string;
+    org_bin: string;
+    publish_date: string | null;
+    total_sum: number;
+    risk_score: number;
+    risk_level: RiskLevel;
+    high_lots_count: number;
+    lots_count: number;
+    max_lot_score: number;
+    avg_lot_score: number;
+    category: "main_high" | "single_case" | "regular";
 }
 
 export interface LotDetail {

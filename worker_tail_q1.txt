@@ -1,0 +1,300 @@
+tender_radar_worker  | [2026-02-24 23:10:43,527: INFO/ForkPoolWorker-2] SELECT trd_app_lots.price 
+tender_radar_worker  | FROM trd_app_lots 
+tender_radar_worker  | WHERE trd_app_lots.lot_id = $1::BIGINT AND trd_app_lots.price IS NOT NULL AND trd_app_lots.price > $2::INTEGER ORDER BY trd_app_lots.price 
+tender_radar_worker  |  LIMIT $3::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,527: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,527 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (40211176, 0, 2)
+tender_radar_worker  | [2026-02-24 23:10:43,527: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (40211176, 0, 2)
+tender_radar_worker  | [2026-02-24 23:10:43,528: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,528 INFO sqlalchemy.engine.Engine SELECT trd_buy.end_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,528: INFO/ForkPoolWorker-2] SELECT trd_buy.end_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,528: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,528 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,528: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,529: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,528 INFO sqlalchemy.engine.Engine SELECT trd_buy.parent_id, trd_buy.repeat_start_date, trd_buy.repeat_end_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,528: INFO/ForkPoolWorker-2] SELECT trd_buy.parent_id, trd_buy.repeat_start_date, trd_buy.repeat_end_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,529: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,529 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,529: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,529: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,529 INFO sqlalchemy.engine.Engine SELECT trd_buy.ref_buy_status_id 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,529: INFO/ForkPoolWorker-2] SELECT trd_buy.ref_buy_status_id 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,529: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,529 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,529: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,530: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,530 INFO sqlalchemy.engine.Engine SELECT trd_buy.ref_buy_status_id 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,530: INFO/ForkPoolWorker-2] SELECT trd_buy.ref_buy_status_id 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,530: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,530 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,530: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,531: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,530 INFO sqlalchemy.engine.Engine SELECT trd_buy.publish_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,530: INFO/ForkPoolWorker-2] SELECT trd_buy.publish_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,531: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,531 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,531: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,532: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,532 INFO sqlalchemy.engine.Engine SELECT trd_buy.discus_start_date, trd_buy.discus_end_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,532: INFO/ForkPoolWorker-2] SELECT trd_buy.discus_start_date, trd_buy.discus_end_date 
+tender_radar_worker  | FROM trd_buy 
+tender_radar_worker  | WHERE trd_buy.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,532: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,532 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,532: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (16343313,)
+tender_radar_worker  | [2026-02-24 23:10:43,532: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,532 INFO sqlalchemy.engine.Engine SELECT count(contract.id) AS count_1 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.customer_bin = $1::VARCHAR AND contract.is_deleted = false
+tender_radar_worker  | [2026-02-24 23:10:43,532: INFO/ForkPoolWorker-2] SELECT count(contract.id) AS count_1 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.customer_bin = $1::VARCHAR AND contract.is_deleted = false
+tender_radar_worker  | [2026-02-24 23:10:43,532: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,532 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('110940010676',)
+tender_radar_worker  | [2026-02-24 23:10:43,532: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('110940010676',)
+tender_radar_worker  | [2026-02-24 23:10:43,533: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,533 INFO sqlalchemy.engine.Engine SELECT count(contract.id) AS count_1 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.customer_bin = $1::VARCHAR AND contract.is_deleted = false
+tender_radar_worker  | [2026-02-24 23:10:43,533: INFO/ForkPoolWorker-2] SELECT count(contract.id) AS count_1 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.customer_bin = $1::VARCHAR AND contract.is_deleted = false
+tender_radar_worker  | [2026-02-24 23:10:43,534: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,534 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('110940010676',)
+tender_radar_worker  | [2026-02-24 23:10:43,534: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('110940010676',)
+tender_radar_worker  | [2026-02-24 23:10:43,535: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,535 INFO sqlalchemy.engine.Engine SELECT contract.supplier_biin, contract.sign_date 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.customer_bin = $1::VARCHAR AND contract.is_deleted = false ORDER BY contract.sign_date 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,535: INFO/ForkPoolWorker-2] SELECT contract.supplier_biin, contract.sign_date 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.customer_bin = $1::VARCHAR AND contract.is_deleted = false ORDER BY contract.sign_date 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,535: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,535 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('110940010676', 50)
+tender_radar_worker  | [2026-02-24 23:10:43,535: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('110940010676', 50)
+tender_radar_worker  | [2026-02-24 23:10:43,536: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,536 INFO sqlalchemy.engine.Engine SELECT count(contract.id) AS count_1 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.supplier_biin = $1::VARCHAR AND contract.is_deleted = false
+tender_radar_worker  | [2026-02-24 23:10:43,536: INFO/ForkPoolWorker-2] SELECT count(contract.id) AS count_1 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.supplier_biin = $1::VARCHAR AND contract.is_deleted = false
+tender_radar_worker  | [2026-02-24 23:10:43,536: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,536 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('130240030480',)
+tender_radar_worker  | [2026-02-24 23:10:43,536: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('130240030480',)
+tender_radar_worker  | [2026-02-24 23:10:43,537: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,537 INFO sqlalchemy.engine.Engine SELECT rnu.id, rnu.reason, rnu.start_date, rnu.system_id 
+tender_radar_worker  | FROM rnu 
+tender_radar_worker  | WHERE rnu.supplier_biin = $1::VARCHAR AND rnu.is_active = true 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,537: INFO/ForkPoolWorker-2] SELECT rnu.id, rnu.reason, rnu.start_date, rnu.system_id 
+tender_radar_worker  | FROM rnu 
+tender_radar_worker  | WHERE rnu.supplier_biin = $1::VARCHAR AND rnu.is_active = true 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,537: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,537 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('130240030480', 1)
+tender_radar_worker  | [2026-02-24 23:10:43,537: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('130240030480', 1)
+tender_radar_worker  | [2026-02-24 23:10:43,538: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,538 INFO sqlalchemy.engine.Engine SELECT count(distinct(trd_app.buy_id)) AS count_1 
+tender_radar_worker  | FROM trd_app 
+tender_radar_worker  | WHERE trd_app.supplier_biin = $1::VARCHAR
+tender_radar_worker  | [2026-02-24 23:10:43,538: INFO/ForkPoolWorker-2] SELECT count(distinct(trd_app.buy_id)) AS count_1 
+tender_radar_worker  | FROM trd_app 
+tender_radar_worker  | WHERE trd_app.supplier_biin = $1::VARCHAR
+tender_radar_worker  | [2026-02-24 23:10:43,538: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,538 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('130240030480',)
+tender_radar_worker  | [2026-02-24 23:10:43,538: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('130240030480',)
+tender_radar_worker  | [2026-02-24 23:10:43,539: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,539 INFO sqlalchemy.engine.Engine SELECT subject.regdate, subject.crdate, subject.name_ru 
+tender_radar_worker  | FROM subject 
+tender_radar_worker  | WHERE subject.bin = $1::VARCHAR OR subject.iin = $2::VARCHAR 
+tender_radar_worker  |  LIMIT $3::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,539: INFO/ForkPoolWorker-2] SELECT subject.regdate, subject.crdate, subject.name_ru 
+tender_radar_worker  | FROM subject 
+tender_radar_worker  | WHERE subject.bin = $1::VARCHAR OR subject.iin = $2::VARCHAR 
+tender_radar_worker  |  LIMIT $3::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,539: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,539 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('130240030480', '130240030480', 1)
+tender_radar_worker  | [2026-02-24 23:10:43,539: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('130240030480', '130240030480', 1)
+tender_radar_worker  | [2026-02-24 23:10:43,614: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,614 INFO sqlalchemy.engine.Engine SELECT contract.supplier_iik, contract.supplier_bik 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.supplier_biin = $1::VARCHAR AND contract.supplier_iik IS NOT NULL AND contract.supplier_bik IS NOT NULL 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,614: INFO/ForkPoolWorker-2] SELECT contract.supplier_iik, contract.supplier_bik 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.supplier_biin = $1::VARCHAR AND contract.supplier_iik IS NOT NULL AND contract.supplier_bik IS NOT NULL 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,614: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,614 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] ('130240030480', 1)
+tender_radar_worker  | [2026-02-24 23:10:43,614: INFO/ForkPoolWorker-2] [cached since 642.1s ago] ('130240030480', 1)
+tender_radar_worker  | [2026-02-24 23:10:43,614: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,614 INFO sqlalchemy.engine.Engine SELECT contract.contract_sum_wnds, contract.root_id, contract.parent_id 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,614: INFO/ForkPoolWorker-2] SELECT contract.contract_sum_wnds, contract.root_id, contract.parent_id 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,615: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,615 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,615: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,615: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,615 INFO sqlalchemy.engine.Engine SELECT contract.id, contract.trd_buy_id, contract.contract_number, contract.contract_number_sys, contract.trd_buy_number_anno, contract.customer_bin, contract.supplier_biin, contract.contract_sum_wnds, contract.sign_date, contract.plan_exec_date, contract.fakt_exec_date, contract.fakt_sum, contract.ref_contract_status_id, contract.ref_contract_type_id, contract.parent_id, contract.root_id, contract.supplier_legal_address, contract.customer_legal_address, contract.supplier_iik, contract.supplier_bik, contract.is_gu, contract.exchange_rate, contract.system_id, contract.last_update_at, contract.is_deleted 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,615: INFO/ForkPoolWorker-2] SELECT contract.id, contract.trd_buy_id, contract.contract_number, contract.contract_number_sys, contract.trd_buy_number_anno, contract.customer_bin, contract.supplier_biin, contract.contract_sum_wnds, contract.sign_date, contract.plan_exec_date, contract.fakt_exec_date, contract.fakt_sum, contract.ref_contract_status_id, contract.ref_contract_type_id, contract.parent_id, contract.root_id, contract.supplier_legal_address, contract.customer_legal_address, contract.supplier_iik, contract.supplier_bik, contract.is_gu, contract.exchange_rate, contract.system_id, contract.last_update_at, contract.is_deleted 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,615: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,615 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,615: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,616: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,616 INFO sqlalchemy.engine.Engine SELECT contract.sign_date, contract.contract_sum_wnds 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.parent_id = $1::BIGINT ORDER BY contract.sign_date 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,616: INFO/ForkPoolWorker-2] SELECT contract.sign_date, contract.contract_sum_wnds 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.parent_id = $1::BIGINT ORDER BY contract.sign_date 
+tender_radar_worker  |  LIMIT $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,616: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,616 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358, 1)
+tender_radar_worker  | [2026-02-24 23:10:43,616: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358, 1)
+tender_radar_worker  | [2026-02-24 23:10:43,617: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,617 INFO sqlalchemy.engine.Engine SELECT contract.sign_date, contract.plan_exec_date 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,617: INFO/ForkPoolWorker-2] SELECT contract.sign_date, contract.plan_exec_date 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,617: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,617 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,617: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,618: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,617 INFO sqlalchemy.engine.Engine SELECT count(treasury_pay.id) AS count_1, sum(treasury_pay.pay_amount) AS sum_1 
+tender_radar_worker  | FROM treasury_pay 
+tender_radar_worker  | WHERE treasury_pay.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,617: INFO/ForkPoolWorker-2] SELECT count(treasury_pay.id) AS count_1, sum(treasury_pay.pay_amount) AS sum_1 
+tender_radar_worker  | FROM treasury_pay 
+tender_radar_worker  | WHERE treasury_pay.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,618: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,618 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,618: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,618: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,618 INFO sqlalchemy.engine.Engine SELECT contract.contract_sum_wnds 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,618: INFO/ForkPoolWorker-2] SELECT contract.contract_sum_wnds 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,618: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,618 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,618: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,619: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,619 INFO sqlalchemy.engine.Engine SELECT sum(treasury_pay.prepay_sum) AS sum_1 
+tender_radar_worker  | FROM treasury_pay 
+tender_radar_worker  | WHERE treasury_pay.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,619: INFO/ForkPoolWorker-2] SELECT sum(treasury_pay.prepay_sum) AS sum_1 
+tender_radar_worker  | FROM treasury_pay 
+tender_radar_worker  | WHERE treasury_pay.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,619: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,619 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,619: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,619: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,619 INFO sqlalchemy.engine.Engine SELECT contract.contract_sum_wnds 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,619: INFO/ForkPoolWorker-2] SELECT contract.contract_sum_wnds 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,620: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,620 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,620: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,620: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,620 INFO sqlalchemy.engine.Engine SELECT sum(contract_payment.pay_sum) AS sum_1 
+tender_radar_worker  | FROM contract_payment 
+tender_radar_worker  | WHERE contract_payment.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,620: INFO/ForkPoolWorker-2] SELECT sum(contract_payment.pay_sum) AS sum_1 
+tender_radar_worker  | FROM contract_payment 
+tender_radar_worker  | WHERE contract_payment.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,621: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,621 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,621: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,621: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,621 INFO sqlalchemy.engine.Engine SELECT sum(treasury_pay.pay_amount) AS sum_1 
+tender_radar_worker  | FROM treasury_pay 
+tender_radar_worker  | WHERE treasury_pay.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,621: INFO/ForkPoolWorker-2] SELECT sum(treasury_pay.pay_amount) AS sum_1 
+tender_radar_worker  | FROM treasury_pay 
+tender_radar_worker  | WHERE treasury_pay.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,621: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,621 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,621: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,622: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,622 INFO sqlalchemy.engine.Engine SELECT contract.plan_exec_date, contract.fakt_exec_date 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,622: INFO/ForkPoolWorker-2] SELECT contract.plan_exec_date, contract.fakt_exec_date 
+tender_radar_worker  | FROM contract 
+tender_radar_worker  | WHERE contract.id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,623: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,623 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,623: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,623: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,623 INFO sqlalchemy.engine.Engine SELECT max(contract_act.day_overdue) AS max_1 
+tender_radar_worker  | FROM contract_act 
+tender_radar_worker  | WHERE contract_act.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,623: INFO/ForkPoolWorker-2] SELECT max(contract_act.day_overdue) AS max_1 
+tender_radar_worker  | FROM contract_act 
+tender_radar_worker  | WHERE contract_act.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,623: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,623 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,623: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,624: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,624 INFO sqlalchemy.engine.Engine SELECT sum(contract_act.sum_fine) AS sum_1, count(contract_act.id) AS count_1 
+tender_radar_worker  | FROM contract_act 
+tender_radar_worker  | WHERE contract_act.contract_id = $1::BIGINT AND contract_act.sum_fine > $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,624: INFO/ForkPoolWorker-2] SELECT sum(contract_act.sum_fine) AS sum_1, count(contract_act.id) AS count_1 
+tender_radar_worker  | FROM contract_act 
+tender_radar_worker  | WHERE contract_act.contract_id = $1::BIGINT AND contract_act.sum_fine > $2::INTEGER
+tender_radar_worker  | [2026-02-24 23:10:43,624: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,624 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358, 0)
+tender_radar_worker  | [2026-02-24 23:10:43,624: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358, 0)
+tender_radar_worker  | [2026-02-24 23:10:43,626: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,626 INFO sqlalchemy.engine.Engine SELECT sum(contract_spec_sum.fact_sum) AS sum_1, sum(contract_spec_sum.total_sum) AS sum_2 
+tender_radar_worker  | FROM contract_spec_sum 
+tender_radar_worker  | WHERE contract_spec_sum.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,626: INFO/ForkPoolWorker-2] SELECT sum(contract_spec_sum.fact_sum) AS sum_1, sum(contract_spec_sum.total_sum) AS sum_2 
+tender_radar_worker  | FROM contract_spec_sum 
+tender_radar_worker  | WHERE contract_spec_sum.contract_id = $1::BIGINT
+tender_radar_worker  | [2026-02-24 23:10:43,626: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,626 INFO sqlalchemy.engine.Engine [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,626: INFO/ForkPoolWorker-2] [cached since 642.1s ago] (24687358,)
+tender_radar_worker  | [2026-02-24 23:10:43,832: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,832 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+tender_radar_worker  | [2026-02-24 23:10:43,832: INFO/ForkPoolWorker-2] BEGIN (implicit)
+tender_radar_worker  | [2026-02-24 23:10:43,833: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,833 INFO sqlalchemy.engine.Engine SELECT graph_features.features_jsonb 
+tender_radar_worker  | FROM graph_features 
+tender_radar_worker  | WHERE graph_features.entity_type = $1::VARCHAR AND graph_features.entity_id = $2::VARCHAR
+tender_radar_worker  | [2026-02-24 23:10:43,833: INFO/ForkPoolWorker-2] SELECT graph_features.features_jsonb 
+tender_radar_worker  | FROM graph_features 
+tender_radar_worker  | WHERE graph_features.entity_type = $1::VARCHAR AND graph_features.entity_id = $2::VARCHAR
+tender_radar_worker  | [2026-02-24 23:10:43,833: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,833 INFO sqlalchemy.engine.Engine [cached since 642.2s ago] ('lot', '40196696')
+tender_radar_worker  | [2026-02-24 23:10:43,833: INFO/ForkPoolWorker-2] [cached since 642.2s ago] ('lot', '40196696')
+tender_radar_worker  | [2026-02-24 23:10:43,835: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,835 INFO sqlalchemy.engine.Engine ROLLBACK
+tender_radar_worker  | [2026-02-24 23:10:43,835: INFO/ForkPoolWorker-2] ROLLBACK
+tender_radar_worker  | [2026-02-24 23:10:43,841: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,841 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,841: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,841: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,841 INFO sqlalchemy.engine.Engine [no key 0.00041s] ('lot', '40196696', 'DUMPING_FLAG', False, 0.0, '{"lot_id": 40196696, "dumping_flag": false, "lot_amount": 345000.0}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,841: INFO/ForkPoolWorker-2] [no key 0.00041s] ('lot', '40196696', 'DUMPING_FLAG', False, 0.0, '{"lot_id": 40196696, "dumping_flag": false, "lot_amount": 345000.0}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,846: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,846 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,846: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,846: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,846 INFO sqlalchemy.engine.Engine [no key 0.00059s] ('lot', '40196696', 'SHORT_DEADLINE', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,846: INFO/ForkPoolWorker-2] [no key 0.00059s] ('lot', '40196696', 'SHORT_DEADLINE', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,849: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,849 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,849: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,849: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,849 INFO sqlalchemy.engine.Engine [no key 0.00039s] ('lot', '40196696', 'FEW_BIDS', True, 1.0, '{"bid_count": 1, "threshold": 2}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,849: INFO/ForkPoolWorker-2] [no key 0.00039s] ('lot', '40196696', 'FEW_BIDS', True, 1.0, '{"bid_count": 1, "threshold": 2}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,852: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,851 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,851: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,852: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,852 INFO sqlalchemy.engine.Engine [no key 0.00046s] ('lot', '40196696', 'LOT_SPLITTING', False, 10.0, '{"lot_count": 10, "total_sum": 1185750.0, "avg_lot_amount": 118575.0}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,852: INFO/ForkPoolWorker-2] [no key 0.00046s] ('lot', '40196696', 'LOT_SPLITTING', False, 10.0, '{"lot_count": 10, "total_sum": 1185750.0, "avg_lot_amount": 118575.0}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,856: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,856 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,856: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,856: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,856 INFO sqlalchemy.engine.Engine [no key 0.00029s] ('lot', '40196696', 'LAST_MINUTE_CHANGES', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,856: INFO/ForkPoolWorker-2] [no key 0.00029s] ('lot', '40196696', 'LAST_MINUTE_CHANGES', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,858: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,858 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,858: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,859: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,859 INFO sqlalchemy.engine.Engine [no key 0.00018s] ('lot', '40196696', 'COMMON_REQUISITES', False, 0.0, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,859: INFO/ForkPoolWorker-2] [no key 0.00018s] ('lot', '40196696', 'COMMON_REQUISITES', False, 0.0, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,861: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,861 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,861: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,861: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,861 INFO sqlalchemy.engine.Engine [no key 0.00028s] ('lot', '40196696', 'IDENTICAL_BID_PRICES', False, 0.0, '{"identical_price_groups": 0, "details": []}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,861: INFO/ForkPoolWorker-2] [no key 0.00028s] ('lot', '40196696', 'IDENTICAL_BID_PRICES', False, 0.0, '{"identical_price_groups": 0, "details": []}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,863: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,863 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,863: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,863: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,863 INFO sqlalchemy.engine.Engine [no key 0.00027s] ('lot', '40196696', 'TINY_WIN_MARGIN', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,863: INFO/ForkPoolWorker-2] [no key 0.00027s] ('lot', '40196696', 'TINY_WIN_MARGIN', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,865: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,865 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,865: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,865: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,865 INFO sqlalchemy.engine.Engine [no key 0.00018s] ('lot', '40196696', 'LATE_BID_SUBMISSION', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,865: INFO/ForkPoolWorker-2] [no key 0.00018s] ('lot', '40196696', 'LATE_BID_SUBMISSION', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,867: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,867 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,867: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,867: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,867 INFO sqlalchemy.engine.Engine [no key 0.00031s] ('lot', '40196696', 'REPEAT_TENDER', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,867: INFO/ForkPoolWorker-2] [no key 0.00031s] ('lot', '40196696', 'REPEAT_TENDER', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,869: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,869 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,869: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,869: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,869 INFO sqlalchemy.engine.Engine [no key 0.00015s] ('lot', '40196696', 'CANCELLED_TENDER', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,869: INFO/ForkPoolWorker-2] [no key 0.00015s] ('lot', '40196696', 'CANCELLED_TENDER', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,872: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,872 INFO sqlalchemy.engine.Engine INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,872: INFO/ForkPoolWorker-2] INSERT INTO risk_flags (entity_type, entity_id, indicator_code, flag_bool, value_numeric, evidence_jsonb, computed_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::FLOAT, $6::JSONB, $7::TIMESTAMP WITHOUT TIME ZONE) ON CONFLICT ON CONSTRAINT uq_risk_flags_entity_indicator DO UPDATE SET flag_bool = excluded.flag_bool, value_numeric = excluded.value_numeric, evidence_jsonb = excluded.evidence_jsonb, computed_at = excluded.computed_at RETURNING risk_flags.id
+tender_radar_worker  | [2026-02-24 23:10:43,872: WARNING/ForkPoolWorker-2] 2026-02-24 23:10:43,872 INFO sqlalchemy.engine.Engine [no key 0.00029s] ('lot', '40196696', 'PAUSED_TENDER', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))
+tender_radar_worker  | [2026-02-24 23:10:43,872: INFO/ForkPoolWorker-2] [no key 0.00029s] ('lot', '40196696', 'PAUSED_TENDER', False, None, '{}', datetime.datetime(2026, 2, 24, 23, 10, 43, 840226))

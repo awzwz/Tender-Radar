@@ -53,17 +53,39 @@ def _try_load_ml_model():
         return None
 
 
+def _get_anomaly_predictor():
+    try:
+        from app.ml.anomaly import get_anomaly_predictor
+        return get_anomaly_predictor()
+    except Exception:
+        return None
+
+
+def _get_weak_predictor():
+    try:
+        from app.ml.weak_model import get_weak_predictor
+        return get_weak_predictor()
+    except Exception:
+        return None
+
+
 class FeatureEngine:
     """
-    Computes risk flags, rule-based score, ML score, and final score.
+    Computes risk flags, rule-based score, ML score, anomaly/weak/composite, and final score.
     """
 
     def __init__(self):
         self.ml_model = _try_load_ml_model()
+        self._anomaly_packed = _get_anomaly_predictor()
+        self._weak_packed = _get_weak_predictor()
         if self.ml_model:
             logger.info("ML model loaded for scoring")
         else:
             logger.info("ML model not available — using rules-only scoring")
+        if self._anomaly_packed:
+            logger.info("Anomaly model loaded")
+        if self._weak_packed:
+            logger.info("Weak model loaded")
 
     async def run(self, entity_ids: list = None) -> dict:
         """Recompute features for all lots (or a specific list)."""
@@ -186,6 +208,49 @@ class FeatureEngine:
                     1.0 if r.get("flag") else 0.0
                 )
 
+            # ── Anomaly scoring (additive signal; does not replace score) ──────
+            anomaly_score = None
+            anomaly_model_version = None
+            anomaly_explanation_jsonb = None
+            if self._anomaly_packed:
+                try:
+                    from app.ml.anomaly import predict_anomaly
+                    out = predict_anomaly(feature_vector)
+                    if out:
+                        anomaly_score, anomaly_model_version, anomaly_explanation_jsonb = out
+                except Exception as e:
+                    logger.debug("Anomaly prediction skipped: %s", e)
+
+            # ── Weak model scoring (additive signal) ───────────────────────────
+            weak_proba = None
+            weak_score = None
+            weak_model_version = None
+            weak_explanation_jsonb = None
+            if self._weak_packed:
+                try:
+                    from app.ml.weak_model import predict_weak
+                    out = predict_weak(feature_vector)
+                    if out:
+                        weak_proba, weak_score, weak_model_version, weak_explanation_jsonb = out
+                except Exception as e:
+                    logger.debug("Weak model prediction skipped: %s", e)
+
+            # ── Graph features (for composite; optional) ───────────────────────
+            graph_score = None
+            try:
+                from app.features.graph_features import get_graph_features_for_lot
+                gf = await get_graph_features_for_lot(lot_id)
+                if gf is not None:
+                    # Derive single 0..100 score: high top_supplier_win_share = risk, low rotation = risk
+                    top_share = float(gf.get("customer_top_supplier_win_share") or 0)
+                    rotation = int(gf.get("customer_win_rotation_index") or 0)
+                    if rotation > 0:
+                        graph_score = min(100.0, top_share)  # 0..100
+                    else:
+                        graph_score = 50.0
+            except Exception as e:
+                logger.debug("Graph features skipped: %s", e)
+
             # ── ML scoring ────────────────────────────────────────────────────
             score_ml = None
             if self.ml_model is not None:
@@ -195,14 +260,51 @@ class FeatureEngine:
                 except Exception as e:
                     logger.warning(f"ML prediction failed for lot {lot_id}: {e}")
 
-            # ── Final score ───────────────────────────────────────────────────
+            # ── Composite score (only when mode=composite) ─────────────────────
             from app.core.config import settings
-            if score_ml is not None:
+            mode = getattr(settings, "risk_scoring_mode", "hybrid") or "hybrid"
+            delta_max = getattr(settings, "composite_delta_max", 15.0) or 15.0
+            composite_score = None
+            components_jsonb = None
+            if mode == "composite":
+                # f: map each component 0..100 to contribution in [-1, 1]; missing = 0 (neutral 50)
+                def _to_contrib(s):
+                    if s is None:
+                        return 0.0
+                    return (s / 50.0) - 1.0  # 50 -> 0, 100 -> 1, 0 -> -1
+                a_contrib = _to_contrib(anomaly_score)
+                w_contrib = _to_contrib(weak_score)
+                g_contrib = _to_contrib(graph_score)
+                n = sum(1 for x in (anomaly_score, weak_score, graph_score) if x is not None)
+                if n > 0:
+                    avg_contrib = (a_contrib + w_contrib + g_contrib) / 3.0  # treat missing as 0
+                    avg_contrib = max(-1.0, min(1.0, avg_contrib))
+                    composite_score = round(score_rules + delta_max * avg_contrib, 1)
+                    composite_score = max(0.0, min(100.0, composite_score))
+                else:
+                    composite_score = round(score_rules, 1)
+                components_jsonb = {
+                    "anomaly_score": anomaly_score,
+                    "weak_score": weak_score,
+                    "graph_score": graph_score,
+                }
+
+            # ── Final score (by mode) ─────────────────────────────────────────
+            if mode == "rules":
+                score_final = round(score_rules)
+            elif mode == "composite" and composite_score is not None:
+                score_final = round(composite_score)
+            elif score_ml is not None and mode in ("ml", "hybrid"):
                 score_final = round(
                     100 * (settings.ml_rules_weight * score_rules / 100 + settings.ml_ml_weight * score_ml)
                 )
             else:
                 score_final = round(score_rules)
+
+            # Guardrail for hybrid mode:
+            # do not escalate to HIGH purely by ML when rule evidence is weak.
+            if mode == "hybrid" and score_ml is not None and score_rules < 10 and score_final > THRESHOLDS["medium_max"]:
+                score_final = THRESHOLDS["medium_max"]
 
             score_final = max(0, min(100, score_final))
             level = _get_level(score_final)
@@ -257,6 +359,15 @@ class FeatureEngine:
                 "level": level,
                 "top_reasons_jsonb": top_reasons,
                 "computed_at": now,
+                "anomaly_score": anomaly_score,
+                "anomaly_model_version": anomaly_model_version,
+                "anomaly_explanation_jsonb": anomaly_explanation_jsonb,
+                "weak_proba": weak_proba,
+                "weak_score": weak_score,
+                "weak_model_version": weak_model_version,
+                "weak_explanation_jsonb": weak_explanation_jsonb,
+                "composite_score": composite_score,
+                "components_jsonb": components_jsonb,
             })
             score_stmt = score_stmt.on_conflict_do_update(
                 constraint="uq_risk_scores_entity",
@@ -268,6 +379,15 @@ class FeatureEngine:
                     "level": level,
                     "top_reasons_jsonb": top_reasons,
                     "computed_at": now,
+                    "anomaly_score": anomaly_score,
+                    "anomaly_model_version": anomaly_model_version,
+                    "anomaly_explanation_jsonb": anomaly_explanation_jsonb,
+                    "weak_proba": weak_proba,
+                    "weak_score": weak_score,
+                    "weak_model_version": weak_model_version,
+                    "weak_explanation_jsonb": weak_explanation_jsonb,
+                    "composite_score": composite_score,
+                    "components_jsonb": components_jsonb,
                 },
             )
             await db.execute(score_stmt)

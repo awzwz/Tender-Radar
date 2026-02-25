@@ -111,6 +111,7 @@ export default function LotDetailPage() {
     const [noteText, setNoteText] = useState("");
     const [noteLabel, setNoteLabel] = useState("NEEDS_REVIEW");
     const [noteSaving, setNoteSaving] = useState(false);
+    const [notes, setNotes] = useState<{ id: number; note_text: string; label: string; created_at: string }[]>([]);
     const [indicatorDetail, setIndicatorDetail] = useState<IndicatorDetails | null>(null);
     const [indicatorDetailCode, setIndicatorDetailCode] = useState<string | null>(null);
     const [indicatorDetailLoading, setIndicatorDetailLoading] = useState(false);
@@ -137,12 +138,31 @@ export default function LotDetailPage() {
         api.lot(Number(params.id)).then(setData).catch(e => setError(e.message)).finally(() => setLoading(false));
     }, [params.id]);
 
+    useEffect(() => {
+        if (!data?.lot.id) return;
+        api.getNotes("lot", String(data.lot.id)).then(setNotes).catch(() => setNotes([]));
+    }, [data?.lot.id]);
+
     async function saveNote() {
-        if (!noteText.trim() || !data) return;
+        if (!data) return;
         setNoteSaving(true);
         try {
-            await api.createNote({ entity_type: "lot", entity_id: String(data.lot.id), note_text: noteText, label: noteLabel });
+            await api.createNote({ entity_type: "lot", entity_id: String(data.lot.id), note_text: noteText.trim() || "Label", label: noteLabel });
             setNoteText("");
+            const list = await api.getNotes("lot", String(data.lot.id));
+            setNotes(list);
+        } finally {
+            setNoteSaving(false);
+        }
+    }
+
+    async function setLabelOnly(label: string) {
+        if (!data) return;
+        setNoteSaving(true);
+        try {
+            await api.createNote({ entity_type: "lot", entity_id: String(data.lot.id), note_text: "", label });
+            const list = await api.getNotes("lot", String(data.lot.id));
+            setNotes(list);
         } finally {
             setNoteSaving(false);
         }
@@ -249,7 +269,43 @@ export default function LotDetailPage() {
 
                 {/* Analyst Note */}
                 <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Заметка аналитика</h2>
+                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Метка аналитика</h2>
+                    {notes.length > 0 && (
+                        <div className="mb-4 text-sm text-gray-300">
+                            Текущая метка: <span className="font-medium text-white">{notes[0].label}</span>
+                            {notes[0].created_at && <span className="text-gray-500 ml-2">({new Date(notes[0].created_at).toLocaleString("ru")})</span>}
+                        </div>
+                    )}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        <button
+                            onClick={() => setLabelOnly("NEEDS_REVIEW")}
+                            disabled={noteSaving}
+                            className="px-3 py-1.5 rounded-lg border border-amber-700 bg-amber-900/30 text-amber-400 text-sm hover:bg-amber-900/50 disabled:opacity-50"
+                        >
+                            Требует проверки
+                        </button>
+                        <button
+                            onClick={() => setLabelOnly("SUSPICIOUS")}
+                            disabled={noteSaving}
+                            className="px-3 py-1.5 rounded-lg border border-red-700 bg-red-900/30 text-red-400 text-sm hover:bg-red-900/50 disabled:opacity-50"
+                        >
+                            Подозрительно
+                        </button>
+                        <button
+                            onClick={() => setLabelOnly("FALSE_POSITIVE")}
+                            disabled={noteSaving}
+                            className="px-3 py-1.5 rounded-lg border border-green-700 bg-green-900/30 text-green-400 text-sm hover:bg-green-900/50 disabled:opacity-50"
+                        >
+                            Ложное срабатывание
+                        </button>
+                        <button
+                            onClick={() => setLabelOnly("VERIFIED")}
+                            disabled={noteSaving}
+                            className="px-3 py-1.5 rounded-lg border border-gray-600 bg-gray-800/50 text-gray-300 text-sm hover:bg-gray-700/50 disabled:opacity-50"
+                        >
+                            Проверено
+                        </button>
+                    </div>
                     <div className="flex gap-3 mb-3">
                         <select value={noteLabel} onChange={e => setNoteLabel(e.target.value)} className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none">
                             <option value="NEEDS_REVIEW">Требует проверки</option>
@@ -261,15 +317,15 @@ export default function LotDetailPage() {
                     <textarea
                         value={noteText}
                         onChange={e => setNoteText(e.target.value)}
-                        placeholder="Добавить заметку..."
+                        placeholder="Добавить заметку (необязательно)..."
                         className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-red-500 resize-none h-24"
                     />
                     <button
                         onClick={saveNote}
-                        disabled={noteSaving || !noteText.trim()}
+                        disabled={noteSaving}
                         className="mt-3 bg-red-600 hover:bg-red-700 disabled:opacity-40 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
                     >
-                        {noteSaving ? "Сохранение..." : "Сохранить"}
+                        {noteSaving ? "Сохранение..." : "Сохранить заметку"}
                     </button>
                 </div>
             </main>

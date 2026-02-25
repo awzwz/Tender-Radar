@@ -81,11 +81,12 @@ async def get_etl_status(
 @router.post("/features/recompute")
 async def trigger_feature_recompute(
     entity_ids: Optional[list] = None,
+    limit: Optional[int] = None,
     _=Depends(require_admin),
 ):
-    """Trigger risk feature recomputation."""
+    """Trigger risk feature recomputation. Optional limit=N to process only first N lots."""
     from app.etl.tasks import run_feature_recompute
-    task = run_feature_recompute.delay(entity_ids)
+    task = run_feature_recompute.delay(entity_ids, limit)
     return {"message": "Feature recompute started", "task_id": task.id}
 
 
@@ -149,3 +150,35 @@ async def scoring_health_check(
         "flags_triggered": triggered_count,
         "risk_distribution": distribution,
     }
+
+
+@router.post("/ml/train-anomaly")
+async def trigger_train_anomaly(_=Depends(require_admin)):
+    """Trigger anomaly model training (IsolationForest)."""
+    from app.etl.tasks import train_anomaly_model
+    task = train_anomaly_model.delay()
+    return {"message": "Anomaly model training started", "task_id": task.id}
+
+
+@router.post("/ml/weak-labeling")
+async def trigger_weak_labeling(_=Depends(require_admin)):
+    """Trigger weak labeling pipeline."""
+    from app.etl.tasks import run_weak_labeling
+    task = run_weak_labeling.delay()
+    return {"message": "Weak labeling started", "task_id": task.id}
+
+
+@router.post("/ml/train-weak-model")
+async def trigger_train_weak_model(_=Depends(require_admin)):
+    """Trigger weak model (GBM) training."""
+    from app.etl.tasks import train_weak_model
+    task = train_weak_model.delay()
+    return {"message": "Weak model training started", "task_id": task.id}
+
+
+@router.post("/ml/compute-graph-features")
+async def trigger_compute_graph_features(_=Depends(require_admin)):
+    """Trigger graph features computation."""
+    from app.etl.tasks import compute_graph_features
+    task = compute_graph_features.delay()
+    return {"message": "Graph features computation started", "task_id": task.id}

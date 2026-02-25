@@ -4,7 +4,7 @@ from app.models.procurement import (
     TrdBuy, Lot, TrdApp, TrdAppLot, Contract, Subject, Rnu, TreasuryPay,
     RiskFlag, RiskScore, AnalystNote, EtlRun, EtlCursor,
     ContractAct, ContractPayment, ContractSpecSum,
-    TenderFeature, LlmExplanation,
+    TenderFeature, LlmExplanation, WeakLabel, GraphFeature,
 )
 
 __all__ = [
@@ -13,5 +13,5 @@ __all__ = [
     "TrdBuy", "Lot", "TrdApp", "TrdAppLot", "Contract", "Subject", "Rnu", "TreasuryPay",
     "RiskFlag", "RiskScore", "AnalystNote", "EtlRun", "EtlCursor",
     "ContractAct", "ContractPayment", "ContractSpecSum",
-    "TenderFeature", "LlmExplanation",
+    "TenderFeature", "LlmExplanation", "WeakLabel", "GraphFeature",
 ]

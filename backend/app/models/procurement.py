@@ -338,6 +338,18 @@ class RiskScore(Base):
     level = Column(String(10), nullable=False, default="LOW")  # LOW/MEDIUM/HIGH
     top_reasons_jsonb = Column(JSONB)
     computed_at = Column(DateTime)
+    # Anomaly (IsolationForest)
+    anomaly_score = Column(Float)
+    anomaly_model_version = Column(String(50))
+    anomaly_explanation_jsonb = Column(JSONB)
+    # Weak supervision (Snorkel + GBM)
+    weak_proba = Column(Float)
+    weak_score = Column(Float)
+    weak_model_version = Column(String(50))
+    weak_explanation_jsonb = Column(JSONB)
+    # Composite (when risk_scoring_mode=composite)
+    composite_score = Column(Float)
+    components_jsonb = Column(JSONB)
 
     __table_args__ = (
         UniqueConstraint("entity_type", "entity_id", name="uq_risk_scores_entity"),
@@ -396,6 +408,39 @@ class AnalystNote(Base):
 
     __table_args__ = (
         Index("ix_analyst_notes_entity", "entity_type", "entity_id"),
+    )
+
+
+class WeakLabel(Base):
+    """Probabilistic weak labels from labeling functions (Snorkel-style)."""
+    __tablename__ = "weak_labels"
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    entity_type = Column(String(20), nullable=False, default="lot")
+    entity_id = Column(String(255), nullable=False)
+    weak_proba = Column(Float, nullable=False)
+    version = Column(String(80), nullable=False)
+    lf_votes_jsonb = Column(JSONB)
+    created_at = Column(DateTime)
+
+    __table_args__ = (
+        Index("ix_weak_labels_entity", "entity_type", "entity_id"),
+        Index("ix_weak_labels_version", "version"),
+    )
+
+
+class GraphFeature(Base):
+    """Precomputed graph-based features (co-bidding, rotation)."""
+    __tablename__ = "graph_features"
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    entity_type = Column(String(20), nullable=False)
+    entity_id = Column(String(255), nullable=False)
+    features_jsonb = Column(JSONB, nullable=False)
+    computed_at = Column(DateTime)
+    version = Column(String(80))
+
+    __table_args__ = (
+        Index("ix_graph_features_entity", "entity_type", "entity_id"),
+        Index("ix_graph_features_version", "version"),
     )
 
 
