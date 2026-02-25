@@ -44,15 +44,6 @@ def _get_level(score: float) -> str:
     return "HIGH"
 
 
-def _try_load_ml_model():
-    """Attempt to load ML model; return None if not available."""
-    try:
-        from app.ml.model import get_model
-        return get_model()
-    except Exception:
-        return None
-
-
 def _get_anomaly_predictor():
     try:
         from app.ml.anomaly import get_anomaly_predictor
@@ -71,17 +62,12 @@ def _get_weak_predictor():
 
 class FeatureEngine:
     """
-    Computes risk flags, rule-based score, ML score, anomaly/weak/composite, and final score.
+    Computes risk flags, rule-based score, anomaly/weak/composite, and final score.
     """
 
     def __init__(self):
-        self.ml_model = _try_load_ml_model()
         self._anomaly_packed = _get_anomaly_predictor()
         self._weak_packed = _get_weak_predictor()
-        if self.ml_model:
-            logger.info("ML model loaded for scoring")
-        else:
-            logger.info("ML model not available — using rules-only scoring")
         if self._anomaly_packed:
             logger.info("Anomaly model loaded")
         if self._weak_packed:
@@ -100,7 +86,7 @@ class FeatureEngine:
                 )
                 lot_ids = [r[0] for r in result.all()]
 
-        logger.info(f"Feature recompute starting for {len(lot_ids)} lots (ML model: {'loaded' if self.ml_model else 'not available'})")
+        logger.info(f"Feature recompute starting for {len(lot_ids)} lots")
 
         for lot_id in lot_ids:
             try:
@@ -251,14 +237,8 @@ class FeatureEngine:
             except Exception as e:
                 logger.debug("Graph features skipped: %s", e)
 
-            # ── ML scoring ────────────────────────────────────────────────────
+            # ── ML scoring (REMOVED) ─────────────────────────────────────────
             score_ml = None
-            if self.ml_model is not None:
-                try:
-                    from app.ml.model import predict_risk
-                    score_ml = predict_risk(self.ml_model, feature_vector)
-                except Exception as e:
-                    logger.warning(f"ML prediction failed for lot {lot_id}: {e}")
 
             # ── Composite score (only when mode=composite) ─────────────────────
             from app.core.config import settings
@@ -324,6 +304,35 @@ class FeatureEngine:
                 key=lambda x: x["weight"],
                 reverse=True,
             )[:5]
+
+            # Append ML explanations so the UI receives them naturally
+            if anomaly_score and anomaly_score > 50:
+                a_ev = {}
+                if anomaly_explanation_jsonb and "top_abnormal_features" in anomaly_explanation_jsonb:
+                    for i, tf in enumerate(anomaly_explanation_jsonb["top_abnormal_features"][:3]):
+                        val = round(tf.get("value", 0), 2)
+                        a_ev[f"Аномалия: {tf.get('feature')}"] = str(val)
+
+                top_reasons.insert(0, {
+                    "code": "ML_ANOMALY",
+                    "weight": 100,
+                    "description": f"ML Структурная аномалия (уверенность: {round(anomaly_score, 1)}%)",
+                    "evidence": a_ev
+                })
+            
+            if weak_score and weak_score > 50:
+                w_ev = {}
+                if weak_explanation_jsonb and "top_features" in weak_explanation_jsonb:
+                    for i, tf in enumerate(weak_explanation_jsonb["top_features"][:3]):
+                        imp = round(tf.get("importance", 0) * 100)
+                        w_ev[f"Влияние: {tf.get('feature')}"] = f"{imp}%"
+
+                top_reasons.insert(0, {
+                    "code": "ML_WEAK_SIGNAL",
+                    "weight": 100,
+                    "description": f"ML Графовые паттерны риска (уверенность: {round(weak_score, 1)}%)",
+                    "evidence": w_ev
+                })
 
             # ── Persist flags (upsert) ────────────────────────────────────────
             now = datetime.utcnow()

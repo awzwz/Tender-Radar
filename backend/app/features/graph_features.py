@@ -201,7 +201,9 @@ async def compute_graph_features(batch_size: int = 2000) -> dict:
     return {"lots_updated": len(to_upsert), "version": VERSION}
 
 
-async def get_graph_features_for_lot(lot_id: int) -> dict | None:
+from typing import Optional
+
+async def get_graph_features_for_lot(lot_id: int) -> Optional[dict]:
     """Return graph features dict for lot or None."""
     from sqlalchemy import and_
     async with AsyncSessionLocal() as db:

@@ -148,19 +148,7 @@ def run_score_lot(lot_id: int):
         raise
 
 
-@celery_app.task(name="app.etl.tasks.run_ml_train")
-def run_ml_train():
-    """Celery task: train ML model on computed features."""
-    from app.ml.train import train_model
 
-    logger.info("Starting ML model training...")
-    try:
-        metrics = run_async(train_model())
-        logger.info(f"ML training complete: {metrics}")
-        return metrics
-    except Exception as exc:
-        logger.error(f"ML training failed: {exc}")
-        raise
 
 
 @celery_app.task(name="app.etl.tasks.run_q1_2024_etl", bind=True)
@@ -186,7 +174,19 @@ def train_anomaly_model():
     from app.models.procurement import TenderFeature
     from sqlalchemy import select
     import numpy as np
-    from app.ml.train import FEATURE_COLUMNS
+    
+    # Hardcoded feature columns since train.py was removed
+    FEATURE_COLUMNS = [
+        "LOT_SPLITTING", "SHORT_DEADLINE", "FEW_BIDS", "RECURRING_WINNER",
+        "COMMON_REQUISITES", "NEW_COMPANY_BIG_CONTRACT", "CAROUSEL_PATTERN",
+        "RNU_FLAG", "DUMPING_FLAG", "IDENTICAL_BID_PRICES", "TINY_WIN_MARGIN",
+        "LATE_BID_SUBMISSION", "REPEAT_TENDER", "CANCELLED_TENDER", "PAUSED_TENDER",
+        "NIGHT_OR_WEEKEND_PUBLISH", "SHORT_DISCUSSION_WINDOW", "LAST_MINUTE_CHANGES",
+        "SUPPLIER_CONCENTRATION", "CUSTOMER_WINNER_CONCENTRATION", "HIGH_WIN_RATE_FEW_BIDS",
+        "ADDENDUM_VALUE_INCREASE", "WIN_MIN_THEN_ADDENDUM", "WEIRD_EXECUTION_TIME",
+        "HIGH_PREPAY", "PAYMENTS_EXCEED_CONTRACT", "PAYMENT_WITHOUT_ACT",
+        "OVERDUE_EXECUTION", "FINES_PRESENT", "LOW_EXECUTION_RATE", "BANK_DETAILS_REUSE",
+    ]
 
     logger.info("Building anomaly dataset...")
     async def _build():
@@ -241,7 +241,19 @@ def train_weak_model():
     from app.models.procurement import TenderFeature, WeakLabel
     from sqlalchemy import select
     import numpy as np
-    from app.ml.train import FEATURE_COLUMNS
+    
+    # Hardcoded feature columns since train.py was removed
+    FEATURE_COLUMNS = [
+        "LOT_SPLITTING", "SHORT_DEADLINE", "FEW_BIDS", "RECURRING_WINNER",
+        "COMMON_REQUISITES", "NEW_COMPANY_BIG_CONTRACT", "CAROUSEL_PATTERN",
+        "RNU_FLAG", "DUMPING_FLAG", "IDENTICAL_BID_PRICES", "TINY_WIN_MARGIN",
+        "LATE_BID_SUBMISSION", "REPEAT_TENDER", "CANCELLED_TENDER", "PAUSED_TENDER",
+        "NIGHT_OR_WEEKEND_PUBLISH", "SHORT_DISCUSSION_WINDOW", "LAST_MINUTE_CHANGES",
+        "SUPPLIER_CONCENTRATION", "CUSTOMER_WINNER_CONCENTRATION", "HIGH_WIN_RATE_FEW_BIDS",
+        "ADDENDUM_VALUE_INCREASE", "WIN_MIN_THEN_ADDENDUM", "WEIRD_EXECUTION_TIME",
+        "HIGH_PREPAY", "PAYMENTS_EXCEED_CONTRACT", "PAYMENT_WITHOUT_ACT",
+        "OVERDUE_EXECUTION", "FINES_PRESENT", "LOW_EXECUTION_RATE", "BANK_DETAILS_REUSE",
+    ]
 
     logger.info("Building weak model dataset...")
     async def _build():

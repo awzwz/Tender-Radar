@@ -90,7 +90,30 @@ const EVIDENCE_LABELS: Record<string, string> = {
     common_emails: "Общие email",
     method: "Метод закупки",
     region: "Регион",
+
+    // ML Anomaly Interpretations
+    PAUSED_TENDER: "Задержка тендера (дней)",
+    CANCELLED_TENDER: "Отмен тендера (счётчик)",
+    LAST_MINUTE_CHANGES: "Изменения в последний момент",
+    CUSTOMER_WINNER_CONCENTRATION: "Концентрация победителя у заказчика (%)",
+    NEW_COMPANY_BIG_CONTRACT: "Капитализация молодой компании (показатель)",
+    SUPPLIER_CONCENTRATION: "Концентрация поставщика (показатель)",
+    CAROUSEL_PATTERN: "Паттерн ротации победителей (индекс)",
+    LOT_SPLITTING: "Дробление лотов (индекс сходства)",
 };
+
+function formatWinnerSequence(sequence: any) {
+    if (!sequence || typeof sequence !== "string") return String(sequence);
+    const items = sequence.split(",").map(s => s.trim());
+    if (items.length === 0) return sequence;
+    const uniqueItems = Array.from(new Set(items));
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const itemToLetter: Record<string, string> = {};
+    uniqueItems.forEach((item, index) => {
+        itemToLetter[item] = letters[index % letters.length];
+    });
+    return items.map(item => itemToLetter[item] || item).join(" → ");
+}
 
 function BinLink({ bin, label, isCustomer = false }: { bin: string; label?: string; isCustomer?: boolean }) {
     const router = useRouter();
@@ -135,7 +158,7 @@ export default function LotDetailPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) { router.push("/login"); return; }
-        api.lot(Number(params.id)).then(setData).catch(e => setError(e.message)).finally(() => setLoading(false));
+        api.lot(Number(params.id)).then(setData).catch((e: any) => setError(e.message)).finally(() => setLoading(false));
     }, [params.id]);
 
     useEffect(() => {
@@ -173,7 +196,7 @@ export default function LotDetailPage() {
     if (!data) return null;
 
     const { lot, tender, contract, risk, flags } = data;
-    const triggeredFlags = flags.filter(f => f.triggered);
+    const triggeredFlags = flags.filter((f: any) => f.triggered);
 
     return (
         <div className="min-h-screen bg-gray-950 text-gray-100">
@@ -200,8 +223,22 @@ export default function LotDetailPage() {
                     {risk.top_reasons.length > 0 && (
                         <div className="mt-4 space-y-1">
                             <div className="text-xs text-gray-400 mb-2">Основные причины:</div>
-                            {risk.top_reasons.map((r, i) => (
-                                <div key={`${r.code}-${i}`} className="text-sm text-gray-200">• {r.description || r.code}</div>
+                            {risk.top_reasons.map((r: any, i: number) => (
+                                <div key={`${r.code}-${i}`} className="mb-2">
+                                    <div className="text-sm text-gray-200 font-medium">• {r.description || r.code}</div>
+                                    {r.evidence && Object.keys(r.evidence).length > 0 && (
+                                        <div className="ml-4 mt-1 bg-gray-900/50 rounded p-2 text-xs text-gray-400 border border-gray-800">
+                                            {Object.entries(r.evidence).map(([ek, ev]: [string, any]) => (
+                                                <div key={ek} className={`flex justify-between items-center gap-2 border-b border-gray-800/50 last:border-0 py-0.5 ${ek === "winner_sequence" ? "flex-col items-start" : ""}`}>
+                                                    <span>{EVIDENCE_LABELS[ek] || ek}:</span>
+                                                    <span className={`${ek === "winner_sequence" ? "text-indigo-400 font-bold mt-1" : "text-gray-300 ml-2"} font-mono text-right truncate`}>
+                                                        {ek === "winner_sequence" ? formatWinnerSequence(String(ev)) : String(ev)}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             ))}
                         </div>
                     )}
@@ -241,7 +278,7 @@ export default function LotDetailPage() {
                     <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
                         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Сработавшие индикаторы ({triggeredFlags.length})</h2>
                         <div className="space-y-3">
-                            {triggeredFlags.map((f, i) => (
+                            {triggeredFlags.map((f: any, i: number) => (
                                 <button
                                     key={`${f.code}-${i}`}
                                     onClick={() => openIndicatorDetail(f.code)}
@@ -250,13 +287,13 @@ export default function LotDetailPage() {
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="font-mono text-sm font-bold text-red-400">{f.code}</span>
                                         {f.code !== "CUSTOMER_WINNER_CONCENTRATION" && (
-                                          <span className="text-xs text-blue-400 ml-2">Подробнее →</span>
+                                            <span className="text-xs text-blue-400 ml-2">Подробнее →</span>
                                         )}
                                     </div>
                                     {f.value !== null && <div className="text-xs text-gray-400 mb-1">Значение: {f.value}</div>}
                                     {f.evidence && Object.keys(f.evidence).length > 0 && (
                                         <div className="text-xs text-gray-500 space-y-0.5">
-                                            {Object.entries(f.evidence).slice(0, 5).map(([k, v]) => (
+                                            {Object.entries(f.evidence).slice(0, 5).map(([k, v]: [string, any]) => (
                                                 <div key={k}><span className="text-gray-600">{EVIDENCE_LABELS[k] || k}:</span> {String(v)}</div>
                                             ))}
                                         </div>
@@ -307,7 +344,7 @@ export default function LotDetailPage() {
                         </button>
                     </div>
                     <div className="flex gap-3 mb-3">
-                        <select value={noteLabel} onChange={e => setNoteLabel(e.target.value)} className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none">
+                        <select value={noteLabel} onChange={(e: any) => setNoteLabel(e.target.value)} className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none">
                             <option value="NEEDS_REVIEW">Требует проверки</option>
                             <option value="SUSPICIOUS">Подозрительно</option>
                             <option value="FALSE_POSITIVE">Ложное срабатывание</option>
@@ -316,7 +353,7 @@ export default function LotDetailPage() {
                     </div>
                     <textarea
                         value={noteText}
-                        onChange={e => setNoteText(e.target.value)}
+                        onChange={(e: any) => setNoteText(e.target.value)}
                         placeholder="Добавить заметку (необязательно)..."
                         className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-red-500 resize-none h-24"
                     />
@@ -338,7 +375,7 @@ export default function LotDetailPage() {
                 >
                     <div
                         className="rounded-2xl border border-gray-700 bg-gray-900 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e: any) => e.stopPropagation()}
                     >
                         <div className="flex items-center justify-between p-4 border-b border-gray-700">
                             <h3 className="text-sm font-semibold text-white font-mono">{indicatorDetailCode}</h3>
@@ -370,7 +407,7 @@ export default function LotDetailPage() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {indicatorDetail.contracts.map((c, i) => (
+                                                {indicatorDetail.contracts.map((c: any, i: number) => (
                                                     <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/50">
                                                         <td className="px-3 py-2 font-mono text-gray-200">{c.contract_number}</td>
                                                         <td className="px-3 py-2 text-gray-400">{c.sign_date?.slice(0, 10) ?? "—"}</td>
@@ -404,7 +441,7 @@ export default function LotDetailPage() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {indicatorDetail.contracts.map((c, i) => (
+                                                {indicatorDetail.contracts.map((c: any, i: number) => (
                                                     <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/50">
                                                         <td className="px-3 py-2 font-mono text-gray-200">{c.contract_number}</td>
                                                         <td className="px-3 py-2 text-gray-400">{c.sign_date?.slice(0, 10) ?? "—"}</td>
@@ -418,7 +455,7 @@ export default function LotDetailPage() {
                                 </div>
                             ) : indicatorDetail?.evidence && Object.keys(indicatorDetail.evidence).length > 0 ? (
                                 <div className="space-y-2 text-xs">
-                                    {Object.entries(indicatorDetail.evidence).map(([k, v]) => (
+                                    {Object.entries(indicatorDetail.evidence).map(([k, v]: [string, any]) => (
                                         <div key={k} className="flex gap-2">
                                             <span className="text-gray-500 shrink-0">{EVIDENCE_LABELS[k] || k}:</span>
                                             <span className="text-gray-300 break-all">

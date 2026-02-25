@@ -11,9 +11,33 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from app.core.database import AsyncSessionLocal
-from app.models.procurement import WeakLabel, TenderFeature
+from app.models.procurement import WeakLabel, TenderFeature, GraphFeature
 
 logger = logging.getLogger(__name__)
+
+# --- Graph Features (from graph_features table) ---
+def lf_high_cobid_count(features: dict, graph_features: dict) -> int:
+    # If the supplier frequently bids with the same partners (cartel risk)
+    if graph_features.get("supplier_frequent_cobid_partners_count", 0) >= 2:
+        return SUSPICIOUS
+    return ABSTAIN
+
+def lf_high_customer_concentration(features: dict, graph_features: dict) -> int:
+    # If a customer gives >50% of its contracts to a single supplier
+    if graph_features.get("customer_top_supplier_win_share", 0.0) > 50.0:
+        return SUSPICIOUS
+    return ABSTAIN
+
+def lf_low_win_rotation(features: dict, graph_features: dict) -> int:
+    # If a customer has a lot of contracts but very few distinct winners
+    # e.g., < 3 distinct winners across their entire history
+    # The index itself is the number of distinct winners
+    index = graph_features.get("customer_win_rotation_index")
+    if index is not None and index > 0 and index <= 2:
+        return SUSPICIOUS
+    return ABSTAIN
+    
+# --- Original Tender Features ---
 
 # LF return: 1 = suspicious, -1 = not suspicious, 0 = abstain
 ABSTAIN = 0
@@ -152,7 +176,7 @@ def lf_customer_winner_concentration(features: dict) -> int:
 
 
 # Less suspicious / abstain when many indicators are 0
-def lf_many_zeros(features: dict) -> int:
+def lf_many_zeros(features: dict, graph_features: dict) -> int:
     ones = sum(1 for k, v in features.items() if v == 1 or v is True)
     if ones <= 1:
         return NOT_SUSPICIOUS
@@ -181,8 +205,21 @@ ALL_LFS = [
     ("lf_dumping", lf_dumping),
     ("lf_supplier_concentration", lf_supplier_concentration),
     ("lf_customer_winner_concentration", lf_customer_winner_concentration),
+    ("lf_high_cobid_count", lf_high_cobid_count),
+    ("lf_high_customer_concentration", lf_high_customer_concentration),
+    ("lf_low_win_rotation", lf_low_win_rotation),
     ("lf_many_zeros", lf_many_zeros),
 ]
+
+# Helper to wrap LFs so they all accept (features, graph_features)
+def _wrap_lf(lf_func):
+    import inspect
+    sig = inspect.signature(lf_func)
+    if len(sig.parameters) == 1:
+        return lambda f, g: lf_func(f)
+    return lf_func
+
+ALL_LFS_WRAPPED = [(name, _wrap_lf(f)) for name, f in ALL_LFS]
 
 
 def _weighted_majority_vote(L: np.ndarray) -> np.ndarray:
@@ -211,11 +248,18 @@ async def run_weak_labeling(version: str = None) -> dict:
     """
     version = version or datetime.utcnow().strftime("%Y%m%d_%H%M%S")
     async with AsyncSessionLocal() as db:
-        result = await db.execute(
-            select(TenderFeature.entity_id, TenderFeature.features_jsonb).where(
-                TenderFeature.entity_type == "lot"
-            )
+        # Join TenderFeature and GraphFeature to feed both to LFs
+        query = select(
+            TenderFeature.entity_id, 
+            TenderFeature.features_jsonb,
+            GraphFeature.features_jsonb.label("graph_features_jsonb")
+        ).outerjoin(
+            GraphFeature,
+            (TenderFeature.entity_id == GraphFeature.entity_id) & (GraphFeature.entity_type == "lot")
+        ).where(
+            TenderFeature.entity_type == "lot"
         )
+        result = await db.execute(query)
         rows = result.all()
 
     if not rows:
@@ -228,9 +272,10 @@ async def run_weak_labeling(version: str = None) -> dict:
     for row in rows:
         entity_ids.append(row.entity_id)
         features = row.features_jsonb or {}
+        g_features = row.graph_features_jsonb or {}
         votes = []
-        for name, lf in ALL_LFS:
-            v = lf(features)
+        for name, lf in ALL_LFS_WRAPPED:
+            v = lf(features, g_features)
             votes.append(v)
         L_list.append(votes)
 
@@ -267,7 +312,9 @@ async def run_weak_labeling(version: str = None) -> dict:
     return {"version": version, "labeled": len(entity_ids)}
 
 
-async def get_weak_proba_for_entity(entity_id: str, version: str = None) -> float | None:
+from typing import Optional
+
+async def get_weak_proba_for_entity(entity_id: str, version: str = None) -> Optional[float]:
     """Return latest weak_proba for entity (optional version filter)."""
     from sqlalchemy import and_
     async with AsyncSessionLocal() as db:

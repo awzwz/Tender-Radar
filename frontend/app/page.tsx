@@ -147,6 +147,7 @@ function DashboardView({
     low: number;
     avg_score: number;
     scored_tenders: number;
+    total_tenders: number;
     main_high: number;
     single_case_alerts: number;
   } | null;
@@ -336,10 +337,10 @@ function DashboardView({
                       <div className="text-xs text-white/60">{money(t.total_sum)}</div>
                       <Badge level={t.risk_level} score={Math.round(t.risk_score)} />
                     </div>
-                </div>
-                <div className="mt-2">
+                  </div>
+                  <div className="mt-2">
                     <ProgressBar value={t.risk_score} />
-                </div>
+                  </div>
                 </div>
               ))
             )}
@@ -495,7 +496,33 @@ const EVIDENCE_LABELS: Record<string, string> = {
   common_emails: "Общие email",
   method: "Метод закупки",
   region: "Регион",
+
+  // ML Anomaly Interpretations
+  PAUSED_TENDER: "Задержка тендера (дней)",
+  CANCELLED_TENDER: "Отмен тендера (дней/счётчик)",
+  LAST_MINUTE_CHANGES: "Изменения в последний момент",
+  CUSTOMER_WINNER_CONCENTRATION: "Концентрация победителя у заказчика (%)",
+  NEW_COMPANY_BIG_CONTRACT: "Капитализация молодой компании (показатель)",
+  SUPPLIER_CONCENTRATION: "Концентрация поставщика (показатель)",
+  CAROUSEL_PATTERN: "Паттерн ротации победителей (индекс)",
+  LOT_SPLITTING: "Дробление лотов (индекс сходства)",
 };
+
+function formatWinnerSequence(sequence: any) {
+  if (!sequence || typeof sequence !== "string") return String(sequence);
+  const items = sequence.split(",").map(s => s.trim());
+  if (items.length === 0) return sequence;
+
+  const uniqueItems = Array.from(new Set(items));
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const itemToLetter: Record<string, string> = {};
+
+  uniqueItems.forEach((item, index) => {
+    itemToLetter[item] = letters[index % letters.length];
+  });
+
+  return items.map(item => itemToLetter[item] || item).join(" → ");
+}
 
 function BinLink({ bin, label, isCustomer = false }: { bin: string; label?: string; isCustomer?: boolean }) {
   const router = useRouter();
@@ -790,10 +817,22 @@ function LotDetailView({
               <span className="text-xs text-white/50">из модели</span>
             </div>
             <div className="space-y-2">
-              {risk.top_reasons.map((r, i) => (
+              {risk.top_reasons.map((r: any, i: number) => (
                 <div key={`${r.code}-${i}`} className="rounded-2xl border border-white/10 bg-slate-950/40 px-3 py-2">
                   <span className="text-xs font-mono text-indigo-300">{r.code}</span>
                   {r.description && <div className="text-xs text-white/70 mt-0.5">{r.description}</div>}
+                  {r.evidence && Object.keys(r.evidence).length > 0 && (
+                    <div className="mt-1.5 space-y-0.5 rounded-xl border border-white/5 bg-slate-900/50 p-2 text-xs text-white/50">
+                      {Object.entries(r.evidence).map(([ek, ev]: [string, any]) => (
+                        <div key={ek} className={`flex justify-between items-center gap-2 ${ek === "winner_sequence" ? "flex-col items-start" : ""}`}>
+                          <span>{EVIDENCE_LABELS[ek] || ek}:</span>
+                          <span className={`${ek === "winner_sequence" ? "text-indigo-400 font-bold mt-1" : "text-white/80"} font-mono text-right truncate`}>
+                            {ek === "winner_sequence" ? formatWinnerSequence(String(ev)) : String(ev)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
               {risk.top_reasons.length === 0 && (

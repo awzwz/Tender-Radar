@@ -236,7 +236,6 @@ async def get_lot_detail(
         except Exception as e:
             logger.warning(f"On-demand scoring failed for lot {lot_id}: {e}")
 
-    # Get all risk flags
     flags_result = await db.execute(
         select(RiskFlag).where(
             RiskFlag.entity_type == "lot",
@@ -244,6 +243,59 @@ async def get_lot_detail(
         )
     )
     flags = flags_result.scalars().all()
+
+    # Build dynamic top reasons for old lots that weren't rescored
+    final_top_reasons = []
+    if risk_score:
+        if isinstance(risk_score.top_reasons_jsonb, list):
+            final_top_reasons = risk_score.top_reasons_jsonb.copy()
+            
+        # Ensure we don't duplicate if already injected by engine.py
+        has_anomaly = any(r.get("code") == "ML_ANOMALY" for r in final_top_reasons)
+        has_weak = any(r.get("code") == "ML_WEAK_SIGNAL" for r in final_top_reasons)
+
+        if not has_anomaly and risk_score.anomaly_score and risk_score.anomaly_score > 50:
+            a_ev = {}
+            if risk_score.anomaly_explanation_jsonb and "top_abnormal_features" in risk_score.anomaly_explanation_jsonb:
+                sorted_a = sorted(risk_score.anomaly_explanation_jsonb["top_abnormal_features"], key=lambda x: abs(x.get("value", 0)), reverse=True)
+                filtered_a = [tf for tf in sorted_a if abs(tf.get("value", 0)) > 0.1]
+                for tf in filtered_a[:3]:
+                    val = float(tf.get("value", 0))
+                    # Rather than showing raw unscaled math output like -194.3 or 350.0,
+                    # we translate it to actionable insights for the ML explanation:
+                    direction = "ниже нормы" if val < 0 else "выше нормы"
+                    a_ev[f"Аномалия: {tf.get('feature')}"] = f"{round(val, 1)} ({direction})"
+            if a_ev:
+                final_top_reasons.insert(0, {
+                    "code": "ML_ANOMALY",
+                    "weight": 100,
+                    "description": f"ML Структурная аномалия (уверенность: {round(risk_score.anomaly_score, 1)}%)",
+                    "evidence": a_ev
+                })
+
+        if not has_weak and risk_score.weak_score and risk_score.weak_score > 50:
+            w_ev = {}
+            if risk_score.weak_explanation_jsonb and "top_features" in risk_score.weak_explanation_jsonb:
+                sorted_w = sorted(risk_score.weak_explanation_jsonb["top_features"], key=lambda x: x.get("importance", 0), reverse=True)
+                filtered_w = [tf for tf in sorted_w if tf.get("importance", 0) > 0.005] # >= 1%
+                for tf in filtered_w[:3]:
+                    imp = round(tf.get("importance", 0) * 100)
+                    w_ev[f"Влияние: {tf.get('feature')}"] = f"{imp}%"
+            if w_ev:
+                final_top_reasons.insert(0, {
+                    "code": "ML_WEAK_SIGNAL",
+                    "weight": 100,
+                    "description": f"ML Графовые паттерны риска (уверенность: {round(risk_score.weak_score, 1)}%)",
+                    "evidence": w_ev
+                })
+
+        # Dynamically calculate score_ml for UI if it's missing
+        dynamic_score_ml = risk_score.score_ml
+        if dynamic_score_ml is None:
+            max_m = max(risk_score.weak_score or 0, risk_score.anomaly_score or 0)
+            if max_m > 0:
+                # Truncate rather than round to prevent 99.9 -> 1.0 (100%)
+                dynamic_score_ml = int(max_m) / 100.0
 
     return {
         "lot": {
@@ -277,10 +329,10 @@ async def get_lot_detail(
         "risk": {
             "score": risk_score.score_final if risk_score else None,
             "score_rules": risk_score.score_rules if risk_score else None,
-            "score_ml": risk_score.score_ml if risk_score else None,
+            "score_ml": dynamic_score_ml if risk_score else None,
             "score_final": risk_score.score_final if risk_score else None,
             "level": risk_score.level if risk_score else "UNKNOWN",
-            "top_reasons": risk_score.top_reasons_jsonb if risk_score else [],
+            "top_reasons": final_top_reasons,
             "computed_at": str(risk_score.computed_at) if risk_score else None,
         },
         "flags": [
