@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import dashboard, lots, tenders, suppliers, customers, notes, auth, admin, explain
+from app.api.v1.endpoints import dashboard, lots, tenders, suppliers, customers, notes, auth, admin, explain, bidcheck
 
 router = APIRouter()
 
 router.include_router(auth.router, prefix="/auth", tags=["Auth"])
+router.include_router(bidcheck.router, prefix="/bidcheck", tags=["BidCheck"])
 router.include_router(dashboard.router, prefix="/dashboard", tags=["Dashboard"])
 router.include_router(lots.router, prefix="/lots", tags=["Lots"])
 router.include_router(explain.router, prefix="/explain", tags=["Explain"])

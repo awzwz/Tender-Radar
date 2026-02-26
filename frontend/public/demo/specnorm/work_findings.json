@@ -1,0 +1,3762 @@
+[
+  {
+    "tenderId": "WORK-100037",
+    "titleRu": "Защитное покрытие внутренних стенок резервуара РВС-20000 ТЭЦ-3 Астана",
+    "region": "Мангистауская область",
+    "amountKZT": 144000000,
+    "publishDate": "2024-01-04",
+    "specDeviationScore": 70,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (489 мкм) превышает норму ГОСТ 9.402 на 63%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 72% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 489,
+      "nonvolatile_min_pct": 72,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100037.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100037.pdf"
+  },
+  {
+    "tenderId": "WORK-100074",
+    "titleRu": "Гидроизоляция фундаментов насосной станции Алматы — Капшагай",
+    "region": "Актюбинская область",
+    "amountKZT": 172000000,
+    "publishDate": "2024-02-05",
+    "specDeviationScore": 43,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 286,
+      "nonvolatile_min_pct": 63,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100074.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100074.pdf"
+  },
+  {
+    "tenderId": "WORK-100111",
+    "titleRu": "Нанесение огнезащитного покрытия на стальные балки линия Экибастуз — Агадырь",
+    "region": "Кызылординская область",
+    "amountKZT": 462000000,
+    "publishDate": "2024-03-08",
+    "specDeviationScore": 71,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 69% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 5 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 281,
+      "nonvolatile_min_pct": 69,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 5
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100111.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100111.pdf"
+  },
+  {
+    "tenderId": "WORK-100148",
+    "titleRu": "Антикоррозионное покрытие трубопроводов на ТОО «КазТрансОйл»",
+    "region": "Западно-Казахстанская область",
+    "amountKZT": 233000000,
+    "publishDate": "2024-04-25",
+    "specDeviationScore": 42,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 314,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100148.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100148.pdf"
+  },
+  {
+    "tenderId": "WORK-100185",
+    "titleRu": "Антикоррозионное покрытие трубопроводов на ТОО «КазТрансОйл»",
+    "region": "Актюбинская область",
+    "amountKZT": 489000000,
+    "publishDate": "2024-05-25",
+    "specDeviationScore": 88,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 80% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.4 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 10 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 297,
+      "nonvolatile_min_pct": 80,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.4,
+      "abrasive_conductivity_max": 10
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100185.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100185.pdf"
+  },
+  {
+    "tenderId": "WORK-100222",
+    "titleRu": "Пескоструйная обработка резервуаров РВС-5000 через р. Иртыш",
+    "region": "Костанайская область",
+    "amountKZT": 314000000,
+    "publishDate": "2024-06-06",
+    "specDeviationScore": 86,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (355 мкм) превышает норму ГОСТ 9.402 на 18%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 80% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 3.9 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 6 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 355,
+      "nonvolatile_min_pct": 80,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 3.9,
+      "abrasive_conductivity_max": 6
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100222.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100222.pdf"
+  },
+  {
+    "tenderId": "WORK-100259",
+    "titleRu": "Антикоррозионная обработка ёмкостного оборудования НПЗ «Шымкент»",
+    "region": "Павлодарская область",
+    "amountKZT": 397000000,
+    "publishDate": "2024-07-19",
+    "specDeviationScore": 81,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 72% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 11 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 318,
+      "nonvolatile_min_pct": 72,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 11
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100259.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100259.pdf"
+  },
+  {
+    "tenderId": "WORK-100296",
+    "titleRu": "Гидроизоляция фундаментов насосной станции магистраль Атырау — Самара",
+    "region": "Западно-Казахстанская область",
+    "amountKZT": 110000000,
+    "publishDate": "2024-08-21",
+    "specDeviationScore": 72,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 3.8 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 8 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 298,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.8,
+      "abrasive_conductivity_max": 8
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100296.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100296.pdf"
+  },
+  {
+    "tenderId": "WORK-100333",
+    "titleRu": "Антикоррозионная защита опор ЛЭП 220 кВ на ГПЗ «Жанажол»",
+    "region": "Мангистауская область",
+    "amountKZT": 326000000,
+    "publishDate": "2024-09-04",
+    "specDeviationScore": 22,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 294,
+      "nonvolatile_min_pct": 56,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100333.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100333.pdf"
+  },
+  {
+    "tenderId": "WORK-100370",
+    "titleRu": "Защитное покрытие внутренних стенок резервуара РВС-20000 ПС «Узень»",
+    "region": "Кызылординская область",
+    "amountKZT": 314000000,
+    "publishDate": "2024-10-28",
+    "specDeviationScore": 84,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (462 мкм) превышает норму ГОСТ 9.402 на 54%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Насыпная плотность абразива ≥ 4.1 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 15 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 462,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.1,
+      "abrasive_conductivity_max": 15
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100370.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100370.pdf"
+  },
+  {
+    "tenderId": "WORK-100407",
+    "titleRu": "Покраска опор и пролётных строений путепровода НПЗ «Шымкент»",
+    "region": "Алматинская область",
+    "amountKZT": 303000000,
+    "publishDate": "2024-11-15",
+    "specDeviationScore": 72,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (455 мкм) превышает норму ГОСТ 9.402 на 52%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 9 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 455,
+      "nonvolatile_min_pct": 57,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 9
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100407.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100407.pdf"
+  },
+  {
+    "tenderId": "WORK-100444",
+    "titleRu": "Абразивоструйная очистка и покрытие ж/д моста г. Актау",
+    "region": "Павлодарская область",
+    "amountKZT": 600000000,
+    "publishDate": "2024-12-11",
+    "specDeviationScore": 62,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 11 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 55,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 11
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100444.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100444.pdf"
+  },
+  {
+    "tenderId": "WORK-100481",
+    "titleRu": "Антикоррозионная защита металлоконструкций моста ПС «Каламкас»",
+    "region": "Алматинская область",
+    "amountKZT": 304000000,
+    "publishDate": "2024-01-23",
+    "specDeviationScore": 72,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (354 мкм) превышает норму ГОСТ 9.402 на 18%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 77% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 354,
+      "nonvolatile_min_pct": 77,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100481.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100481.pdf"
+  },
+  {
+    "tenderId": "WORK-100518",
+    "titleRu": "Обработка и покраска стальных ёмкостей ГСМ МАЭК «Актау»",
+    "region": "Мангистауская область",
+    "amountKZT": 541000000,
+    "publishDate": "2024-02-28",
+    "specDeviationScore": 82,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (464 мкм) превышает норму ГОСТ 9.402 на 55%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Насыпная плотность абразива ≥ 3.9 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 16 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 464,
+      "nonvolatile_min_pct": 62,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 3.9,
+      "abrasive_conductivity_max": 16
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100518.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100518.pdf"
+  },
+  {
+    "tenderId": "WORK-100555",
+    "titleRu": "Покраска опор и пролётных строений путепровода Алматы — Капшагай",
+    "region": "Павлодарская область",
+    "amountKZT": 581000000,
+    "publishDate": "2024-03-07",
+    "specDeviationScore": 78,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 74% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.0 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 7 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 317,
+      "nonvolatile_min_pct": 74,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.0,
+      "abrasive_conductivity_max": 7
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100555.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100555.pdf"
+  },
+  {
+    "tenderId": "WORK-100592",
+    "titleRu": "Защитное покрытие внутренних стенок резервуара РВС-20000 МАЭК «Актау»",
+    "region": "Кызылординская область",
+    "amountKZT": 551000000,
+    "publishDate": "2024-04-08",
+    "specDeviationScore": 85,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.4 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 17 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 285,
+      "nonvolatile_min_pct": 55,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.4,
+      "abrasive_conductivity_max": 17
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100592.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100592.pdf"
+  },
+  {
+    "tenderId": "WORK-100629",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом линия Экибастуз — Агадырь",
+    "region": "Западно-Казахстанская область",
+    "amountKZT": 462000000,
+    "publishDate": "2024-05-17",
+    "specDeviationScore": 89,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (316 мкм) превышает норму ГОСТ 9.402 на 5%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 13 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 316,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 13
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100629.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100629.pdf"
+  },
+  {
+    "tenderId": "WORK-100666",
+    "titleRu": "Защита от коррозии подземных коммуникаций ПС «Узень»",
+    "region": "Астана",
+    "amountKZT": 41000000,
+    "publishDate": "2024-06-12",
+    "specDeviationScore": 85,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (474 мкм) превышает норму ГОСТ 9.402 на 58%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 76% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 3.9 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 11 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 474,
+      "nonvolatile_min_pct": 76,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 3.9,
+      "abrasive_conductivity_max": 11
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100666.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100666.pdf"
+  },
+  {
+    "tenderId": "WORK-100703",
+    "titleRu": "Защитное покрытие внутренних стенок резервуара РВС-20000 база «Доссор»",
+    "region": "Астана",
+    "amountKZT": 191000000,
+    "publishDate": "2024-07-24",
+    "specDeviationScore": 96,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (300 мкм) превышает норму ГОСТ 9.402 на 0%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 79% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 6 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 79,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 6
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100703.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100703.pdf"
+  },
+  {
+    "tenderId": "WORK-100740",
+    "titleRu": "Покраска металлоконструкций эстакады КС «Бейнеу»",
+    "region": "Алматинская область",
+    "amountKZT": 335000000,
+    "publishDate": "2024-08-03",
+    "specDeviationScore": 86,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (455 мкм) превышает норму ГОСТ 9.402 на 52%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 13 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 455,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 13
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100740.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100740.pdf"
+  },
+  {
+    "tenderId": "WORK-100777",
+    "titleRu": "Защита от коррозии подземных коммуникаций НПЗ «Шымкент»",
+    "region": "Мангистауская область",
+    "amountKZT": 573000000,
+    "publishDate": "2024-09-04",
+    "specDeviationScore": 49,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 280,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100777.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100777.pdf"
+  },
+  {
+    "tenderId": "WORK-100814",
+    "titleRu": "Ремонт и покраска резервуарного парка магистраль Атырау — Самара",
+    "region": "Западно-Казахстанская область",
+    "amountKZT": 49000000,
+    "publishDate": "2024-10-05",
+    "specDeviationScore": 23,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 303,
+      "nonvolatile_min_pct": 59,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100814.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100814.pdf"
+  },
+  {
+    "tenderId": "WORK-100851",
+    "titleRu": "Защитное покрытие стальных конструкций газопровода на ТОО «КазТрансОйл»",
+    "region": "Костанайская область",
+    "amountKZT": 89000000,
+    "publishDate": "2024-11-18",
+    "specDeviationScore": 77,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (445 мкм) превышает норму ГОСТ 9.402 на 48%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 445,
+      "nonvolatile_min_pct": 56,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100851.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100851.pdf"
+  },
+  {
+    "tenderId": "WORK-100888",
+    "titleRu": "Абразивоструйная очистка и покрытие ж/д моста КС «Бейнеу»",
+    "region": "Восточно-Казахстанская область",
+    "amountKZT": 100000000,
+    "publishDate": "2024-12-19",
+    "specDeviationScore": 44,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 314,
+      "nonvolatile_min_pct": 57,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100888.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100888.pdf"
+  },
+  {
+    "tenderId": "WORK-100925",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом КС «Бейнеу»",
+    "region": "Актюбинская область",
+    "amountKZT": 516000000,
+    "publishDate": "2024-01-05",
+    "specDeviationScore": 87,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (367 мкм) превышает норму ГОСТ 9.402 на 22%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 76% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.6 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 17 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 367,
+      "nonvolatile_min_pct": 76,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.6,
+      "abrasive_conductivity_max": 17
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100925.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100925.pdf"
+  },
+  {
+    "tenderId": "WORK-100962",
+    "titleRu": "Ремонт и покраска резервуарного парка на ГНПС «Атасу»",
+    "region": "Актюбинская область",
+    "amountKZT": 235000000,
+    "publishDate": "2024-02-13",
+    "specDeviationScore": 91,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (402 мкм) превышает норму ГОСТ 9.402 на 34%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 78% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.6 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 12 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 402,
+      "nonvolatile_min_pct": 78,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.6,
+      "abrasive_conductivity_max": 12
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100962.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100962.pdf"
+  },
+  {
+    "tenderId": "WORK-100999",
+    "titleRu": "Защитное покрытие стальных конструкций газопровода КС «Бейнеу»",
+    "region": "Карагандинская область",
+    "amountKZT": 153000000,
+    "publishDate": "2024-03-26",
+    "specDeviationScore": 62,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 69% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 294,
+      "nonvolatile_min_pct": 69,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-100999.pdf",
+    "normFile": "norm_pdfs/norm_WORK-100999.pdf"
+  },
+  {
+    "tenderId": "WORK-101036",
+    "titleRu": "Защитное покрытие внутренних стенок резервуара РВС-20000 база «Доссор»",
+    "region": "Кызылординская область",
+    "amountKZT": 597000000,
+    "publishDate": "2024-04-24",
+    "specDeviationScore": 89,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (450 мкм) превышает норму ГОСТ 9.402 на 50%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 71% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.4 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 5 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 450,
+      "nonvolatile_min_pct": 71,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.4,
+      "abrasive_conductivity_max": 5
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101036.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101036.pdf"
+  },
+  {
+    "tenderId": "WORK-101073",
+    "titleRu": "Антикоррозионная защита опор ЛЭП 220 кВ ТЭЦ-3 Астана",
+    "region": "Астана",
+    "amountKZT": 264000000,
+    "publishDate": "2024-05-04",
+    "specDeviationScore": 72,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec",
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (308 мкм) превышает норму ГОСТ 9.402 на 3%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 73% при норме 60% — сужение рынка поставщиков"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 308,
+      "nonvolatile_min_pct": 73,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101073.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101073.pdf"
+  },
+  {
+    "tenderId": "WORK-101110",
+    "titleRu": "Покраска опор и пролётных строений путепровода через р. Иртыш",
+    "region": "Восточно-Казахстанская область",
+    "amountKZT": 315000000,
+    "publishDate": "2024-06-11",
+    "specDeviationScore": 41,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 311,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101110.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101110.pdf"
+  },
+  {
+    "tenderId": "WORK-101147",
+    "titleRu": "Защитное покрытие стальных конструкций газопровода линия Экибастуз — Агадырь",
+    "region": "Костанайская область",
+    "amountKZT": 514000000,
+    "publishDate": "2024-07-14",
+    "specDeviationScore": 27,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 310,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101147.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101147.pdf"
+  },
+  {
+    "tenderId": "WORK-101184",
+    "titleRu": "Защитное покрытие внутренних стенок резервуара РВС-20000 Алматы — Капшагай",
+    "region": "Мангистауская область",
+    "amountKZT": 126000000,
+    "publishDate": "2024-08-16",
+    "specDeviationScore": 58,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (468 мкм) превышает норму ГОСТ 9.402 на 56%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 468,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101184.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101184.pdf"
+  },
+  {
+    "tenderId": "WORK-101221",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом МАЭК «Актау»",
+    "region": "Актюбинская область",
+    "amountKZT": 450000000,
+    "publishDate": "2024-09-09",
+    "specDeviationScore": 84,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 78% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 10 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 283,
+      "nonvolatile_min_pct": 78,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 10
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101221.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101221.pdf"
+  },
+  {
+    "tenderId": "WORK-101258",
+    "titleRu": "Обработка и покраска стальных ёмкостей ГСМ магистраль Атырау — Самара",
+    "region": "Мангистауская область",
+    "amountKZT": 141000000,
+    "publishDate": "2024-10-04",
+    "specDeviationScore": 77,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (349 мкм) превышает норму ГОСТ 9.402 на 16%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 71% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 349,
+      "nonvolatile_min_pct": 71,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101258.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101258.pdf"
+  },
+  {
+    "tenderId": "WORK-101295",
+    "titleRu": "Антикоррозионная защита опор ЛЭП 220 кВ на ГПЗ «Жанажол»",
+    "region": "Кызылординская область",
+    "amountKZT": 462000000,
+    "publishDate": "2024-11-28",
+    "specDeviationScore": 87,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (371 мкм) превышает норму ГОСТ 9.402 на 24%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 75% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 18 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 371,
+      "nonvolatile_min_pct": 75,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 18
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101295.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101295.pdf"
+  },
+  {
+    "tenderId": "WORK-101332",
+    "titleRu": "Абразивоструйная очистка и покрытие ж/д моста ТЭЦ-3 Астана",
+    "region": "Павлодарская область",
+    "amountKZT": 593000000,
+    "publishDate": "2024-12-19",
+    "specDeviationScore": 58,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.6 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 18 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 283,
+      "nonvolatile_min_pct": 63,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.6,
+      "abrasive_conductivity_max": 18
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101332.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101332.pdf"
+  },
+  {
+    "tenderId": "WORK-101369",
+    "titleRu": "Абразивоструйная очистка и покрытие ж/д моста на ГНПС «Кенкияк»",
+    "region": "Павлодарская область",
+    "amountKZT": 272000000,
+    "publishDate": "2024-01-07",
+    "specDeviationScore": 75,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.6 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 5 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 306,
+      "nonvolatile_min_pct": 62,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.6,
+      "abrasive_conductivity_max": 5
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101369.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101369.pdf"
+  },
+  {
+    "tenderId": "WORK-101406",
+    "titleRu": "Огнезащита металлических конструкций машинного зала магистраль Атырау — Самара",
+    "region": "Карагандинская область",
+    "amountKZT": 198000000,
+    "publishDate": "2024-02-06",
+    "specDeviationScore": 32,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 280,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101406.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101406.pdf"
+  },
+  {
+    "tenderId": "WORK-101443",
+    "titleRu": "Антикоррозионная обработка ёмкостного оборудования линия Экибастуз — Агадырь",
+    "region": "Павлодарская область",
+    "amountKZT": 495000000,
+    "publishDate": "2024-03-11",
+    "specDeviationScore": 29,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 307,
+      "nonvolatile_min_pct": 63,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101443.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101443.pdf"
+  },
+  {
+    "tenderId": "WORK-101480",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом на ТЭЦ-2 Караганда",
+    "region": "Западно-Казахстанская область",
+    "amountKZT": 188000000,
+    "publishDate": "2024-04-09",
+    "specDeviationScore": 61,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 5 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 298,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 5
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101480.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101480.pdf"
+  },
+  {
+    "tenderId": "WORK-101517",
+    "titleRu": "Гидроизоляция фундаментов насосной станции на ГНПС «Кенкияк»",
+    "region": "Атырауская область",
+    "amountKZT": 81000000,
+    "publishDate": "2024-05-21",
+    "specDeviationScore": 38,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 310,
+      "nonvolatile_min_pct": 63,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101517.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101517.pdf"
+  },
+  {
+    "tenderId": "WORK-101554",
+    "titleRu": "Защита от коррозии подземных коммуникаций линия Экибастуз — Агадырь",
+    "region": "Кызылординская область",
+    "amountKZT": 88000000,
+    "publishDate": "2024-06-24",
+    "specDeviationScore": 86,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.4 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 8 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 285,
+      "nonvolatile_min_pct": 57,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.4,
+      "abrasive_conductivity_max": 8
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101554.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101554.pdf"
+  },
+  {
+    "tenderId": "WORK-101591",
+    "titleRu": "Защитное покрытие внутренних стенок резервуара РВС-20000 ПС «Узень»",
+    "region": "Мангистауская область",
+    "amountKZT": 443000000,
+    "publishDate": "2024-07-20",
+    "specDeviationScore": 73,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (445 мкм) превышает норму ГОСТ 9.402 на 48%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 445,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101591.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101591.pdf"
+  },
+  {
+    "tenderId": "WORK-101628",
+    "titleRu": "Нанесение огнезащитного покрытия на стальные балки на ГНПС «Кенкияк»",
+    "region": "Астана",
+    "amountKZT": 459000000,
+    "publishDate": "2024-08-24",
+    "specDeviationScore": 41,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 317,
+      "nonvolatile_min_pct": 63,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101628.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101628.pdf"
+  },
+  {
+    "tenderId": "WORK-101665",
+    "titleRu": "Антикоррозионное покрытие трубопроводов ТЭЦ-3 Астана",
+    "region": "Атырауская область",
+    "amountKZT": 297000000,
+    "publishDate": "2024-09-13",
+    "specDeviationScore": 76,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (471 мкм) превышает норму ГОСТ 9.402 на 57%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 79% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 471,
+      "nonvolatile_min_pct": 79,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101665.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101665.pdf"
+  },
+  {
+    "tenderId": "WORK-101702",
+    "titleRu": "Защитное покрытие стальных конструкций газопровода ПС «Узень»",
+    "region": "Карагандинская область",
+    "amountKZT": 301000000,
+    "publishDate": "2024-10-14",
+    "specDeviationScore": 32,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 288,
+      "nonvolatile_min_pct": 59,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101702.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101702.pdf"
+  },
+  {
+    "tenderId": "WORK-101739",
+    "titleRu": "Антикоррозионная защита металлоконструкций моста база «Доссор»",
+    "region": "Восточно-Казахстанская область",
+    "amountKZT": 353000000,
+    "publishDate": "2024-11-11",
+    "specDeviationScore": 72,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 75% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 13 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 280,
+      "nonvolatile_min_pct": 75,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 13
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101739.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101739.pdf"
+  },
+  {
+    "tenderId": "WORK-101776",
+    "titleRu": "Нанесение огнезащитного покрытия на стальные балки ПС «Каламкас»",
+    "region": "Мангистауская область",
+    "amountKZT": 301000000,
+    "publishDate": "2024-12-24",
+    "specDeviationScore": 59,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (389 мкм) превышает норму ГОСТ 9.402 на 30%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 389,
+      "nonvolatile_min_pct": 56,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101776.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101776.pdf"
+  },
+  {
+    "tenderId": "WORK-101813",
+    "titleRu": "Пескоструйная обработка резервуаров РВС-5000 на участке КС-7 — КС-8",
+    "region": "Туркестанская область",
+    "amountKZT": 321000000,
+    "publishDate": "2024-01-06",
+    "specDeviationScore": 25,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 308,
+      "nonvolatile_min_pct": 63,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101813.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101813.pdf"
+  },
+  {
+    "tenderId": "WORK-101850",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом линия Экибастуз — Агадырь",
+    "region": "Актюбинская область",
+    "amountKZT": 571000000,
+    "publishDate": "2024-02-21",
+    "specDeviationScore": 82,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (470 мкм) превышает норму ГОСТ 9.402 на 57%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 76% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.6 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 7 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 470,
+      "nonvolatile_min_pct": 76,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.6,
+      "abrasive_conductivity_max": 7
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101850.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101850.pdf"
+  },
+  {
+    "tenderId": "WORK-101887",
+    "titleRu": "Защита от коррозии подземных коммуникаций КС «Бейнеу»",
+    "region": "Астана",
+    "amountKZT": 300000000,
+    "publishDate": "2024-03-16",
+    "specDeviationScore": 58,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 79% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 286,
+      "nonvolatile_min_pct": 79,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101887.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101887.pdf"
+  },
+  {
+    "tenderId": "WORK-101924",
+    "titleRu": "Защита от коррозии подземных коммуникаций Караганда — Жезказган",
+    "region": "Мангистауская область",
+    "amountKZT": 318000000,
+    "publishDate": "2024-04-28",
+    "specDeviationScore": 89,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (353 мкм) превышает норму ГОСТ 9.402 на 18%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 9 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 353,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 9
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101924.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101924.pdf"
+  },
+  {
+    "tenderId": "WORK-101961",
+    "titleRu": "Нанесение антикоррозионного покрытия на нефтепровод ТЭЦ-3 Астана",
+    "region": "Атырауская область",
+    "amountKZT": 82000000,
+    "publishDate": "2024-05-17",
+    "specDeviationScore": 57,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (462 мкм) превышает норму ГОСТ 9.402 на 54%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 462,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101961.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101961.pdf"
+  },
+  {
+    "tenderId": "WORK-101998",
+    "titleRu": "Огнезащита металлических конструкций машинного зала на ГНПС «Кенкияк»",
+    "region": "Карагандинская область",
+    "amountKZT": 33000000,
+    "publishDate": "2024-06-06",
+    "specDeviationScore": 30,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 288,
+      "nonvolatile_min_pct": 59,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-101998.pdf",
+    "normFile": "norm_pdfs/norm_WORK-101998.pdf"
+  },
+  {
+    "tenderId": "WORK-102035",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом ПС «Каламкас»",
+    "region": "Актюбинская область",
+    "amountKZT": 482000000,
+    "publishDate": "2024-07-09",
+    "specDeviationScore": 37,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 307,
+      "nonvolatile_min_pct": 63,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102035.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102035.pdf"
+  },
+  {
+    "tenderId": "WORK-102072",
+    "titleRu": "Ремонт и покраска резервуарного парка на ГНПС «Атасу»",
+    "region": "Актюбинская область",
+    "amountKZT": 144000000,
+    "publishDate": "2024-08-25",
+    "specDeviationScore": 84,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (476 мкм) превышает норму ГОСТ 9.402 на 59%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 70% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 7 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 476,
+      "nonvolatile_min_pct": 70,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 7
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102072.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102072.pdf"
+  },
+  {
+    "tenderId": "WORK-102109",
+    "titleRu": "Антикоррозионная обработка ёмкостного оборудования на ГНПС «Кенкияк»",
+    "region": "Алматинская область",
+    "amountKZT": 470000000,
+    "publishDate": "2024-09-15",
+    "specDeviationScore": 74,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (310 мкм) превышает норму ГОСТ 9.402 на 3%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 72% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 310,
+      "nonvolatile_min_pct": 72,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102109.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102109.pdf"
+  },
+  {
+    "tenderId": "WORK-102146",
+    "titleRu": "Обработка и покраска стальных ёмкостей ГСМ магистраль Атырау — Самара",
+    "region": "Мангистауская область",
+    "amountKZT": 396000000,
+    "publishDate": "2024-10-04",
+    "specDeviationScore": 76,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (474 мкм) превышает норму ГОСТ 9.402 на 58%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 18 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 474,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 18
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102146.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102146.pdf"
+  },
+  {
+    "tenderId": "WORK-102183",
+    "titleRu": "Покраска металлоконструкций эстакады НПЗ «Шымкент»",
+    "region": "Алматинская область",
+    "amountKZT": 446000000,
+    "publishDate": "2024-11-15",
+    "specDeviationScore": 39,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 289,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102183.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102183.pdf"
+  },
+  {
+    "tenderId": "WORK-102220",
+    "titleRu": "Абразивоструйная очистка и покрытие ж/д моста на ТОО «КазТрансОйл»",
+    "region": "Восточно-Казахстанская область",
+    "amountKZT": 211000000,
+    "publishDate": "2024-12-15",
+    "specDeviationScore": 83,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 70% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 18 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 281,
+      "nonvolatile_min_pct": 70,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 18
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102220.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102220.pdf"
+  },
+  {
+    "tenderId": "WORK-102257",
+    "titleRu": "Покраска металлоконструкций эстакады НПЗ «Шымкент»",
+    "region": "Восточно-Казахстанская область",
+    "amountKZT": 284000000,
+    "publishDate": "2024-01-11",
+    "specDeviationScore": 78,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 80% при норме 60% — сужение рынка поставщиков"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 290,
+      "nonvolatile_min_pct": 80,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102257.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102257.pdf"
+  },
+  {
+    "tenderId": "WORK-102294",
+    "titleRu": "Покраска опор и пролётных строений путепровода КС «Бейнеу»",
+    "region": "Павлодарская область",
+    "amountKZT": 69000000,
+    "publishDate": "2024-02-23",
+    "specDeviationScore": 85,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 71% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.1 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 17 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 294,
+      "nonvolatile_min_pct": 71,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.1,
+      "abrasive_conductivity_max": 17
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102294.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102294.pdf"
+  },
+  {
+    "tenderId": "WORK-102331",
+    "titleRu": "Огнезащита металлических конструкций машинного зала г. Актау",
+    "region": "Карагандинская область",
+    "amountKZT": 263000000,
+    "publishDate": "2024-03-18",
+    "specDeviationScore": 89,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (306 мкм) превышает норму ГОСТ 9.402 на 2%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 78% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.1 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 18 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 306,
+      "nonvolatile_min_pct": 78,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.1,
+      "abrasive_conductivity_max": 18
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102331.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102331.pdf"
+  },
+  {
+    "tenderId": "WORK-102368",
+    "titleRu": "Нанесение огнезащитного покрытия на стальные балки НПЗ «Шымкент»",
+    "region": "Астана",
+    "amountKZT": 101000000,
+    "publishDate": "2024-04-16",
+    "specDeviationScore": 78,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 78% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.6 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 6 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 302,
+      "nonvolatile_min_pct": 78,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.6,
+      "abrasive_conductivity_max": 6
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102368.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102368.pdf"
+  },
+  {
+    "tenderId": "WORK-102405",
+    "titleRu": "Нанесение антикоррозионного покрытия на нефтепровод на ГНПС «Кенкияк»",
+    "region": "Атырауская область",
+    "amountKZT": 297000000,
+    "publishDate": "2024-05-01",
+    "specDeviationScore": 87,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (448 мкм) превышает норму ГОСТ 9.402 на 49%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 72% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 10 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 448,
+      "nonvolatile_min_pct": 72,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 10
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102405.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102405.pdf"
+  },
+  {
+    "tenderId": "WORK-102442",
+    "titleRu": "Ремонт и покраска резервуарного парка на ТЭЦ-2 Караганда",
+    "region": "Атырауская область",
+    "amountKZT": 351000000,
+    "publishDate": "2024-06-01",
+    "specDeviationScore": 95,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (455 мкм) превышает норму ГОСТ 9.402 на 52%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 76% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.6 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 8 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 455,
+      "nonvolatile_min_pct": 76,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.6,
+      "abrasive_conductivity_max": 8
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102442.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102442.pdf"
+  },
+  {
+    "tenderId": "WORK-102479",
+    "titleRu": "Покраска опор и пролётных строений путепровода на ТЭЦ-2 Караганда",
+    "region": "Павлодарская область",
+    "amountKZT": 290000000,
+    "publishDate": "2024-07-03",
+    "specDeviationScore": 71,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 68% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 15 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 307,
+      "nonvolatile_min_pct": 68,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 15
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102479.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102479.pdf"
+  },
+  {
+    "tenderId": "WORK-102516",
+    "titleRu": "Обработка и покраска стальных ёмкостей ГСМ НПЗ «Шымкент»",
+    "region": "Астана",
+    "amountKZT": 368000000,
+    "publishDate": "2024-08-20",
+    "specDeviationScore": 39,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 56,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102516.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102516.pdf"
+  },
+  {
+    "tenderId": "WORK-102553",
+    "titleRu": "Защитное покрытие стальных конструкций газопровода база «Доссор»",
+    "region": "Карагандинская область",
+    "amountKZT": 549000000,
+    "publishDate": "2024-09-02",
+    "specDeviationScore": 91,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (470 мкм) превышает норму ГОСТ 9.402 на 57%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 74% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.4 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 13 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 470,
+      "nonvolatile_min_pct": 74,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.4,
+      "abrasive_conductivity_max": 13
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102553.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102553.pdf"
+  },
+  {
+    "tenderId": "WORK-102590",
+    "titleRu": "Защитное покрытие стальных конструкций газопровода на ТЭЦ-2 Караганда",
+    "region": "Карагандинская область",
+    "amountKZT": 160000000,
+    "publishDate": "2024-10-18",
+    "specDeviationScore": 61,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 78% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 306,
+      "nonvolatile_min_pct": 78,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102590.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102590.pdf"
+  },
+  {
+    "tenderId": "WORK-102627",
+    "titleRu": "Антикоррозионная защита опор ЛЭП 220 кВ на НПЗ «Павлодар»",
+    "region": "Кызылординская область",
+    "amountKZT": 338000000,
+    "publishDate": "2024-11-24",
+    "specDeviationScore": 32,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 315,
+      "nonvolatile_min_pct": 55,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102627.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102627.pdf"
+  },
+  {
+    "tenderId": "WORK-102664",
+    "titleRu": "Огнезащита металлических конструкций машинного зала ПС «Каламкас»",
+    "region": "Туркестанская область",
+    "amountKZT": 323000000,
+    "publishDate": "2024-12-22",
+    "specDeviationScore": 76,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 80% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 15 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 307,
+      "nonvolatile_min_pct": 80,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 15
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102664.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102664.pdf"
+  },
+  {
+    "tenderId": "WORK-102701",
+    "titleRu": "Покраска опор и пролётных строений путепровода магистраль Атырау — Самара",
+    "region": "Павлодарская область",
+    "amountKZT": 248000000,
+    "publishDate": "2024-01-03",
+    "specDeviationScore": 71,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.3 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 15 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 310,
+      "nonvolatile_min_pct": 57,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.3,
+      "abrasive_conductivity_max": 15
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102701.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102701.pdf"
+  },
+  {
+    "tenderId": "WORK-102738",
+    "titleRu": "Ремонт и покраска резервуарного парка г. Актау",
+    "region": "Западно-Казахстанская область",
+    "amountKZT": 373000000,
+    "publishDate": "2024-02-09",
+    "specDeviationScore": 84,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (492 мкм) превышает норму ГОСТ 9.402 на 64%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 71% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 7 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 492,
+      "nonvolatile_min_pct": 71,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 7
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102738.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102738.pdf"
+  },
+  {
+    "tenderId": "WORK-102775",
+    "titleRu": "Обработка и покраска стальных ёмкостей ГСМ на ТЭЦ-2 Караганда",
+    "region": "Мангистауская область",
+    "amountKZT": 55000000,
+    "publishDate": "2024-03-24",
+    "specDeviationScore": 83,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (362 мкм) превышает норму ГОСТ 9.402 на 21%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 75% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 15 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 362,
+      "nonvolatile_min_pct": 75,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 15
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102775.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102775.pdf"
+  },
+  {
+    "tenderId": "WORK-102812",
+    "titleRu": "Огнезащита металлических конструкций машинного зала г. Актау",
+    "region": "Карагандинская область",
+    "amountKZT": 229000000,
+    "publishDate": "2024-04-14",
+    "specDeviationScore": 67,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 74% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 311,
+      "nonvolatile_min_pct": 74,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102812.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102812.pdf"
+  },
+  {
+    "tenderId": "WORK-102849",
+    "titleRu": "Нанесение огнезащитного покрытия на стальные балки Караганда — Жезказган",
+    "region": "Кызылординская область",
+    "amountKZT": 35000000,
+    "publishDate": "2024-05-20",
+    "specDeviationScore": 73,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 3.8 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 8 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 307,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.8,
+      "abrasive_conductivity_max": 8
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102849.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102849.pdf"
+  },
+  {
+    "tenderId": "WORK-102886",
+    "titleRu": "Огнезащита металлических конструкций машинного зала г. Актау",
+    "region": "Костанайская область",
+    "amountKZT": 154000000,
+    "publishDate": "2024-06-14",
+    "specDeviationScore": 34,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 288,
+      "nonvolatile_min_pct": 62,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102886.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102886.pdf"
+  },
+  {
+    "tenderId": "WORK-102923",
+    "titleRu": "Защита от коррозии подземных коммуникаций на ГНПС «Атасу»",
+    "region": "Кызылординская область",
+    "amountKZT": 483000000,
+    "publishDate": "2024-07-16",
+    "specDeviationScore": 89,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 74% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 12 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 312,
+      "nonvolatile_min_pct": 74,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 12
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102923.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102923.pdf"
+  },
+  {
+    "tenderId": "WORK-102960",
+    "titleRu": "Огнезащита металлических конструкций машинного зала на ГНПС «Кенкияк»",
+    "region": "Костанайская область",
+    "amountKZT": 490000000,
+    "publishDate": "2024-08-10",
+    "specDeviationScore": 63,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (492 мкм) превышает норму ГОСТ 9.402 на 64%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 492,
+      "nonvolatile_min_pct": 58,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102960.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102960.pdf"
+  },
+  {
+    "tenderId": "WORK-102997",
+    "titleRu": "Нанесение огнезащитного покрытия на стальные балки Алматы — Капшагай",
+    "region": "Кызылординская область",
+    "amountKZT": 274000000,
+    "publishDate": "2024-09-08",
+    "specDeviationScore": 28,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 308,
+      "nonvolatile_min_pct": 56,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-102997.pdf",
+    "normFile": "norm_pdfs/norm_WORK-102997.pdf"
+  },
+  {
+    "tenderId": "WORK-103034",
+    "titleRu": "Антикоррозионная защита технологических трубопроводов г. Актау",
+    "region": "Карагандинская область",
+    "amountKZT": 270000000,
+    "publishDate": "2024-10-22",
+    "specDeviationScore": 28,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 301,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103034.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103034.pdf"
+  },
+  {
+    "tenderId": "WORK-103071",
+    "titleRu": "Пескоструйная обработка резервуаров РВС-5000 ТЭЦ-3 Астана",
+    "region": "Костанайская область",
+    "amountKZT": 171000000,
+    "publishDate": "2024-11-10",
+    "specDeviationScore": 24,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 294,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103071.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103071.pdf"
+  },
+  {
+    "tenderId": "WORK-103108",
+    "titleRu": "Покраска металлоконструкций эстакады Караганда — Жезказган",
+    "region": "Павлодарская область",
+    "amountKZT": 249000000,
+    "publishDate": "2024-12-07",
+    "specDeviationScore": 72,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 8 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 306,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 8
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103108.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103108.pdf"
+  },
+  {
+    "tenderId": "WORK-103145",
+    "titleRu": "Огнезащита металлических конструкций машинного зала база «Доссор»",
+    "region": "Костанайская область",
+    "amountKZT": 460000000,
+    "publishDate": "2024-01-22",
+    "specDeviationScore": 94,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (497 мкм) превышает норму ГОСТ 9.402 на 66%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 77% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 10 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 497,
+      "nonvolatile_min_pct": 77,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 10
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103145.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103145.pdf"
+  },
+  {
+    "tenderId": "WORK-103182",
+    "titleRu": "Антикоррозионное покрытие трубопроводов на ГПЗ «Жанажол»",
+    "region": "Атырауская область",
+    "amountKZT": 335000000,
+    "publishDate": "2024-02-13",
+    "specDeviationScore": 44,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 304,
+      "nonvolatile_min_pct": 61,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103182.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103182.pdf"
+  },
+  {
+    "tenderId": "WORK-103219",
+    "titleRu": "Нанесение огнезащитного покрытия на стальные балки ПС «Узень»",
+    "region": "Мангистауская область",
+    "amountKZT": 529000000,
+    "publishDate": "2024-03-16",
+    "specDeviationScore": 77,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (369 мкм) превышает норму ГОСТ 9.402 на 23%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 74% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 369,
+      "nonvolatile_min_pct": 74,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103219.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103219.pdf"
+  },
+  {
+    "tenderId": "WORK-103256",
+    "titleRu": "Ремонт и покраска резервуарного парка на ГНПС «Атасу»",
+    "region": "Атырауская область",
+    "amountKZT": 428000000,
+    "publishDate": "2024-04-13",
+    "specDeviationScore": 30,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 305,
+      "nonvolatile_min_pct": 57,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103256.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103256.pdf"
+  },
+  {
+    "tenderId": "WORK-103293",
+    "titleRu": "Антикоррозионная обработка ёмкостного оборудования на ГПЗ «Жанажол»",
+    "region": "Павлодарская область",
+    "amountKZT": 160000000,
+    "publishDate": "2024-05-19",
+    "specDeviationScore": 39,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 314,
+      "nonvolatile_min_pct": 55,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103293.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103293.pdf"
+  },
+  {
+    "tenderId": "WORK-103330",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом ПС «Каламкас»",
+    "region": "Актюбинская область",
+    "amountKZT": 57000000,
+    "publishDate": "2024-06-25",
+    "specDeviationScore": 22,
+    "isFlagged": false,
+    "activeFlags": [],
+    "summary": [
+      "Параметры спецификации соответствуют нормативам",
+      "Отклонений не выявлено"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 307,
+      "nonvolatile_min_pct": 57,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103330.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103330.pdf"
+  },
+  {
+    "tenderId": "WORK-103367",
+    "titleRu": "Антикоррозионная обработка ёмкостного оборудования база «Доссор»",
+    "region": "Павлодарская область",
+    "amountKZT": 216000000,
+    "publishDate": "2024-07-23",
+    "specDeviationScore": 83,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (366 мкм) превышает норму ГОСТ 9.402 на 22%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 74% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 5 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 10 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 366,
+      "nonvolatile_min_pct": 74,
+      "pot_life_hours_min": 5,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 10
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103367.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103367.pdf"
+  },
+  {
+    "tenderId": "WORK-103404",
+    "titleRu": "Защита от коррозии подземных коммуникаций НПЗ «Шымкент»",
+    "region": "Астана",
+    "amountKZT": 418000000,
+    "publishDate": "2024-08-16",
+    "specDeviationScore": 63,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 72% при норме 60% — сужение рынка поставщиков"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 306,
+      "nonvolatile_min_pct": 72,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103404.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103404.pdf"
+  },
+  {
+    "tenderId": "WORK-103441",
+    "titleRu": "Покрытие внутренней поверхности трубопровода эпоксидом ПС «Узень»",
+    "region": "Западно-Казахстанская область",
+    "amountKZT": 49000000,
+    "publishDate": "2024-09-25",
+    "specDeviationScore": 83,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (389 мкм) превышает норму ГОСТ 9.402 на 30%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 71% при норме 60% — сужение рынка поставщиков",
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 8 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 389,
+      "nonvolatile_min_pct": 71,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 8
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103441.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103441.pdf"
+  },
+  {
+    "tenderId": "WORK-103478",
+    "titleRu": "Антикоррозионная защита опор ЛЭП 220 кВ на ТОО «КазТрансОйл»",
+    "region": "Мангистауская область",
+    "amountKZT": 234000000,
+    "publishDate": "2024-10-12",
+    "specDeviationScore": 82,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (459 мкм) превышает норму ГОСТ 9.402 на 53%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 70% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 6 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 459,
+      "nonvolatile_min_pct": 70,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 7,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 6
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103478.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103478.pdf"
+  },
+  {
+    "tenderId": "WORK-103515",
+    "titleRu": "Огнезащита металлических конструкций машинного зала на ТОО «КазТрансОйл»",
+    "region": "Туркестанская область",
+    "amountKZT": 253000000,
+    "publishDate": "2024-11-22",
+    "specDeviationScore": 69,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.5 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 7 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 296,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.5,
+      "abrasive_conductivity_max": 7
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103515.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103515.pdf"
+  },
+  {
+    "tenderId": "WORK-103552",
+    "titleRu": "Абразивоструйная очистка и покрытие ж/д моста МАЭК «Актау»",
+    "region": "Павлодарская область",
+    "amountKZT": 348000000,
+    "publishDate": "2024-12-27",
+    "specDeviationScore": 58,
+    "isFlagged": true,
+    "activeFlags": [
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Насыпная плотность абразива ≥ 4.2 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 16 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 317,
+      "nonvolatile_min_pct": 55,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 5,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 4.2,
+      "abrasive_conductivity_max": 16
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103552.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103552.pdf"
+  },
+  {
+    "tenderId": "WORK-103589",
+    "titleRu": "Обработка и покраска стальных ёмкостей ГСМ на ГНПС «Кенкияк»",
+    "region": "Астана",
+    "amountKZT": 233000000,
+    "publishDate": "2024-01-12",
+    "specDeviationScore": 57,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec"
+    ],
+    "summary": [
+      "Минимум нелетучих веществ 79% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 4 ч существенно выше нормы (2 ч)"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 317,
+      "nonvolatile_min_pct": 79,
+      "pot_life_hours_min": 4,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103589.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103589.pdf"
+  },
+  {
+    "tenderId": "WORK-103626",
+    "titleRu": "Антикоррозионная защита металлоконструкций моста на ТЭЦ-2 Караганда",
+    "region": "Восточно-Казахстанская область",
+    "amountKZT": 338000000,
+    "publishDate": "2024-02-15",
+    "specDeviationScore": 89,
+    "isFlagged": true,
+    "activeFlags": [
+      "MaterialOverSpec",
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (330 мкм) превышает норму ГОСТ 9.402 на 10%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 80% при норме 60% — сужение рынка поставщиков"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 330,
+      "nonvolatile_min_pct": 80,
+      "pot_life_hours_min": 3,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103626.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103626.pdf"
+  },
+  {
+    "tenderId": "WORK-103663",
+    "titleRu": "Покраска опор и пролётных строений путепровода на ГПЗ «Жанажол»",
+    "region": "Алматинская область",
+    "amountKZT": 575000000,
+    "publishDate": "2024-03-11",
+    "specDeviationScore": 68,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation"
+    ],
+    "summary": [
+      "Толщина покрытия (469 мкм) превышает норму ГОСТ 9.402 на 56%",
+      "Требуемое количество слоёв (3) выше нормативного (2)",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)"
+    ],
+    "extracted": {
+      "layers": 3,
+      "thickness_um": 469,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103663.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103663.pdf"
+  },
+  {
+    "tenderId": "WORK-103700",
+    "titleRu": "Покраска опор и пролётных строений путепровода Караганда — Жезказган",
+    "region": "Павлодарская область",
+    "amountKZT": 42000000,
+    "publishDate": "2024-04-19",
+    "specDeviationScore": 95,
+    "isFlagged": true,
+    "activeFlags": [
+      "CoatingBuildInflation",
+      "MaterialOverSpec",
+      "AbrasiveOverSpec"
+    ],
+    "summary": [
+      "Толщина покрытия (425 мкм) превышает норму ГОСТ 9.402 на 42%",
+      "Требование к адгезии (1 балл) строже нормы (2 балла)",
+      "Минимум нелетучих веществ 69% при норме 60% — сужение рынка поставщиков",
+      "Жизнеспособность ≥ 6 ч существенно выше нормы (2 ч)",
+      "Насыпная плотность абразива ≥ 4.4 г/см³ при норме ≥ 3.5",
+      "Электропроводность абразива ≤ 18 мСм/м (норма ≤ 25) — чрезмерное ограничение"
+    ],
+    "extracted": {
+      "layers": 2,
+      "thickness_um": 425,
+      "nonvolatile_min_pct": 69,
+      "pot_life_hours_min": 6,
+      "dry_degree3_hours_max": 6,
+      "adhesion_points_max": 1,
+      "abrasive_bulk_density_min": 4.4,
+      "abrasive_conductivity_max": 18
+    },
+    "norm": {
+      "layers": 2,
+      "thickness_um": 300,
+      "nonvolatile_min_pct": 60,
+      "pot_life_hours_min": 2,
+      "dry_degree3_hours_max": 8,
+      "adhesion_points_max": 2,
+      "abrasive_bulk_density_min": 3.5,
+      "abrasive_conductivity_max": 25
+    },
+    "techspecFile": "techspec_pdfs/techspec_WORK-103700.pdf",
+    "normFile": "norm_pdfs/norm_WORK-103700.pdf"
+  }
+]

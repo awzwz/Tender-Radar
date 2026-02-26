@@ -23,6 +23,8 @@ out/
 
 # Docker
 *.log
+celerybeat-schedule
+celerybeat.pid
 
 # IDE
 .vscode/

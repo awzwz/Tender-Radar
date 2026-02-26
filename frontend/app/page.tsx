@@ -1485,6 +1485,40 @@ export default function AIProcurePage() {
               <NavBtn active={nav === "cases"} onClick={() => setNav("cases")} icon={<Briefcase className="h-4 w-4" />} title="Cases" hint="Рабочее место" />
             </div>
 
+            <div className="my-2 h-px w-full bg-white/10" />
+
+            <a
+              href="/specnorm"
+              className="w-full rounded-2xl border border-indigo-500/20 bg-indigo-500/5 px-3 py-2.5 text-left transition hover:bg-indigo-500/10 flex items-center justify-between gap-2"
+            >
+              <div className="flex items-center gap-2">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-white/80">
+                  <FileText className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-white">Tender Analysis</div>
+                  <div className="text-xs text-white/60">Spec vs Norm + Document Check · LLM</div>
+                </div>
+              </div>
+              <ChevronRight className="h-4 w-4 text-white/40" />
+            </a>
+
+            <a
+              href="/bidcheck"
+              className="w-full rounded-2xl border border-emerald-500/20 bg-emerald-500/5 px-3 py-2.5 text-left transition hover:bg-emerald-500/10 flex items-center justify-between gap-2"
+            >
+              <div className="flex items-center gap-2">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-white/80">
+                  <FileText className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-white">BidCheck</div>
+                  <div className="text-xs text-white/60">Parse PDF · Generate Suppliers</div>
+                </div>
+              </div>
+              <ChevronRight className="h-4 w-4 text-white/40" />
+            </a>
+
             <DividerSpacer />
 
             {/* Filters */}
