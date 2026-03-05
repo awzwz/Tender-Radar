@@ -31,15 +31,28 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
 
 export const api = {
     login: (username: string, password: string) => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
         return fetch(`${API_BASE}/auth/login/json`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),
-        }).then(async (r) => {
-            const data = await r.json();
-            if (!r.ok) throw new Error(Array.isArray(data.detail) ? data.detail[0]?.msg : data.detail || "Ошибка входа");
-            return data;
-        });
+            signal: controller.signal,
+        })
+            .then(async (r) => {
+                clearTimeout(timeout);
+                const data = await r.json().catch(() => ({}));
+                if (!r.ok) {
+                    const msg = Array.isArray(data.detail) ? data.detail[0]?.msg : data.detail;
+                    throw new Error(typeof msg === "string" ? msg : "Неверный логин или пароль");
+                }
+                return data;
+            })
+            .catch((e) => {
+                clearTimeout(timeout);
+                if (e.name === "AbortError") throw new Error("Сервер не отвечает. Запущен ли backend на порту 8000?");
+                throw e;
+            });
     },
 
     me: () => apiFetch<{ id: number; username: string; role: string }>("/auth/me"),

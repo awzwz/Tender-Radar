@@ -273,16 +273,24 @@ async def parse_and_generate_full(content: bytes, filename: str) -> Optional[dic
     try:
         from openai import AsyncOpenAI
         client = AsyncOpenAI(api_key=settings.openai_api_key)
-        instructions = (
-            "Ты — аудитор госзакупок. Работаешь строго по содержимому PDF.\n\n"
-            "Задача (верни ТОЛЬКО валидный JSON, без markdown):\n"
-            "A) requirements: Извлеки ВСЕ роли из раздела 'Трудовые ресурсы/Еңбек ресурстары'. "
-            "Для каждой: role, count, required_documents (если указаны в PDF), notes, evidence (1-2 фрагмента).\n"
-            "B) suppliers: Сгенерируй 2 поставщика: 1) profile=FULL — полностью закрывает требования; "
-            "2) profile=MINOR_MISSING — не хватает ровно одного элемента. "
-            "documents_text — текстовый список документов (удостоверения, дипломы, аттестаты, ФИО и т.д.).\n"
-            "C) summaries: Для каждого поставщика checks по каждой роли (status: OK/FAIL/UNKNOWN), verdict (PASS только если все OK), issues только при FAIL.\n"
-        )
+        instructions = """Ты — аудитор госзакупок. Работаешь строго по содержимому PDF. Тщательно проанализируй оба документа и сверь, все ли совпадает по требованиям, учитывая каждую информацию, будто ты реальный человек и проверяешь на корректность, и в конце полностью распиши, что совпало а что нет: где не совпало — FAIL, где совпало — PASS.
+
+Верни ТОЛЬКО валидный JSON (без markdown) строго в структуре:
+{
+  "requirements": { "labor_roles": [], "global_notes": [] },
+  "suppliers": [{ "supplier_name": "Поставщик", "profile": "FULL"|"MINOR_MISSING", "documents_text": "" }],
+  "summaries": [{
+    "supplier_name": "Поставщик",
+    "verdict": "PASS"|"FAIL",
+    "checks": [{"role": "", "required": "/N", "status": "OK"|"FAIL", "evidence": []}],
+    "issues": [{"category": "required_documents", "finding": "", "evidence": []}]
+  }]
+}
+
+Правила:
+- В конце обязательно дай полный summary: что совпало и что не совпало. Любое несоответствие = FAIL и заполни issues.
+- Не выдумывай факты — только то, что есть в тексте PDF.
+"""
         prompt = f"{instructions}\n\nТекст из PDF:\n---\n{text[:14000]}\n---\n\nJSON:"
         resp = await client.chat.completions.create(
             model=settings.openai_model,
@@ -332,7 +340,9 @@ async def parse_and_analyze_compliance(
     try:
         from openai import AsyncOpenAI
         client = AsyncOpenAI(api_key=settings.openai_api_key)
-        instructions = """Ты — аудитор госзакупок. Сравниваешь требования ТЗ с документами поставщика.
+        instructions = """Ты — аудитор госзакупок. Работаешь строго по содержимому PDF. Тщательно проанализируй оба документа и сверь, все ли совпадает по требованиям, учитывая каждую информацию, будто ты реальный человек и проверяешь на корректность, и в конце полностью распиши, что совпало а что нет: где не совпало — FAIL, где совпало — PASS.
+
+Критично: верни ОБЯЗАТЕЛЬНО полный summary и при ЛЮБОМ несоответствии — verdict MUST be "FAIL" и массив issues MUST быть заполнен.
 
 Верни ТОЛЬКО валидный JSON (без markdown). Строго соблюдай структуру:
 
@@ -346,26 +356,27 @@ async def parse_and_analyze_compliance(
   "suppliers": [
     {
       "supplier_name": "название из документа или Поставщик",
-      "profile": "FULL" или "MINOR_MISSING" — FULL если все требования выполнены, иначе MINOR_MISSING,
-      "documents_text": "подробное описание: роли, ФИО, номера документов, что предоставлено (как в демо)"
+      "profile": "FULL" только если ВСЕ требования выполнены на 100%, иначе "MINOR_MISSING",
+      "documents_text": "подробное описание: роли, ФИО, номера документов, что предоставлено"
     }
   ],
   "summaries": [
     {
-      "supplier_name": "то же что в suppliers",
+      "supplier_name": "то же что в suppliers[0]",
       "verdict": "PASS" или "FAIL",
-      "checks": [{"role": "роль", "required": "/N", "status": "OK"|"FAIL", "evidence": []}],
-      "issues": [{"category": "required_documents", "finding": "описание проблемы", "evidence": []}]
+      "checks": [{"role": "роль", "required": "/N", "status": "OK" или "FAIL", "evidence": ["..."]}],
+      "issues": [{"category": "required_documents", "finding": "конкретное описание: что отсутствует или не соответствует", "evidence": []}]
     }
   ]
 }
 
-Требования:
-- labor_roles: извлеки ВСЕ роли из раздела Трудовые ресурсы/Еңбек ресурстары в ТЗ.
-- required_documents: массив строк (удостоверения, аттестаты и т.д.) для каждой роли.
-- documents_text: структурируй по ролям с ФИО и номерами документов (как в примере демо).
-- checks: по ОДНОЙ записи на КАЖДУЮ роль из labor_roles, status OK/FAIL.
-- issues: заполняй ТОЛЬКО при FAIL, category обычно "required_documents"."""
+Правила (соблюдай неукоснительно):
+1) labor_roles: извлеки ВСЕ роли из раздела Трудовые ресурсы/Еңбек ресурстары в ТЗ. required_documents — массив строк (удостоверения, аттестаты, реестр ИТР и т.д.) для каждой роли.
+2) suppliers: один объект (поставщик из второго документа). documents_text — структурированно по ролям с ФИО и документами.
+3) summaries: ОБЯЗАТЕЛЬНО один элемент. checks: РОВНО по одной записи на КАЖДУЮ роль из labor_roles. Для каждой роли сверь: количество человек, наличие ВСЕХ required_documents в документе поставщика.
+4) verdict: "PASS" ТОЛЬКО если для КАЖДОЙ роли выполнено: нужное количество человек И все указанные в ТЗ документы присутствуют/подтверждены в документе поставщика. Иначе verdict = "FAIL".
+5) issues: при verdict "FAIL" ОБЯЗАТЕЛЬНО заполни массив issues. Каждый элемент: category (например "required_documents"), finding — конкретная формулировка (по какой роли, чего не хватает или что не соответствует). Без общих фраз.
+6) Будь строгим: если документа нет, количество не совпадает, или формулировка не подтверждает соответствие — ставить status "FAIL" в checks и добавлять запись в issues."""
         prompt = (
             f"{instructions}\n\n"
             f"--- Текст ТЗ ({ts_filename}) ---\n{ts_text[:12000]}\n\n"
@@ -421,10 +432,10 @@ async def parse_and_analyze_compliance(
             sn = suppliers[0].get("supplier_name", "Поставщик")
             summaries = [{
                 "supplier_name": sn,
-                "verdict": "PASS",
-                "checks": [{"role": r.get("role", "?"), "required": f"/{r.get('count', '?')}", "status": "OK", "evidence": []}
+                "verdict": "FAIL",
+                "checks": [{"role": r.get("role", "?"), "required": f"/{r.get('count', '?')}", "status": "FAIL", "evidence": []}
                            for r in labor_roles],
-                "issues": []
+                "issues": [{"category": "required_documents", "finding": "Анализ не получен от модели — проверка невозможна.", "evidence": []}]
             }]
         data["summaries"] = summaries
 

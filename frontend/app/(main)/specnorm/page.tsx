@@ -78,7 +78,7 @@ export default function SpecNormDashboard() {
   if (loading) {
     return (
       <SpecNormShell title="Tender Analysis" subtitle="Загрузка данных...">
-        <div className="flex items-center justify-center py-24 text-white/40">
+        <div className="flex items-center justify-center py-24 text-[var(--text-muted)]">
           <RefreshCw className="h-6 w-6 animate-spin mr-2" /> Загрузка...
         </div>
       </SpecNormShell>
@@ -91,17 +91,17 @@ export default function SpecNormDashboard() {
         {/* Section Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-              <LayoutDashboard className="h-4 w-4 text-indigo-200" />
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-sm shadow-[var(--border-hover)]">
+              <LayoutDashboard className="h-4 w-4 text-indigo-500 dark:text-indigo-200" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-white">Dashboard</div>
-              <div className="text-xs text-white/50">Аналитика завершённых тендеров: Spec vs Norm + Document Check</div>
+              <div className="text-sm font-semibold text-[var(--text-main)]">Dashboard</div>
+              <div className="text-xs text-[var(--text-muted)]">Аналитика завершённых тендеров: Spec vs Norm + Document Check</div>
             </div>
           </div>
           <a
             href="/specnorm/lots"
-            className="flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-200 hover:bg-indigo-500/20 transition"
+            className="flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-700 dark:text-indigo-200 hover:bg-indigo-500/20 transition"
           >
             <List className="h-3.5 w-3.5" /> Все тендеры
           </a>
@@ -109,7 +109,7 @@ export default function SpecNormDashboard() {
 
         {/* KPI Cards — Two rows */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-xs text-white/50">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
             <Scale className="h-3.5 w-3.5" /> Проверка Заказчика (Spec vs Norm)
           </div>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -121,7 +121,7 @@ export default function SpecNormDashboard() {
         </div>
 
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-xs text-white/50">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
             <FileSearch className="h-3.5 w-3.5" /> Проверка Поставщика (Document Check)
           </div>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -163,13 +163,13 @@ export default function SpecNormDashboard() {
         </div>
 
         {/* Top Risky Tenders */}
-        <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <ShieldAlert className="h-4 w-4 text-rose-300" />
-              <span className="text-sm font-semibold text-white">Топ подозрительных тендеров</span>
+              <ShieldAlert className="h-4 w-4 text-rose-500 dark:text-rose-300" />
+              <span className="text-sm font-semibold text-[var(--text-main)]">Топ подозрительных тендеров</span>
             </div>
-            <span className="text-xs text-white/40">по совокупному риску</span>
+            <span className="text-xs text-[var(--text-muted)]">по совокупному риску</span>
           </div>
 
           <div className="space-y-2">
@@ -177,16 +177,16 @@ export default function SpecNormDashboard() {
               <button
                 key={item.tenderId}
                 onClick={() => router.push(`/specnorm/lots/${item.tenderId}`)}
-                className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-left hover:bg-white/10 transition"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-left hover:bg-[var(--surface-hover)] transition shadow-sm"
               >
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <CategoryBadge category={item.category} />
-                      <span className="text-xs text-white/50 font-mono">{item.tenderId}</span>
+                      <span className="text-xs text-[var(--text-muted)] font-mono">{item.tenderId}</span>
                     </div>
-                    <div className="mt-1 text-sm font-semibold text-white truncate">{item.titleRu}</div>
-                    <div className="mt-1 text-xs text-white/60 truncate">
+                    <div className="mt-1 text-sm font-semibold text-[var(--text-main)] truncate">{item.titleRu}</div>
+                    <div className="mt-1 text-xs text-[var(--text-muted)] truncate">
                       {item.region} · {money(item.amountKZT)}
                     </div>
                     <div className="mt-1.5 flex flex-wrap gap-1">

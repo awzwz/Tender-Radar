@@ -11,9 +11,9 @@ import { FLAG_LABELS, DOC_VIOLATION_LABELS, CATEGORY_LABELS, getRiskTier, getDoc
 /* ── Risk Badge ────────────────────────────────────────────────────────────── */
 
 const TIER_STYLE: Record<RiskTier, string> = {
-  HIGH: "border-rose-500/30 bg-rose-500/15 text-rose-300",
-  MEDIUM: "border-amber-500/30 bg-amber-500/15 text-amber-300",
-  LOW: "border-emerald-500/30 bg-emerald-500/15 text-emerald-300",
+  HIGH: "border-rose-500/30 bg-rose-500/15 text-rose-700 dark:text-rose-300",
+  MEDIUM: "border-amber-500/30 bg-amber-500/15 text-amber-700 dark:text-amber-300",
+  LOW: "border-emerald-500/30 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
 };
 
 export function RiskBadge({ score, size = "sm", label }: { score: number; size?: "sm" | "lg"; label?: string }) {
@@ -50,14 +50,14 @@ export function DocBadge({ score, size = "sm" }: { score: number; size?: "sm" | 
 /* ── Category Badge ────────────────────────────────────────────────────────── */
 
 const CAT_STYLES: Record<TenderCategory, string> = {
-  works: "border-amber-500/25 bg-amber-500/10 text-amber-200",
-  services: "border-indigo-500/25 bg-indigo-500/10 text-indigo-200",
-  goods: "border-emerald-500/25 bg-emerald-500/10 text-emerald-200",
+  works: "border-amber-500/25 bg-amber-500/15 text-amber-700 dark:text-amber-200",
+  services: "border-indigo-500/25 bg-indigo-500/15 text-indigo-700 dark:text-indigo-200",
+  goods: "border-emerald-500/25 bg-emerald-500/15 text-emerald-700 dark:text-emerald-200",
 };
 
 export function CategoryBadge({ category }: { category: TenderCategory }) {
   return (
-    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${CAT_STYLES[category] ?? "border-white/10 bg-white/5 text-white/70"}`}>
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${CAT_STYLES[category] ?? "border-[var(--border)] bg-[var(--surface-hover)] text-[var(--text-muted)]"}`}>
       {CATEGORY_LABELS[category] ?? category}
     </span>
   );
@@ -67,7 +67,7 @@ export function CategoryBadge({ category }: { category: TenderCategory }) {
 
 export function FlagChip({ code }: { code: string }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-rose-500/25 bg-rose-500/10 px-2.5 py-0.5 text-[11px] font-medium text-rose-200">
+    <span className="inline-flex items-center gap-1 rounded-full border border-rose-500/25 bg-rose-500/10 px-2.5 py-0.5 text-[11px] font-medium text-rose-700 dark:text-rose-200">
       <AlertTriangle className="h-3 w-3" />
       {FLAG_LABELS[code] ?? code}
     </span>
@@ -86,9 +86,9 @@ const VIOLATION_ICONS: Record<string, React.ReactNode> = {
 };
 
 const SEVERITY_CHIP: Record<Severity, string> = {
-  HIGH: "border-rose-500/30 bg-rose-500/10 text-rose-200",
-  MEDIUM: "border-amber-500/30 bg-amber-500/10 text-amber-200",
-  LOW: "border-yellow-500/30 bg-yellow-500/10 text-yellow-200",
+  HIGH: "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-200",
+  MEDIUM: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-200",
+  LOW: "border-yellow-500/30 bg-yellow-500/10 text-yellow-700 dark:text-yellow-200",
 };
 
 export function ViolationChip({ type, severity }: { type: DocViolationType; severity: Severity }) {
@@ -112,13 +112,13 @@ export function StatCard({
     danger: "border-rose-500/20 bg-rose-500/10",
     warn: "border-amber-500/20 bg-amber-500/10",
     ok: "border-emerald-500/20 bg-emerald-500/10",
-    neutral: "border-white/10 bg-white/5",
+    neutral: "border-[var(--border)] bg-[var(--surface-hover)]",
   };
   return (
-    <div className={`rounded-2xl border p-4 ${styles[tone]}`}>
-      <div className="text-xs text-white/60">{label}</div>
-      <div className="mt-1 text-2xl font-bold text-white">{value}</div>
-      {sub && <div className="mt-1 text-[11px] text-white/50">{sub}</div>}
+    <div className={`rounded-2xl border p-4 shadow-sm shadow-[var(--border-hover)] ${styles[tone]}`}>
+      <div className="text-xs text-[var(--text-muted)]">{label}</div>
+      <div className="mt-1 text-2xl font-bold text-[var(--text-main)]">{value}</div>
+      {sub && <div className="mt-1 text-[11px] text-[var(--text-muted)]">{sub}</div>}
     </div>
   );
 }
@@ -127,8 +127,8 @@ export function StatCard({
 
 export function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-      <div className="mb-3 text-sm font-semibold text-white">{title}</div>
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
+      <div className="mb-3 text-sm font-semibold text-[var(--text-main)]">{title}</div>
       {children}
     </div>
   );
@@ -142,11 +142,11 @@ export function MiniBar({ items }: { items: { label: string; value: number; colo
     <div className="space-y-2">
       {items.map((it) => (
         <div key={it.label}>
-          <div className="flex items-center justify-between text-xs text-white/70 mb-1">
+          <div className="flex items-center justify-between text-xs text-[var(--text-muted)] mb-1">
             <span>{it.label}</span>
             <span className="font-mono">{it.value}</span>
           </div>
-          <div className="h-2 w-full rounded-full bg-white/5 overflow-hidden">
+          <div className="h-2 w-full rounded-full bg-[var(--surface-hover)] overflow-hidden">
             <div
               className={`h-full rounded-full ${it.color} transition-all duration-500`}
               style={{ width: `${(it.value / max) * 100}%` }}
@@ -187,7 +187,7 @@ export function DonutChart({
       />
       <div className="space-y-1.5">
         {segments.map((seg) => (
-          <div key={seg.label} className="flex items-center gap-2 text-xs text-white/70">
+          <div key={seg.label} className="flex items-center gap-2 text-xs font-medium" style={{ color: seg.color }}>
             <div className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: seg.color }} />
             {seg.label} ({seg.value})
           </div>
@@ -203,7 +203,7 @@ export function SeverityBar({ value, max = 100 }: { value: number; max?: number 
   const pct = Math.min(100, (value / max) * 100);
   const color = pct >= 75 ? "bg-rose-500" : pct >= 55 ? "bg-amber-500" : "bg-emerald-500";
   return (
-    <div className="h-2 w-full rounded-full bg-white/10 overflow-hidden">
+    <div className="h-2 w-full rounded-full bg-[var(--surface-hover)] overflow-hidden">
       <div className={`h-full ${color} transition-all duration-500 rounded-full`} style={{ width: `${pct}%` }} />
     </div>
   );
@@ -215,7 +215,7 @@ export function ComplianceBar({ value }: { value: number }) {
   const pct = Math.min(100, Math.max(0, value));
   const color = pct >= 70 ? "bg-emerald-500" : pct >= 40 ? "bg-amber-500" : "bg-rose-500";
   return (
-    <div className="h-2 w-full rounded-full bg-white/10 overflow-hidden">
+    <div className="h-2 w-full rounded-full bg-[var(--surface-hover)] overflow-hidden">
       <div className={`h-full ${color} transition-all duration-500 rounded-full`} style={{ width: `${pct}%` }} />
     </div>
   );
@@ -232,7 +232,7 @@ export function BreakdownBar({
   const t = Math.max(total, 1);
   return (
     <div className="space-y-2">
-      <div className="flex h-6 w-full overflow-hidden rounded-full bg-white/5">
+      <div className="flex h-6 w-full overflow-hidden rounded-full bg-[var(--surface-hover)]">
         {items.map((it) => (
           <div
             key={it.label}
@@ -244,7 +244,7 @@ export function BreakdownBar({
       </div>
       <div className="flex flex-wrap gap-3">
         {items.map((it) => (
-          <div key={it.label} className="flex items-center gap-1.5 text-[11px] text-white/60">
+          <div key={it.label} className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
             <div className="h-2 w-2 rounded-full" style={{ backgroundColor: it.color }} />
             {it.label}: {it.value}
           </div>
@@ -266,29 +266,25 @@ export function SpecNormShell({
   subtitle?: string;
 }) {
   return (
-    <div className="min-h-screen" style={{ background: "#020817", color: "#f1f5f9" }}>
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-[-10%] top-[-10%] h-[500px] w-[500px] rounded-full bg-indigo-500/15 blur-[100px]" />
-        <div className="absolute right-[-10%] top-[10%] h-[400px] w-[400px] rounded-full bg-emerald-400/8 blur-[100px]" />
-      </div>
+    <div className="min-h-screen bg-[var(--root-bg)] text-[var(--root-fg)]">
       <div className="mx-auto max-w-[1400px] px-4 py-5">
         <div className="flex items-center gap-3 mb-5">
           {backHref && (
-            <a href={backHref} className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 hover:bg-white/10 transition">
+            <a href={backHref} className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)] transition">
               <ArrowLeft className="h-3.5 w-3.5" />
               {backLabel ?? "Назад"}
             </a>
           )}
-          <a href="/" className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 hover:bg-white/10 transition">
+          <a href="/" className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)] transition">
             <ArrowLeft className="h-3.5 w-3.5" /> Главная
           </a>
           <div className="flex items-center gap-2">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-              <FileText className="h-5 w-5 text-indigo-200" />
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2">
+              <FileText className="h-5 w-5 text-indigo-500 dark:text-indigo-200" />
             </div>
             <div>
-              <div className="text-lg font-semibold tracking-tight">{title ?? "Tender Analysis"}</div>
-              <div className="text-xs text-white/50">{subtitle ?? "Spec vs Norm + Document Check · Demo"}</div>
+              <div className="text-lg font-semibold tracking-tight text-[var(--text-main)]">{title ?? "Tender Analysis"}</div>
+              <div className="text-xs text-[var(--text-muted)]">{subtitle ?? "Spec vs Norm + Document Check · Demo"}</div>
             </div>
           </div>
         </div>
@@ -302,8 +298,8 @@ export function SpecNormShell({
 
 export function EmptyState({ text }: { text: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-white/40">
-      <CheckCircle2 className="h-10 w-10 mb-2" />
+    <div className="flex flex-col items-center justify-center py-16 text-[var(--text-muted)]">
+      <CheckCircle2 className="h-10 w-10 mb-2 opacity-50" />
       <div className="text-sm">{text}</div>
     </div>
   );

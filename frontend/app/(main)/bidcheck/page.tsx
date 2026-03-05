@@ -37,26 +37,22 @@ function BidCheckShell({
   subtitle?: string;
 }) {
   return (
-    <div className="min-h-screen" style={{ background: "#020817", color: "#f1f5f9" }}>
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-[-10%] top-[-10%] h-[500px] w-[500px] rounded-full bg-emerald-500/15 blur-[100px]" />
-        <div className="absolute right-[-10%] top-[10%] h-[400px] w-[400px] rounded-full bg-indigo-400/8 blur-[100px]" />
-      </div>
+    <div className="min-h-screen bg-[var(--root-bg)] text-[var(--root-fg)]">
       <div className="mx-auto max-w-[1200px] px-4 py-5">
         <div className="flex items-center gap-3 mb-5">
           <a
             href="/"
-            className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 hover:bg-white/10 transition"
+            className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)] transition"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Главная
           </a>
           <div className="flex items-center gap-2">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-              <FileText className="h-5 w-5 text-emerald-200" />
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-sm shadow-[var(--border-hover)]">
+              <FileText className="h-5 w-5 text-emerald-500 dark:text-emerald-200" />
             </div>
             <div>
-              <div className="text-lg font-semibold tracking-tight">{title}</div>
-              <div className="text-xs text-white/50">{subtitle}</div>
+              <div className="text-lg font-semibold tracking-tight text-[var(--text-main)]">{title}</div>
+              <div className="text-xs text-[var(--text-muted)]">{subtitle}</div>
             </div>
           </div>
         </div>
@@ -92,10 +88,10 @@ function JsonActions({ data, filename }: { data: object; filename: string }) {
     <div className="flex items-center gap-2">
       <button
         onClick={handleCopy}
-        className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs text-white/70 hover:bg-white/10 transition"
+        className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)] transition shadow-sm"
       >
         {copied ? (
-          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 dark:text-emerald-400" />
         ) : (
           <Copy className="h-3.5 w-3.5" />
         )}
@@ -103,7 +99,7 @@ function JsonActions({ data, filename }: { data: object; filename: string }) {
       </button>
       <button
         onClick={handleDownload}
-        className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs text-white/70 hover:bg-white/10 transition"
+        className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)] transition shadow-sm"
       >
         <Download className="h-3.5 w-3.5" />
         Download JSON
@@ -118,32 +114,32 @@ function RequirementsViewer({ requirements }: { requirements: RequirementsDoc })
   const items = requirements.labor_requirements ?? [];
   const hasEquip = requirements.equipment_requirements && requirements.equipment_requirements.length > 0;
   return (
-    <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <FileText className="h-4 w-4 text-emerald-300" />
-          <span className="text-sm font-semibold text-white">Requirements</span>
+          <FileText className="h-4 w-4 text-emerald-500 dark:text-emerald-300" />
+          <span className="text-sm font-semibold text-[var(--text-main)]">Requirements</span>
         </div>
         <JsonActions data={requirements} filename="requirements.json" />
       </div>
-      <div className="text-xs text-white/50 mb-3">
+      <div className="text-xs text-[var(--text-muted)] mb-3">
         {requirements.source_filename} · {requirements.parsed_at_utc}
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10 text-left">
-              <th className="py-2 pr-4 text-white/70">Role</th>
-              <th className="py-2 pr-4 text-white/70">Count</th>
-              <th className="py-2 text-white/70">Notes</th>
+            <tr className="border-b border-[var(--border)] bg-[var(--surface-hover)] text-left">
+              <th className="py-2.5 px-3 text-[var(--text-muted)]">Role</th>
+              <th className="py-2.5 px-3 text-[var(--text-muted)]">Count</th>
+              <th className="py-2.5 px-3 text-[var(--text-muted)]">Notes</th>
             </tr>
           </thead>
           <tbody>
             {items.map((r: RequirementItem, i: number) => (
-              <tr key={i} className="border-b border-white/5">
-                <td className="py-2 pr-4 text-white">{r.role}</td>
-                <td className="py-2 pr-4 text-white/80">{r.count ?? "—"}</td>
-                <td className="py-2 text-white/60">{r.notes ?? "—"}</td>
+              <tr key={i} className="border-b border-[var(--border)]">
+                <td className="py-2.5 px-3 text-[var(--text-main)]">{r.role}</td>
+                <td className="py-2.5 px-3 text-[var(--text-muted)]">{r.count ?? "—"}</td>
+                <td className="py-2.5 px-3 text-[var(--text-muted)]">{r.notes ?? "—"}</td>
               </tr>
             ))}
           </tbody>
@@ -161,6 +157,65 @@ function RequirementsViewer({ requirements }: { requirements: RequirementsDoc })
   );
 }
 
+function SupplierCard({ supplier }: { supplier: SupplierCandidate }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const getMatchColor = (score: number) => {
+    if (score >= 80) return "text-emerald-500 dark:text-emerald-400";
+    if (score >= 50) return "text-amber-500 dark:text-amber-400";
+    return "text-rose-500 dark:text-rose-400";
+  };
+
+  return (
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm shadow-[var(--border-hover)] overflow-hidden">
+      {/* Header (Always visible) */}
+      <div
+        className="flex cursor-pointer items-center justify-between p-4 hover:bg-[var(--surface-hover)] transition"
+        onClick={() => setExpanded(!expanded)}
+      >
+        <div className="flex items-center gap-3">
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-hover)]">
+            <svg viewBox="0 0 36 36" className="absolute inset-0 h-full w-full -rotate-90">
+              <circle cx="18" cy="18" r="16" fill="none" className="stroke-[var(--border)]" strokeWidth="2" />
+              <circle
+                cx="18" cy="18" r="16" fill="none"
+                className={`stroke-current ${getMatchColor(supplier.confidence ? supplier.confidence * 100 : 0)} transition-all duration-1000 ease-out`}
+                strokeWidth="2"
+                strokeDasharray="100 100"
+                strokeDashoffset={100 - (supplier.confidence ? supplier.confidence * 100 : 0)}
+              />
+            </svg>
+            <span className={`text-[11px] font-bold ${getMatchColor(supplier.confidence ? supplier.confidence * 100 : 0)}`}>
+              {supplier.confidence ? `${Math.round(supplier.confidence * 100)}%` : "0%"}
+            </span>
+          </div>
+          <div>
+            <div className="text-sm font-semibold text-[var(--text-main)] leading-tight">{supplier.name}</div>
+            <div className="text-xs text-[var(--text-muted)] font-mono mt-0.5">BIN: {supplier.bin_iin ?? "—"}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          {expanded ? <ChevronUp className="h-4 w-4 text-[var(--text-muted)]" /> : <ChevronDown className="h-4 w-4 text-[var(--text-muted)]" />}
+        </div>
+      </div>
+
+      {/* Expanded Details */}
+      {expanded && (
+        <div className="border-t border-[var(--border)] p-4 bg-[var(--surface-hover)] space-y-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] mb-1">Company Info</div>
+              <div className="text-xs text-[var(--text-main)] space-y-1">
+                <div><span className="text-[var(--text-muted)]">Capabilities:</span> {supplier.capabilities?.join(", ") || "—"}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── Suppliers Viewer ──────────────────────────────────────────────────────── */
 
 function SuppliersViewer({
@@ -172,44 +227,23 @@ function SuppliersViewer({
 }) {
   const data = { suppliers, summary };
   return (
-    <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Users className="h-4 w-4 text-indigo-300" />
-          <span className="text-sm font-semibold text-white">Suppliers</span>
+          <Users className="h-4 w-4 text-indigo-500 dark:text-indigo-300" />
+          <span className="text-sm font-semibold text-[var(--text-main)]">Suppliers</span>
         </div>
         <JsonActions data={data} filename="suppliers.json" />
       </div>
       {summary && (
-        <div className="text-xs text-white/60 mb-3 p-2 rounded-xl bg-white/5 border border-white/5">
+        <div className="text-xs text-[var(--text-muted)] mb-3 p-2 rounded-xl bg-[var(--surface-hover)] border border-[var(--border)]">
           {summary}
         </div>
       )}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-white/10 text-left">
-              <th className="py-2 pr-4 text-white/70">Name</th>
-              <th className="py-2 pr-4 text-white/70">BIN/IIN</th>
-              <th className="py-2 pr-4 text-white/70">Confidence</th>
-              <th className="py-2 text-white/70">Capabilities</th>
-            </tr>
-          </thead>
-          <tbody>
-            {suppliers.map((s, i) => (
-              <tr key={i} className="border-b border-white/5">
-                <td className="py-2 pr-4 text-white">{s.name}</td>
-                <td className="py-2 pr-4 text-white/80 font-mono text-xs">{s.bin_iin ?? "—"}</td>
-                <td className="py-2 pr-4 text-white/80">
-                  {s.confidence != null ? `${Math.round(s.confidence * 100)}%` : "—"}
-                </td>
-                <td className="py-2 text-white/60 text-xs">
-                  {s.capabilities?.join(", ") ?? "—"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="space-y-3">
+        {suppliers.map((s, i) => (
+          <SupplierCard key={i} supplier={s} />
+        ))}
       </div>
     </div>
   );
@@ -226,26 +260,26 @@ function End2endResultViewer({ data }: { data: BidcheckEnd2endResponse }) {
   return (
     <div className="space-y-4">
       {/* Requirements */}
-      <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-semibold text-white">Требования (labor_roles)</span>
+          <span className="text-sm font-semibold text-[var(--text-main)]">Требования (labor_roles)</span>
           <JsonActions data={data} filename="end2end.json" />
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10 text-left">
-                <th className="py-2 pr-4 text-white/70">Роль</th>
-                <th className="py-2 pr-4 text-white/70">Кол-во</th>
-                <th className="py-2 text-white/70">Документы</th>
+              <tr className="border-b border-[var(--border)] bg-[var(--surface-hover)] text-left">
+                <th className="py-2.5 px-3 text-[var(--text-muted)]">Роль</th>
+                <th className="py-2.5 px-3 text-[var(--text-muted)]">Кол-во</th>
+                <th className="py-2.5 px-3 text-[var(--text-muted)]">Документы</th>
               </tr>
             </thead>
             <tbody>
               {roles.map((r, i) => (
-                <tr key={i} className="border-b border-white/5">
-                  <td className="py-2 pr-4 text-white">{r.role}</td>
-                  <td className="py-2 pr-4 text-white/80">{r.count}</td>
-                  <td className="py-2 text-white/60 text-xs">
+                <tr key={i} className="border-b border-[var(--border)]">
+                  <td className="py-2.5 px-3 text-[var(--text-main)]">{r.role}</td>
+                  <td className="py-2.5 px-3 text-[var(--text-muted)]">{r.count}</td>
+                  <td className="py-2.5 px-3 text-[var(--text-muted)] text-xs">
                     {(r.required_documents ?? []).join(", ") || "—"}
                   </td>
                 </tr>
@@ -263,41 +297,38 @@ function End2endResultViewer({ data }: { data: BidcheckEnd2endResponse }) {
         return (
           <div
             key={i}
-            className={`rounded-2xl border p-4 ${
-              isPass ? "border-emerald-500/20 bg-emerald-500/5" : "border-amber-500/20 bg-amber-500/5"
-            }`}
+            className={`rounded-2xl border p-4 shadow-sm bg-[var(--surface)] ${isPass ? "border-emerald-500/20 text-[var(--text-main)]" : "border-amber-500/20 text-[var(--text-main)]"
+              }`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-semibold text-white">{sup.supplier_name}</span>
+                <span className="text-sm font-semibold text-[var(--text-main)]">{sup.supplier_name}</span>
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    sup.profile === "FULL"
-                      ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-                      : "border border-amber-500/30 bg-amber-500/10 text-amber-200"
-                  }`}
+                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${sup.profile === "FULL"
+                    ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 dark:text-emerald-200"
+                    : "border border-amber-500/30 bg-amber-500/10 text-amber-500 dark:text-amber-200"
+                    }`}
                 >
-                  {sup.profile ?? "—"}
+                  {sup.profile}
                 </span>
                 {sum && (
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      isPass
-                        ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-                        : "border border-rose-500/30 bg-rose-500/10 text-rose-200"
-                    }`}
+                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${isPass
+                      ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 dark:text-emerald-200"
+                      : "border border-amber-500/30 bg-amber-500/10 text-amber-500 dark:text-amber-200"
+                      }`}
                   >
-                    {isPass ? <ShieldCheck className="h-3 w-3" /> : <ShieldX className="h-3 w-3" />}
+                    {isPass ? <CheckCircle2 className="h-3 w-3" /> : <AlertTriangle className="h-3 w-3" />}
                     {sum.verdict}
                   </span>
                 )}
               </div>
               <button
                 onClick={() => setExpandedSupplier(isExpanded ? null : sup.supplier_name)}
-                className="flex items-center gap-1 text-xs text-white/60 hover:text-white/90"
+                className="flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] transition"
               >
-                {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                {isExpanded ? "Свернуть" : "Документы"}
+                {isExpanded ? "Скрыть детали" : "Показать детали"}
+                {isExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
               </button>
             </div>
             {sum && (
@@ -325,9 +356,40 @@ function End2endResultViewer({ data }: { data: BidcheckEnd2endResponse }) {
               </div>
             )}
             {isExpanded && (
-              <pre className="mt-3 max-h-64 overflow-auto rounded-xl border border-white/10 bg-black/20 p-3 text-xs text-white/80 whitespace-pre-wrap">
-                {sup.documents_text}
-              </pre>
+              <div className="mt-4 border-t border-[var(--border)] pt-4 space-y-4">
+                {/* 1. Supplier extracted capabilities */}
+                <div>
+                  <div className="text-xs font-semibold text-[var(--text-main)] mb-2 flex items-center gap-1.5">
+                    <ShieldCheck className="h-4 w-4 text-indigo-500 dark:text-indigo-400" /> Profiling (LLM)
+                  </div>
+                  <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-[var(--border)] bg-[var(--surface-hover)] text-left">
+                          <th className="py-2.5 px-3 text-[var(--text-muted)]">Документ</th>
+                          <th className="py-2.5 px-3 text-[var(--text-muted)]">Возможности</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(sup as any).documents_profiles?.map((dp: any, idx: number) => (
+                          <tr key={idx} className="border-b border-[var(--border)]">
+                            <td className="py-2.5 px-3 text-[var(--text-muted)] truncate max-w-[200px]" title={dp.document_name}>
+                              {dp.document_name}
+                            </td>
+                            <td className="py-2.5 px-3 text-[var(--text-main)]">
+                              <ul className="list-disc list-inside space-y-0.5">
+                                {dp.extracted_capabilities?.map((c: string, cidx: number) => (
+                                  <li key={cidx}>{c}</li>
+                                ))}
+                              </ul>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         );
@@ -363,12 +425,11 @@ function BidcheckUploadCard({
       onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
       onDragLeave={() => setDrag(false)}
       onDrop={handleDrop}
-      className={`block rounded-2xl border-2 border-dashed p-6 text-center cursor-pointer transition ${
-        drag ? "border-emerald-500/50 bg-emerald-500/10" : "border-white/20 hover:border-white/30 bg-white/5"
-      } ${disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+      className={`block rounded-2xl border-2 border-dashed p-6 text-center cursor-pointer transition ${drag ? "border-emerald-500/50 bg-emerald-500/10" : "border-[var(--border)] hover:border-[var(--border-hover)] bg-[var(--surface-hover)]"
+        } ${disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
     >
-      <Upload className="h-10 w-10 mx-auto mb-2 text-white/50" />
-      <div className="text-sm text-white/80">Drop PDF or click to upload</div>
+      <Upload className="h-10 w-10 mx-auto mb-2 text-[var(--text-muted)]" />
+      <div className="text-sm text-[var(--text-muted)]">Drop PDF or click to upload</div>
       <input
         type="file"
         accept={accept}
@@ -463,16 +524,15 @@ export default function BidCheckPage() {
   return (
     <BidCheckShell>
       <div className="space-y-4">
-        <div className="flex gap-2 border-b border-white/10 pb-2">
+        <div className="flex gap-2 border-b border-[var(--border)] pb-2 overflow-x-auto">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
-                tab === t.id
-                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-                  : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
-              }`}
+              className={`rounded-xl px-4 py-2 text-sm font-medium transition whitespace-nowrap ${tab === t.id
+                ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 dark:text-emerald-200"
+                : "border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)]"
+                }`}
             >
               {t.label}
             </button>
@@ -489,8 +549,8 @@ export default function BidCheckPage() {
         {/* Section A — Parse PDF */}
         {tab === "parse" && (
           <div className="space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <h3 className="text-sm font-semibold text-white mb-3">Upload PDF</h3>
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
+              <h3 className="text-sm font-semibold text-[var(--text-main)] mb-3">Upload PDF</h3>
               <BidcheckUploadCard
                 onFileSelect={(f) => {
                   setFile(f);
@@ -499,14 +559,14 @@ export default function BidCheckPage() {
                 disabled={loading}
               />
               {file && (
-                <div className="mt-2 text-xs text-white/50">
+                <div className="mt-2 text-xs text-[var(--text-muted)]">
                   Selected: {file.name} ({(file.size / 1024).toFixed(1)} KB)
                 </div>
               )}
               <button
                 onClick={runParse}
                 disabled={!file || loading}
-                className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-200 hover:bg-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-700 dark:text-emerald-200 hover:bg-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition"
               >
                 {loading ? (
                   <RefreshCw className="h-4 w-4 animate-spin" />
@@ -525,14 +585,14 @@ export default function BidCheckPage() {
         {/* Section B — Анализ ТЗ vs поставщик */}
         {tab === "analyze" && (
           <div className="space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <h3 className="text-sm font-semibold text-white mb-2">Анализ соответствия</h3>
-              <p className="text-xs text-white/50 mb-4">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
+              <h3 className="text-sm font-semibold text-[var(--text-main)] mb-2">Анализ соответствия</h3>
+              <p className="text-xs text-[var(--text-muted)] mb-4">
                 Загрузите ТЗ (техническую спецификацию) и документы поставщика — система проверит соответствие (PASS/FAIL по каждой роли).
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-white/70 mb-2">ТЗ (приложение 7/8)</label>
+                  <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2">ТЗ (приложение 7/8)</label>
                   <BidcheckUploadCard
                     onFileSelect={(f) => {
                       setTsFile(f);
@@ -541,11 +601,11 @@ export default function BidCheckPage() {
                     disabled={loading}
                   />
                   {tsFile && (
-                    <div className="mt-2 text-xs text-white/50">Выбрано: {tsFile.name}</div>
+                    <div className="mt-2 text-xs text-[var(--text-muted)]">Выбрано: {tsFile.name}</div>
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs text-white/70 mb-2">Документ поставщика</label>
+                  <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2">Документ поставщика</label>
                   <BidcheckUploadCard
                     onFileSelect={(f) => {
                       setSupplierFile(f);
@@ -554,7 +614,7 @@ export default function BidCheckPage() {
                     disabled={loading}
                   />
                   {supplierFile && (
-                    <div className="mt-2 text-xs text-white/50">Выбрано: {supplierFile.name}</div>
+                    <div className="mt-2 text-xs text-[var(--text-muted)]">Выбрано: {supplierFile.name}</div>
                   )}
                 </div>
               </div>
@@ -574,34 +634,34 @@ export default function BidCheckPage() {
         {/* Section: Demo — готовые кейсы */}
         {tab === "demo" && (
           <div className="space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <h3 className="text-sm font-semibold text-white mb-2">Готовые демо-кейсы</h3>
-              <p className="text-xs text-white/50 mb-4">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm shadow-[var(--border-hover)]">
+              <h3 className="text-sm font-semibold text-[var(--text-main)] mb-2">Готовые демо-кейсы</h3>
+              <p className="text-xs text-[var(--text-muted)] mb-4">
                 Результаты обработки реальных приложений 7. Выберите кейс — просмотрите готовый результат.
               </p>
               <div className="space-y-2">
                 {demoList.map((d) => (
                   <div
                     key={d.id}
-                    className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3"
                   >
                     <div>
-                      <div className="text-sm font-medium text-white">{d.label}</div>
-                      <div className="text-xs text-white/50 font-mono">{d.id}</div>
+                      <div className="text-sm font-medium text-[var(--text-main)]">{d.label}</div>
+                      <div className="text-xs text-[var(--text-muted)] font-mono">{d.id}</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <a
                         href={`/demo/bidcheck/pdfs/${d.id}.pdf`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/70 hover:bg-white/10 transition"
+                        className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--surface-hover)] transition"
                       >
                         <FileDown className="h-3.5 w-3.5" />
                         PDF
                       </a>
                       <button
                         onClick={() => loadDemoResult(d.id)}
-                        className="flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-500/20 transition"
+                        className="flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-500 dark:text-emerald-200 hover:bg-emerald-500/20 transition"
                       >
                         Показать результат
                       </button>
@@ -609,7 +669,7 @@ export default function BidCheckPage() {
                   </div>
                 ))}
                 {demoList.length === 0 && (
-                  <div className="py-8 text-center text-sm text-white/50">Загрузка списка демо...</div>
+                  <div className="py-8 text-center text-sm text-[var(--text-muted)]">Загрузка списка демо...</div>
                 )}
               </div>
             </div>

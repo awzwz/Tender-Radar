@@ -81,7 +81,7 @@ export default function TenderList() {
   if (loading) {
     return (
       <SpecNormShell backHref="/specnorm" backLabel="Dashboard" title="Tender Analysis" subtitle="Список тендеров">
-        <div className="flex items-center justify-center py-24 text-white/40">
+        <div className="flex items-center justify-center py-24 text-[var(--text-muted)]">
           <RefreshCw className="h-6 w-6 animate-spin mr-2" /> Загрузка...
         </div>
       </SpecNormShell>
@@ -92,32 +92,32 @@ export default function TenderList() {
     <SpecNormShell backHref="/specnorm" backLabel="Dashboard" title="Tender Analysis" subtitle="Список тендеров">
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-            <ListFilter className="h-4 w-4 text-indigo-200" />
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-sm shadow-[var(--border-hover)]">
+            <ListFilter className="h-4 w-4 text-indigo-500 dark:text-indigo-200" />
           </div>
           <div>
-            <div className="text-sm font-semibold text-white">Тендеры</div>
-            <div className="text-xs text-white/50">Фильтрация и поиск · {filtered.length} результатов</div>
+            <div className="text-sm font-semibold text-[var(--text-main)]">Тендеры</div>
+            <div className="text-xs text-[var(--text-muted)]">Фильтрация и поиск · {filtered.length} результатов</div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 space-y-3">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-3 shadow-sm shadow-[var(--border-hover)]">
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 flex-1 min-w-[200px]">
-              <Search className="h-4 w-4 text-white/40 flex-shrink-0" />
+            <div className="flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2 flex-1 min-w-[200px]">
+              <Search className="h-4 w-4 text-[var(--text-muted)] flex-shrink-0" />
               <input
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                 placeholder="ID, название, поставщик..."
-                className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/30"
+                className="w-full bg-transparent text-sm text-[var(--text-main)] outline-none placeholder:text-[var(--text-muted)]"
               />
             </div>
 
             <select
               value={riskFilter}
               onChange={(e) => { setRiskFilter(e.target.value); setPage(1); }}
-              className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 outline-none"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2 text-xs text-[var(--text-main)] outline-none"
             >
               {RISK_FILTERS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
             </select>
@@ -125,7 +125,7 @@ export default function TenderList() {
             <select
               value={catFilter}
               onChange={(e) => { setCatFilter(e.target.value); setPage(1); }}
-              className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 outline-none"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2 text-xs text-[var(--text-main)] outline-none"
             >
               {CAT_FILTERS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
             </select>
@@ -133,7 +133,7 @@ export default function TenderList() {
             <select
               value={checkFilter}
               onChange={(e) => { setCheckFilter(e.target.value); setPage(1); }}
-              className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 outline-none"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2 text-xs text-[var(--text-main)] outline-none"
             >
               {CHECK_FILTERS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
             </select>
@@ -141,7 +141,7 @@ export default function TenderList() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 outline-none"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2 text-xs text-[var(--text-main)] outline-none"
             >
               <option value="risk">По общему риску</option>
               <option value="spec">По Spec Deviation</option>
@@ -161,25 +161,25 @@ export default function TenderList() {
               <button
                 key={item.tenderId}
                 onClick={() => router.push(`/specnorm/lots/${item.tenderId}`)}
-                className="w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-left hover:bg-white/10 transition group"
+                className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-left hover:bg-[var(--surface-hover)] transition group shadow-sm"
               >
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <CategoryBadge category={item.category} />
-                      <span className="text-xs text-white/50 font-mono">{item.tenderId}</span>
+                      <span className="text-xs text-[var(--text-muted)] font-mono">{item.tenderId}</span>
                       {item.overallRiskTier === "HIGH" && (
-                        <span className="rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-bold text-rose-300">
+                        <span className="rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:text-rose-300">
                           HIGH RISK
                         </span>
                       )}
                     </div>
-                    <div className="mt-1 text-sm font-semibold text-white truncate">{item.titleRu}</div>
-                    <div className="mt-1 text-xs text-white/60">
+                    <div className="mt-1 text-sm font-semibold text-[var(--text-main)] truncate">{item.titleRu}</div>
+                    <div className="mt-1 text-xs text-[var(--text-muted)]">
                       {item.region} · {money(item.amountKZT)} · {item.publishDate?.slice(0, 10) ?? "—"}
                     </div>
                     {item.supplierName && (
-                      <div className="mt-1 text-xs text-white/50">
+                      <div className="mt-1 text-xs text-[var(--text-muted)]">
                         Поставщик: {item.supplierName}
                       </div>
                     )}
@@ -190,18 +190,18 @@ export default function TenderList() {
 
                   <div className="flex flex-col gap-2 flex-shrink-0 lg:items-end lg:w-48">
                     <div className="flex items-center gap-2">
-                      <Scale className="h-3 w-3 text-white/40" />
-                      <span className="text-[10px] text-white/50 w-12">Spec</span>
+                      <Scale className="h-3 w-3 text-[var(--text-muted)]" />
+                      <span className="text-[10px] text-[var(--text-muted)] w-12">Spec</span>
                       <div className="w-24"><SeverityBar value={item.specDeviationScore} /></div>
-                      <span className="text-xs font-mono text-white/70 w-8 text-right">{item.specDeviationScore}</span>
+                      <span className="text-xs font-mono text-[var(--text-muted)] w-8 text-right">{item.specDeviationScore}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <FileSearch className="h-3 w-3 text-white/40" />
-                      <span className="text-[10px] text-white/50 w-12">Doc</span>
+                      <FileSearch className="h-3 w-3 text-[var(--text-muted)]" />
+                      <span className="text-[10px] text-[var(--text-muted)] w-12">Doc</span>
                       <div className="w-24"><ComplianceBar value={item.docComplianceScore ?? 100} /></div>
-                      <span className="text-xs font-mono text-white/70 w-8 text-right">{item.docComplianceScore ?? 100}%</span>
+                      <span className="text-xs font-mono text-[var(--text-muted)] w-8 text-right">{item.docComplianceScore ?? 100}%</span>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-white/30 group-hover:text-indigo-400 self-end" />
+                    <ChevronRight className="h-4 w-4 text-[var(--text-muted)] group-hover:text-indigo-500 transition-colors self-end" />
                   </div>
                 </div>
               </button>
@@ -218,12 +218,12 @@ export default function TenderList() {
                 onClick={() => setPage(p)}
                 className={`h-8 w-8 rounded-lg text-xs transition ${p === page
                   ? "bg-indigo-500 text-white"
-                  : "border border-white/10 bg-white/5 text-white/60 hover:bg-white/10"}`}
+                  : "border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:bg-[var(--surface-hover)]"}`}
               >
                 {p}
               </button>
             ))}
-            {totalPages > 10 && <span className="text-xs text-white/40">... {totalPages}</span>}
+            {totalPages > 10 && <span className="text-xs text-[var(--text-muted)]">... {totalPages}</span>}
           </div>
         )}
       </div>
