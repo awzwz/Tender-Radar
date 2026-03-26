@@ -472,6 +472,9 @@ export interface CompanyKGDInfo {
     llm_analysis: TaxLLMAnalysis | null;
     score_points: number;
     source: string;
+    tax_debt?: boolean;
+    pseudo_enterprise?: boolean;
+    is_unreliable_taxpayer?: boolean;
 }
 
 export interface CompanyCourtCase {
