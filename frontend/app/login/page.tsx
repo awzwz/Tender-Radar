@@ -28,7 +28,7 @@ export default function LoginPage() {
         } catch (e: unknown) {
             const msg = e instanceof Error ? e.message : "Ошибка входа";
             const isNetwork = /failed|load failed|network|fetch/i.test(msg);
-            setError(isNetwork ? "Нет связи с сервером. Проверьте, что backend запущен на http://localhost:8000" : msg);
+            setError(isNetwork ? "Нет связи с сервером. Проверьте подключение или статус бэкенда." : msg);
         } finally {
             setLoading(false);
         }

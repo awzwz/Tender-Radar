@@ -1,7 +1,6 @@
-// Только локальная работа: тот же hostname, что и у страницы (localhost или 127.0.0.1), порт 8000
 const getApiBase = (): string => {
-    if (typeof window === "undefined")
-        return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    if (typeof window === "undefined") return "http://localhost:8000/api/v1";
     const host = window.location.hostname;
     return `http://${host}:8000/api/v1`;
 };
@@ -50,7 +49,7 @@ export const api = {
             })
             .catch((e) => {
                 clearTimeout(timeout);
-                if (e.name === "AbortError") throw new Error("Сервер не отвечает. Запущен ли backend на порту 8000?");
+                if (e.name === "AbortError") throw new Error("Сервер не отвечает. Запушен ли backend?");
                 throw e;
             });
     },

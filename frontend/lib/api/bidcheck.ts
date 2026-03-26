@@ -1,8 +1,9 @@
 import type { RequirementsDoc, BidcheckEnd2endResponse } from "@/lib/bidcheck/types";
 
 const getApiBase = (): string => {
+  if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
   if (typeof window === "undefined")
-    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+    return "http://localhost:8000/api/v1";
   const host = window.location.hostname;
   return `http://${host}:8000/api/v1`;
 };

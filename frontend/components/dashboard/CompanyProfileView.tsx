@@ -636,7 +636,8 @@ ${narrativeHtml}
         try {
             // Call backend directly (same approach as api.ts) to avoid Next.js proxy hostname issues
             const token = localStorage.getItem("token");
-            const backendUrl = `http://${window.location.hostname}:8000/api/v1/chat/`;
+            const base = process.env.NEXT_PUBLIC_API_URL || `http://${window.location.hostname}:8000/api/v1`;
+            const backendUrl = `${base}/chat/`;
             const res = await fetch(backendUrl, {
                 method: "POST",
                 headers: {
