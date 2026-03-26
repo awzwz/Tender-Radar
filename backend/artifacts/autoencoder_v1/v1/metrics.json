@@ -1,0 +1,97 @@
+{
+  "model_name": "autoencoder_v1",
+  "version": "v1",
+  "n_samples": 11609,
+  "n_features": 30,
+  "architecture": "30-20-10-5-10-20-30",
+  "epochs_trained": 80,
+  "best_val_loss": 0.161503,
+  "final_train_loss": 0.191895,
+  "feature_columns": [
+    "log_amount",
+    "log_contract_sum",
+    "bid_count",
+    "unique_bidder_count",
+    "deadline_days",
+    "discussion_days",
+    "execution_days_planned",
+    "execution_days_actual",
+    "execution_overrun_ratio",
+    "price_to_plan_ratio",
+    "win_margin_pct",
+    "min_bid_ratio",
+    "payment_to_contract_ratio",
+    "act_sum_to_contract_ratio",
+    "fine_ratio",
+    "max_overdue_days",
+    "addendum_count",
+    "addendum_sum_ratio",
+    "supplier_age_days",
+    "supplier_total_contracts",
+    "supplier_win_rate",
+    "customer_total_tenders",
+    "customer_unique_winners",
+    "customer_top_winner_share",
+    "graph_cobid_partners",
+    "graph_top_supplier_share",
+    "graph_win_rotation_index",
+    "lot_count_in_tender",
+    "is_single_source",
+    "is_construction"
+  ],
+  "percentiles": {
+    "1": 0.00569658869126885,
+    "5": 0.00786183570284913,
+    "10": 0.009898675559103575,
+    "25": 0.01858257158948986,
+    "50": 0.0517909090508755,
+    "75": 0.1598433155766325,
+    "90": 0.342676947740421,
+    "95": 0.5316272351283244,
+    "99": 1.1637124846988218,
+    "min": 0.0030904735256210777,
+    "max": 60.05699818119458
+  },
+  "hardest_features": [
+    {
+      "feature": "log_amount",
+      "mean_mse": 0.576608
+    },
+    {
+      "feature": "log_contract_sum",
+      "mean_mse": 0.521761
+    },
+    {
+      "feature": "execution_overrun_ratio",
+      "mean_mse": 0.502654
+    },
+    {
+      "feature": "supplier_age_days",
+      "mean_mse": 0.469733
+    },
+    {
+      "feature": "customer_total_tenders",
+      "mean_mse": 0.412941
+    },
+    {
+      "feature": "execution_days_actual",
+      "mean_mse": 0.261109
+    },
+    {
+      "feature": "payment_to_contract_ratio",
+      "mean_mse": 0.231469
+    },
+    {
+      "feature": "max_overdue_days",
+      "mean_mse": 0.205264
+    },
+    {
+      "feature": "fine_ratio",
+      "mean_mse": 0.203744
+    },
+    {
+      "feature": "customer_top_winner_share",
+      "mean_mse": 0.185338
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "model_name": "isoforest_v2",
+  "version": "v2",
+  "n_samples": 11609,
+  "n_features": 61,
+  "n_anomalies_detected": 1161,
+  "anomaly_rate": 10.0,
+  "feature_columns": [
+    "log_amount",
+    "log_contract_sum",
+    "bid_count",
+    "unique_bidder_count",
+    "deadline_days",
+    "discussion_days",
+    "execution_days_planned",
+    "execution_days_actual",
+    "execution_overrun_ratio",
+    "price_to_plan_ratio",
+    "win_margin_pct",
+    "min_bid_ratio",
+    "payment_to_contract_ratio",
+    "act_sum_to_contract_ratio",
+    "fine_ratio",
+    "max_overdue_days",
+    "addendum_count",
+    "addendum_sum_ratio",
+    "supplier_age_days",
+    "supplier_total_contracts",
+    "supplier_win_rate",
+    "customer_total_tenders",
+    "customer_unique_winners",
+    "customer_top_winner_share",
+    "graph_cobid_partners",
+    "graph_top_supplier_share",
+    "graph_win_rotation_index",
+    "lot_count_in_tender",
+    "is_single_source",
+    "is_construction",
+    "LOT_SPLITTING",
+    "SHORT_DEADLINE",
+    "FEW_BIDS",
+    "RECURRING_WINNER",
+    "COMMON_REQUISITES",
+    "NEW_COMPANY_BIG_CONTRACT",
+    "CAROUSEL_PATTERN",
+    "RNU_FLAG",
+    "DUMPING_FLAG",
+    "IDENTICAL_BID_PRICES",
+    "TINY_WIN_MARGIN",
+    "LATE_BID_SUBMISSION",
+    "REPEAT_TENDER",
+    "CANCELLED_TENDER",
+    "PAUSED_TENDER",
+    "NIGHT_OR_WEEKEND_PUBLISH",
+    "SHORT_DISCUSSION_WINDOW",
+    "LAST_MINUTE_CHANGES",
+    "SUPPLIER_CONCENTRATION",
+    "CUSTOMER_WINNER_CONCENTRATION",
+    "HIGH_WIN_RATE_FEW_BIDS",
+    "ADDENDUM_VALUE_INCREASE",
+    "WIN_MIN_THEN_ADDENDUM",
+    "WEIRD_EXECUTION_TIME",
+    "HIGH_PREPAY",
+    "PAYMENTS_EXCEED_CONTRACT",
+    "PAYMENT_WITHOUT_ACT",
+    "OVERDUE_EXECUTION",
+    "FINES_PRESENT",
+    "LOW_EXECUTION_RATE",
+    "BANK_DETAILS_REUSE"
+  ],
+  "percentiles": {
+    "1": -0.22535089593236818,
+    "5": -0.22427401922520168,
+    "10": -0.22159498852048543,
+    "25": -0.21469954154861542,
+    "50": -0.20080869213461927,
+    "75": -0.1408333261467351,
+    "90": 3.5098504235376443e-17,
+    "95": 0.037901010477238206,
+    "99": 0.09529207380846039,
+    "min": -0.22636359677829676,
+    "max": 0.15506543770658054
+  },
+  "contamination": 0.1,
+  "top_variance_features": [
+    {
+      "feature": "customer_top_winner_share",
+      "mean_abs": 0.9119
+    },
+    {
+      "feature": "graph_top_supplier_share",
+      "mean_abs": 0.8996
+    },
+    {
+      "feature": "log_amount",
+      "mean_abs": 0.7903
+    },
+    {
+      "feature": "CUSTOMER_WINNER_CONCENTRATION",
+      "mean_abs": 0.7051
+    },
+    {
+      "feature": "NEW_COMPANY_BIG_CONTRACT",
+      "mean_abs": 0.6939
+    },
+    {
+      "feature": "PAUSED_TENDER",
+      "mean_abs": 0.6934
+    },
+    {
+      "feature": "CANCELLED_TENDER",
+      "mean_abs": 0.6934
+    },
+    {
+      "feature": "REPEAT_TENDER",
+      "mean_abs": 0.688
+    },
+    {
+      "feature": "NIGHT_OR_WEEKEND_PUBLISH",
+      "mean_abs": 0.6726
+    },
+    {
+      "feature": "deadline_days",
+      "mean_abs": 0.6623
+    }
+  ]
+}

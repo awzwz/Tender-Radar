@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import dashboard, lots, tenders, suppliers, customers, notes, auth, admin, explain, bidcheck, chat
+from app.api.v1.endpoints import dashboard, lots, tenders, suppliers, customers, notes, auth, admin, explain, bidcheck, chat, company_profile
 
 router = APIRouter()
 
@@ -14,4 +14,5 @@ router.include_router(suppliers.router, prefix="/suppliers", tags=["Suppliers"])
 router.include_router(customers.router, prefix="/customers", tags=["Customers"])
 router.include_router(notes.router, prefix="/notes", tags=["Notes"])
 router.include_router(admin.router, prefix="/admin", tags=["Admin"])
+router.include_router(company_profile.router, prefix="/company", tags=["CompanyProfile"])
 

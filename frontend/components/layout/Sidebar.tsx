@@ -12,23 +12,29 @@ import {
     Search,
     FileCheck2,
     Users,
+    Building,
     ChevronLeft,
     ChevronRight,
     Sparkles,
     LogOut,
     Menu,
     X,
+    Building2,
+    ClipboardList,
 } from "lucide-react";
 
 /* ── Types ──────────────────────────────────────────────────────────── */
 export type NavId =
     | "dashboard"
     | "risk-list"
+    | "tender-list"
     | "detail"
     | "cases"
     | "specnorm"
     | "bidcheck"
     | "suppliers"
+    | "customers"
+    | "company-search"
     | "ai-assistant";
 
 interface SidebarProps {
@@ -50,12 +56,15 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
     { id: "dashboard", label: "Dashboard", icon: <LayoutDashboard className="h-5 w-5" />, hint: "Сводка рисков", group: "main" },
-    { id: "risk-list", label: "Risk List", icon: <ListFilter className="h-5 w-5" />, hint: "Фильтры и поиск", group: "main" },
+    { id: "risk-list", label: "Risk List", icon: <ListFilter className="h-5 w-5" />, hint: "Лоты · фильтры", group: "main" },
+    { id: "tender-list", label: "Тендеры", icon: <ClipboardList className="h-5 w-5" />, hint: "Список тендеров", group: "main" },
+    { id: "suppliers", label: "Suppliers", icon: <Users className="h-5 w-5" />, hint: "Suppliers registry", group: "main" },
+    { id: "customers", label: "Customers", icon: <Building className="h-5 w-5" />, hint: "Customers registry", group: "main" },
     { id: "detail", label: "Lot Detail", icon: <FileText className="h-5 w-5" />, hint: "Причины риска", group: "main" },
     { id: "cases", label: "Cases", icon: <Briefcase className="h-5 w-5" />, hint: "Рабочее место", group: "main" },
     { id: "specnorm", label: "Tender Analysis", icon: <FileCheck2 className="h-5 w-5" />, hint: "Spec vs Norm · LLM", group: "tools", badge: "AI" },
     { id: "bidcheck", label: "BidCheck", icon: <Shield className="h-5 w-5" />, hint: "Parse PDF · Suppliers", group: "tools" },
-    { id: "suppliers", label: "Suppliers", icon: <Users className="h-5 w-5" />, hint: "Карточки поставщиков", group: "tools" },
+    { id: "company-search", label: "Company Intel", icon: <Building2 className="h-5 w-5" />, hint: "Досье по БИН / имени", group: "tools", badge: "Live" },
     { id: "ai-assistant", label: "AI Assistant", icon: <Bot className="h-5 w-5" />, hint: "MCP · tool-based", group: "ai", badge: "New" },
 ];
 

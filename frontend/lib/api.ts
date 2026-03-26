@@ -118,6 +118,49 @@ export const api = {
         apiFetch("/admin/ml/train", { method: "POST" }),
 
     etlStatus: () => apiFetch<EtlRun[]>("/admin/etl/status"),
+
+    // ── Company Profile (real-time OWS) ────────────────────────────────────
+    companySearch: (q: string) =>
+        apiFetch<{ query: string; total: number; results: CompanySearchResult[] }>(
+            `/company/search?q=${encodeURIComponent(q)}`
+        ),
+
+    companyProfile: (bin: string) =>
+        apiFetch<CompanyProfile>(`/company/${bin}`),
+
+    companyAnalyze: (bin: string, profile: CompanyProfile) =>
+        apiFetch<{ bin: string; narrative: string; model: string }>(
+            `/company/${bin}/analyze`,
+            { method: "POST", body: JSON.stringify({ profile }) }
+        ),
+
+    // ── Suppliers list ────────────────────────────────────────────────────────
+    suppliersList: (params: { search?: string; blacklisted?: boolean; sort_by?: string; page?: number; limit?: number }) => {
+        const p: Record<string, string> = {};
+        if (params.search) p.search = params.search;
+        if (params.blacklisted !== undefined) p.blacklisted = String(params.blacklisted);
+        if (params.sort_by) p.sort_by = params.sort_by;
+        if (params.page) p.page = String(params.page);
+        if (params.limit) p.limit = String(params.limit);
+        const qs = new URLSearchParams(p).toString();
+        return apiFetch<{ total: number; page: number; limit: number; items: SupplierListItem[] }>(
+            `/suppliers/${qs ? "?" + qs : ""}`
+        );
+    },
+
+    // ── Customers list ────────────────────────────────────────────────────────
+    customersList: (params: { search?: string; min_high_lots?: number; sort_by?: string; page?: number; limit?: number }) => {
+        const p: Record<string, string> = {};
+        if (params.search) p.search = params.search;
+        if (params.min_high_lots !== undefined) p.min_high_lots = String(params.min_high_lots);
+        if (params.sort_by) p.sort_by = params.sort_by;
+        if (params.page) p.page = String(params.page);
+        if (params.limit) p.limit = String(params.limit);
+        const qs = new URLSearchParams(p).toString();
+        return apiFetch<{ total: number; page: number; limit: number; items: CustomerListItem[] }>(
+            `/customers/${qs ? "?" + qs : ""}`
+        );
+    },
 };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -299,4 +342,235 @@ export interface IndicatorDetails {
         tender_number?: string;
     }[];
     evidence?: Record<string, unknown>;
+}
+
+// ── Supplier / Customer list items ────────────────────────────────────────────
+
+export interface SupplierListItem {
+    biin: string;
+    name_ru: string | null;
+    total_contracts: number;
+    total_sum: number;
+    unique_customers: number;
+    last_contract_date: string | null;
+    is_blacklisted: boolean;
+}
+
+export interface CustomerListItem {
+    bin: string;
+    customer_name: string | null;
+    total_lots: number;
+    total_tenders: number;
+    total_amount: number;
+    avg_risk_score: number;
+    high_risk_lots: number;
+    medium_risk_lots: number;
+}
+
+// ── Company Profile (OWS real-time) ───────────────────────────────────────────
+
+export interface CompanySearchResult {
+    pid?: number;
+    bin?: string;
+    iin?: string;
+    nameRu?: string;
+    nameKz?: string;
+    fullNameRu?: string;
+    regdate?: string;
+    email?: string;
+    phone?: string;
+    website?: string;
+    customer?: boolean;
+    supplier?: boolean;
+    systemId?: number;
+}
+
+export interface CompanyYearStat {
+    count: number;
+    sum: number;
+}
+
+export interface CompanyPartnerStat {
+    bin: string;
+    count: number;
+    sum: number;
+}
+
+export interface CompanySupplierMetrics {
+    total_contracts: number;
+    total_sum: number;
+    executed_sum: number;
+    execution_rate: number;
+    unique_customers: number;
+    top_customers: CompanyPartnerStat[];
+    by_year: Record<string, CompanyYearStat>;
+    overdue_count: number;
+    fines_count: number;
+    avg_contract_size: number;
+    treasury_paid: number;
+}
+
+export interface CompanyCustomerMetrics {
+    total_tenders: number;
+    total_contracts: number;
+    total_procurement_sum: number;
+    unique_suppliers: number;
+    top_suppliers: CompanyPartnerStat[];
+    by_year: Record<string, CompanyYearStat>;
+    single_source_count: number;
+    single_source_rate: number;
+    cancelled_tenders: number;
+}
+
+export interface CompanyRiskInfo {
+    score: number;
+    level: "LOW" | "MEDIUM" | "HIGH";
+    flags: string[];
+    flags_detail?: { code: string; points: number; detail: string }[];
+}
+
+export interface CompanyComplaintLLMAnalysis {
+    complaint_number: string;
+    violation_type: string;
+    summary: string;
+    severity: "low" | "medium" | "high";
+    risk_impact: number;
+}
+
+export interface CompanyComplaintInfo {
+    total: number;
+    complaints_as_supplier: number;
+    complaints_as_customer: number;
+    satisfied_count: number;
+    rejected_count?: number;
+    satisfaction_rate: number;
+    score_points?: number;
+    llm_analyses?: CompanyComplaintLLMAnalysis[];
+    complaints: Record<string, unknown>[];
+}
+
+export interface TaxPaymentEntry {
+    year: number;
+    amount: number;
+    change_pct: number | null;
+}
+
+export interface TaxLLMAnalysis {
+    tax_trend: string;
+    tax_health: string;
+    anomalies: string[];
+    summary: string;
+    risk_level: string;
+    score_points: number;
+}
+
+export interface CompanyKGDInfo {
+    bin: string;
+    available: boolean;
+    tax_payments: TaxPaymentEntry[];
+    total_tax_paid: number;
+    llm_analysis: TaxLLMAnalysis | null;
+    score_points: number;
+    source: string;
+}
+
+export interface CompanyCourtCase {
+    case_number: string;
+    date: string;
+    court: string;
+    case_type: string;
+    parties: string;
+    amount: number | null;
+    outcome: string;
+    role: string;
+    detail_url: string;
+    full_text: string;
+}
+
+export interface CompanyCourtLLMAnalysis {
+    case_number: string;
+    role: string;
+    dispute_type: string;
+    amount: number | null;
+    outcome: string;
+    reliability_impact: number;
+    summary: string;
+}
+
+export interface CompanyCourtInfo {
+    total: number;
+    as_plaintiff: number;
+    as_defendant: number;
+    as_other: number;
+    avg_reliability_impact: number;
+    score_points: number;
+    cases: CompanyCourtCase[];
+    llm_analyses: CompanyCourtLLMAnalysis[];
+}
+
+export interface CompanyAffiliation {
+    bin: string;
+    name: string;
+    match_type?: string;
+    times_together?: number;
+    sum?: number;
+}
+
+export interface CompanyAffiliationsInfo {
+    total_links: number;
+    shared_bank_accounts: CompanyAffiliation[];
+    shared_contacts: CompanyAffiliation[];
+    cobid_partners: CompanyAffiliation[];
+}
+
+export interface CompanyRnuStatus {
+    is_blacklisted: boolean;
+    active_count: number;
+    records: Record<string, unknown>[];
+}
+
+export interface OWSContract {
+    id: number;
+    contractNumber?: string;
+    trdBuyNumberAnno?: string;
+    customerBin?: string;
+    supplierBiin?: string;
+    contractSumWnds?: number;
+    faktSum?: number;
+    signDate?: string;
+    planExecDate?: string;
+    faktExecDate?: string;
+    refContractStatusId?: number;
+}
+
+export interface OWSTender {
+    id: number;
+    numberAnno?: string;
+    nameRu?: string;
+    totalSum?: number;
+    countLots?: number;
+    refBuyStatusId?: number;
+    publishDate?: string;
+    singlOrgSign?: boolean;
+}
+
+export interface CompanyProfile {
+    bin: string;
+    fetched_at: string;
+    subject: CompanySearchResult | null;
+    rnu: CompanyRnuStatus;
+    risk: CompanyRiskInfo;
+    as_supplier: {
+        contracts: OWSContract[];
+        metrics: CompanySupplierMetrics;
+    };
+    as_customer: {
+        contracts: OWSContract[];
+        tenders: OWSTender[];
+        metrics: CompanyCustomerMetrics;
+    };
+    complaints?: CompanyComplaintInfo;
+    kgd?: CompanyKGDInfo;
+    court_cases?: CompanyCourtInfo;
+    affiliations?: CompanyAffiliationsInfo;
 }

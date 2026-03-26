@@ -33,17 +33,10 @@ celery_app.conf.update(
             "task": "app.etl.tasks.compute_graph_features",
             "schedule": crontab(hour=3, minute=30),
         },
-        "daily-weak-labeling": {
-            "task": "app.etl.tasks.run_weak_labeling",
-            "schedule": crontab(hour=5, minute=0),
-        },
-        "weekly-train-anomaly": {
-            "task": "app.etl.tasks.train_anomaly_model",
+        # Weekly ML ensemble training (Sunday 06:00)
+        "weekly-train-ml-ensemble": {
+            "task": "app.etl.tasks.train_ml_ensemble",
             "schedule": crontab(hour=6, minute=0, day_of_week=0),
-        },
-        "weekly-train-weak-model": {
-            "task": "app.etl.tasks.train_weak_model",
-            "schedule": crontab(hour=7, minute=0, day_of_week=0),
         },
     },
 )
@@ -166,134 +159,75 @@ def run_q1_2024_etl_task(self, step: str = "all"):
         raise RuntimeError(f"Q1 2024 ETL failed: {type(e).__name__}: {e}") from None
 
 
-@celery_app.task(name="app.etl.tasks.train_anomaly_model")
-def train_anomaly_model():
-    """Celery task: train IsolationForest anomaly model on tender features (unlabeled)."""
-    from app.ml.anomaly import train_anomaly_model as _train
-    from app.core.database import AsyncSessionLocal
-    from app.models.procurement import TenderFeature
-    from sqlalchemy import select
-    import numpy as np
-    
-    # Hardcoded feature columns since train.py was removed
-    FEATURE_COLUMNS = [
-        "LOT_SPLITTING", "SHORT_DEADLINE", "FEW_BIDS", "RECURRING_WINNER",
-        "COMMON_REQUISITES", "NEW_COMPANY_BIG_CONTRACT", "CAROUSEL_PATTERN",
-        "RNU_FLAG", "DUMPING_FLAG", "IDENTICAL_BID_PRICES", "TINY_WIN_MARGIN",
-        "LATE_BID_SUBMISSION", "REPEAT_TENDER", "CANCELLED_TENDER", "PAUSED_TENDER",
-        "NIGHT_OR_WEEKEND_PUBLISH", "SHORT_DISCUSSION_WINDOW", "LAST_MINUTE_CHANGES",
-        "SUPPLIER_CONCENTRATION", "CUSTOMER_WINNER_CONCENTRATION", "HIGH_WIN_RATE_FEW_BIDS",
-        "ADDENDUM_VALUE_INCREASE", "WIN_MIN_THEN_ADDENDUM", "WEIRD_EXECUTION_TIME",
-        "HIGH_PREPAY", "PAYMENTS_EXCEED_CONTRACT", "PAYMENT_WITHOUT_ACT",
-        "OVERDUE_EXECUTION", "FINES_PRESENT", "LOW_EXECUTION_RATE", "BANK_DETAILS_REUSE",
-    ]
+@celery_app.task(name="app.etl.tasks.train_ml_ensemble")
+def train_ml_ensemble():
+    """Celery task: train all 3 ML models (IsolationForest + Autoencoder + HDBSCAN) on numerical features."""
+    from app.ml.feature_engineering import build_dataset
 
-    logger.info("Building anomaly dataset...")
+    logger.info("Building ML dataset (30 numerical features only)...")
+
     async def _build():
-        async with AsyncSessionLocal() as db:
-            r = await db.execute(
-                select(TenderFeature.entity_id, TenderFeature.features_jsonb).where(
-                    TenderFeature.entity_type == "lot"
-                )
-            )
-            rows = r.all()
-        if not rows:
-            raise ValueError("No tender features; run feature recompute first.")
-        X = []
-        for row in rows:
-            features = row.features_jsonb or {}
-            vec = []
-            for col in FEATURE_COLUMNS:
-                v = features.get(col)
-                if v is None:
-                    vec.append(0.0)
-                elif isinstance(v, bool):
-                    vec.append(1.0 if v else 0.0)
-                else:
-                    try:
-                        vec.append(float(v))
-                    except (ValueError, TypeError):
-                        vec.append(0.0)
-            X.append(vec)
-        return np.array(X, dtype=np.float64)
+        entity_ids, X = await build_dataset(ml_only=True)
+        return X
 
     X = run_async(_build())
-    logger.info("Training anomaly model on %s samples...", X.shape[0])
-    result = _train(X)
-    return result
+    if X.shape[0] < 100:
+        raise ValueError(f"Too few samples: {X.shape[0]}; need at least 100. Run ETL first.")
+
+    results = {}
+
+    # 1. IsolationForest
+    logger.info("Training IsolationForest on %d samples x %d features...", X.shape[0], X.shape[1])
+    try:
+        from app.ml.anomaly import train_anomaly_model
+        results["isoforest"] = train_anomaly_model(X)
+        logger.info("IsolationForest training complete")
+    except Exception as e:
+        logger.error("IsolationForest training failed: %s", e)
+        results["isoforest"] = {"error": str(e)}
+
+    # 2. Autoencoder
+    logger.info("Training Autoencoder...")
+    try:
+        from app.ml.autoencoder import train_autoencoder
+        results["autoencoder"] = train_autoencoder(X)
+        logger.info("Autoencoder training complete")
+    except Exception as e:
+        logger.error("Autoencoder training failed: %s", e)
+        results["autoencoder"] = {"error": str(e)}
+
+    # 3. HDBSCAN
+    logger.info("Training HDBSCAN...")
+    try:
+        from app.ml.clustering import train_hdbscan
+        results["hdbscan"] = train_hdbscan(X)
+        logger.info("HDBSCAN training complete")
+    except Exception as e:
+        logger.error("HDBSCAN training failed: %s", e)
+        results["hdbscan"] = {"error": str(e)}
+
+    successful = sum(1 for r in results.values() if "error" not in r)
+    logger.info("ML Ensemble training done: %d/3 models trained successfully", successful)
+    return results
 
 
-@celery_app.task(name="app.etl.tasks.run_weak_labeling")
-def run_weak_labeling(version: str = None):
-    """Celery task: run weak labeling pipeline and save to weak_labels."""
-    from app.ml.weak_labeling import run_weak_labeling as _run
-    logger.info("Starting weak labeling...")
-    summary = run_async(_run(version=version))
-    logger.info("Weak labeling complete: %s", summary)
-    return summary
+@celery_app.task(name="app.etl.tasks.train_anomaly_model")
+def train_anomaly_model():
+    """Celery task: train IsolationForest only (standalone). Prefer train_ml_ensemble."""
+    from app.ml.anomaly import train_anomaly_model as _train
+    from app.ml.feature_engineering import build_dataset
 
+    logger.info("Building dataset (30 numerical features)...")
 
-@celery_app.task(name="app.etl.tasks.train_weak_model")
-def train_weak_model():
-    """Celery task: train weak model (GBM) on weak labels."""
-    from app.ml.weak_model import train_weak_model as _train
-    from app.core.database import AsyncSessionLocal
-    from app.models.procurement import TenderFeature, WeakLabel
-    from sqlalchemy import select
-    import numpy as np
-    
-    # Hardcoded feature columns since train.py was removed
-    FEATURE_COLUMNS = [
-        "LOT_SPLITTING", "SHORT_DEADLINE", "FEW_BIDS", "RECURRING_WINNER",
-        "COMMON_REQUISITES", "NEW_COMPANY_BIG_CONTRACT", "CAROUSEL_PATTERN",
-        "RNU_FLAG", "DUMPING_FLAG", "IDENTICAL_BID_PRICES", "TINY_WIN_MARGIN",
-        "LATE_BID_SUBMISSION", "REPEAT_TENDER", "CANCELLED_TENDER", "PAUSED_TENDER",
-        "NIGHT_OR_WEEKEND_PUBLISH", "SHORT_DISCUSSION_WINDOW", "LAST_MINUTE_CHANGES",
-        "SUPPLIER_CONCENTRATION", "CUSTOMER_WINNER_CONCENTRATION", "HIGH_WIN_RATE_FEW_BIDS",
-        "ADDENDUM_VALUE_INCREASE", "WIN_MIN_THEN_ADDENDUM", "WEIRD_EXECUTION_TIME",
-        "HIGH_PREPAY", "PAYMENTS_EXCEED_CONTRACT", "PAYMENT_WITHOUT_ACT",
-        "OVERDUE_EXECUTION", "FINES_PRESENT", "LOW_EXECUTION_RATE", "BANK_DETAILS_REUSE",
-    ]
-
-    logger.info("Building weak model dataset...")
     async def _build():
-        async with AsyncSessionLocal() as db:
-            r = await db.execute(
-                select(TenderFeature.entity_id, TenderFeature.features_jsonb).where(
-                    TenderFeature.entity_type == "lot"
-                )
-            )
-            tf_rows = {row.entity_id: row.features_jsonb for row in r.all()}
-            w = await db.execute(
-                select(WeakLabel.entity_id, WeakLabel.weak_proba).where(WeakLabel.entity_type == "lot")
-            )
-            w_rows = {row.entity_id: row.weak_proba for row in w.all()}
-        entity_ids = [eid for eid in tf_rows if eid in w_rows]
-        if len(entity_ids) < 50:
-            raise ValueError("Insufficient weak labels; run weak labeling first.")
-        X = []
-        probs = []
-        for eid in entity_ids:
-            features = tf_rows.get(eid) or {}
-            vec = []
-            for col in FEATURE_COLUMNS:
-                v = features.get(col)
-                if v is None:
-                    vec.append(0.0)
-                elif isinstance(v, bool):
-                    vec.append(1.0 if v else 0.0)
-                else:
-                    try:
-                        vec.append(float(v))
-                    except (ValueError, TypeError):
-                        vec.append(0.0)
-            X.append(vec)
-            probs.append(w_rows[eid])
-        return np.array(X, dtype=np.float64), np.array(probs, dtype=np.float64)
+        entity_ids, X = await build_dataset(ml_only=True)
+        return X
 
-    X, weak_proba = run_async(_build())
-    logger.info("Training weak model on %s samples...", X.shape[0])
-    result = _train(X, weak_proba)
+    X = run_async(_build())
+    if X.shape[0] == 0:
+        raise ValueError("No data found; run ETL + feature recompute first.")
+    logger.info("Training anomaly model on %d samples x %d features...", X.shape[0], X.shape[1])
+    result = _train(X)
     return result
 
 

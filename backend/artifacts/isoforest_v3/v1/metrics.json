@@ -1,0 +1,121 @@
+{
+  "model_name": "isoforest_v3",
+  "version": "v3",
+  "n_samples": 11609,
+  "n_features": 30,
+  "n_anomalies_detected": 1325,
+  "anomaly_rate": 11.41,
+  "feature_columns": [
+    "log_amount",
+    "log_contract_sum",
+    "bid_count",
+    "unique_bidder_count",
+    "deadline_days",
+    "discussion_days",
+    "execution_days_planned",
+    "execution_days_actual",
+    "execution_overrun_ratio",
+    "price_to_plan_ratio",
+    "win_margin_pct",
+    "min_bid_ratio",
+    "payment_to_contract_ratio",
+    "act_sum_to_contract_ratio",
+    "fine_ratio",
+    "max_overdue_days",
+    "addendum_count",
+    "addendum_sum_ratio",
+    "supplier_age_days",
+    "supplier_total_contracts",
+    "supplier_win_rate",
+    "customer_total_tenders",
+    "customer_unique_winners",
+    "customer_top_winner_share",
+    "graph_cobid_partners",
+    "graph_top_supplier_share",
+    "graph_win_rotation_index",
+    "lot_count_in_tender",
+    "is_single_source",
+    "is_construction"
+  ],
+  "percentiles": {
+    "1": -0.17479091764109667,
+    "5": -0.1736152765404308,
+    "10": -0.17018934589512175,
+    "25": -0.16096270815237895,
+    "50": -0.14431807846816913,
+    "75": -0.08531779120515781,
+    "90": 0.01290019022398431,
+    "95": 0.05247430238781157,
+    "99": 0.10972763703796312,
+    "min": -0.17525009645028905,
+    "max": 0.1953542806338766
+  },
+  "severity_thresholds": {
+    "elevated": 0.01290019022398431,
+    "high": 0.05247430238781157,
+    "critical": 0.10972763703796312
+  },
+  "contamination": "auto",
+  "global_feature_importance": [
+    {
+      "feature": "bid_count",
+      "importance": 0.244856
+    },
+    {
+      "feature": "unique_bidder_count",
+      "importance": 0.242824
+    },
+    {
+      "feature": "deadline_days",
+      "importance": 0.239442
+    },
+    {
+      "feature": "graph_top_supplier_share",
+      "importance": 0.235667
+    },
+    {
+      "feature": "execution_days_planned",
+      "importance": 0.216507
+    },
+    {
+      "feature": "price_to_plan_ratio",
+      "importance": 0.210008
+    },
+    {
+      "feature": "supplier_age_days",
+      "importance": 0.205681
+    },
+    {
+      "feature": "customer_total_tenders",
+      "importance": 0.202541
+    },
+    {
+      "feature": "log_contract_sum",
+      "importance": 0.183116
+    },
+    {
+      "feature": "lot_count_in_tender",
+      "importance": 0.181253
+    },
+    {
+      "feature": "customer_unique_winners",
+      "importance": 0.170686
+    },
+    {
+      "feature": "graph_win_rotation_index",
+      "importance": 0.167487
+    },
+    {
+      "feature": "customer_top_winner_share",
+      "importance": 0.16417
+    },
+    {
+      "feature": "log_amount",
+      "importance": 0.149212
+    },
+    {
+      "feature": "payment_to_contract_ratio",
+      "importance": 0.14314
+    }
+  ]
+}

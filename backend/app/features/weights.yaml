@@ -39,10 +39,10 @@ indicators:
     description_en: "Recently registered company wins large contract"
 
   CAROUSEL_PATTERN:
-    weight: 18
+    weight: 15
     level_contribution: high
-    description: "Паттерн чередования победителей А→В→С→А"
-    description_en: "Winner rotation pattern between small group"
+    description: "Паттерн чередования победителей А→В→С→А (3+ участника)"
+    description_en: "Winner rotation pattern between small group (3+ participants)"
 
   RNU_FLAG:
     weight: 20
@@ -69,31 +69,31 @@ indicators:
     description_en: "Very small win margin (< 1%)"
 
   LATE_BID_SUBMISSION:
-    weight: 7
+    weight: 4
     level_contribution: low
-    description: "Заявки поданы за <60 минут до дедлайна"
-    description_en: "Bids submitted very close to deadline (last 60 min)"
+    description: "Все заявки поданы за <60 минут до дедлайна"
+    description_en: "All bids submitted very close to deadline (last 60 min)"
 
   REPEAT_TENDER:
-    weight: 8
-    level_contribution: medium
+    weight: 4
+    level_contribution: low
     description: "Тендер является повторным (есть parentId)"
     description_en: "Tender is a repeat/restart"
 
   CANCELLED_TENDER:
-    weight: 10
-    level_contribution: medium
+    weight: 5
+    level_contribution: low
     description: "Тендер отменён"
     description_en: "Tender has cancellation records"
 
   PAUSED_TENDER:
-    weight: 8
-    level_contribution: medium
+    weight: 4
+    level_contribution: low
     description: "Тендер был приостановлен"
     description_en: "Tender was paused"
 
   NIGHT_OR_WEEKEND_PUBLISH:
-    weight: 6
+    weight: 3
     level_contribution: low
     description: "Публикация в нерабочее время или выходные"
     description_en: "Tender published at unusual time (night/weekend)"
@@ -189,7 +189,82 @@ indicators:
     description_en: "Same bank details across different companies"
 
 thresholds:
-  # Градация: LOW 0-6, MEDIUM 7-19, HIGH 20+
-  # (было low_max: 9 — часть LOW переехала в MEDIUM для лучшего охвата)
-  low_max: 6
-  medium_max: 19
+  # Градация: LOW 0-25, MEDIUM 26-45, HIGH 46+
+  low_max: 25
+  medium_max: 45
+
+# Configurable thresholds per indicator (avoids hardcoding in Python)
+indicator_thresholds:
+  LOT_SPLITTING:
+    min_lots: 5
+    max_avg_amount: 5000000
+    min_total_sum: 10000000
+  SHORT_DEADLINE:
+    min_days: 3
+  FEW_BIDS:
+    max_bids: 2
+  RECURRING_WINNER:
+    min_contracts: 3
+    win_rate_threshold: 0.70
+    lookback_days: 730
+  NEW_COMPANY_BIG_CONTRACT:
+    max_age_days: 365
+    min_contract_sum: 10000000
+  CAROUSEL_PATTERN:
+    min_contracts: 5
+    min_unique_suppliers: 3
+    max_hhi: 0.45
+  OVERDUE_EXECUTION:
+    min_overdue_days: 14
+    min_overdue_days_long: 30
+    long_contract_days: 365
+  FINES_PRESENT:
+    min_fine_ratio: 0.01
+  LATE_BID_SUBMISSION:
+    cutoff_minutes: 60
+    require_all_late: true
+  SUPPLIER_CONCENTRATION:
+    min_contracts: 5
+    threshold: 0.80
+  CUSTOMER_WINNER_CONCENTRATION:
+    min_contracts: 5
+    threshold: 0.80
+  ADDENDUM_VALUE_INCREASE:
+    threshold: 0.20
+  WIN_MIN_THEN_ADDENDUM:
+    max_days: 30
+  WEIRD_EXECUTION_TIME:
+    min_days: 7
+    max_days: 730
+  HIGH_PREPAY:
+    threshold: 0.50
+  SHORT_DISCUSSION_WINDOW:
+    min_days: 2
+  TINY_WIN_MARGIN:
+    threshold_pct: 1.0
+  IDENTICAL_BID_PRICES:
+    min_duplicate_groups: 1
+
+# Combo boosters: bonus points when dangerous indicator combinations co-occur
+combo_boosters:
+  - codes: ["LOT_SPLITTING", "FEW_BIDS", "RECURRING_WINNER"]
+    bonus: 10
+    description: "Split + few bids + recurring winner"
+  - codes: ["COMMON_REQUISITES", "IDENTICAL_BID_PRICES"]
+    bonus: 8
+    description: "Shared contacts + identical prices (collusion)"
+  - codes: ["WIN_MIN_THEN_ADDENDUM", "ADDENDUM_VALUE_INCREASE"]
+    bonus: 8
+    description: "Quick addendum + value increase (win-low-inflate)"
+  - codes: ["NEW_COMPANY_BIG_CONTRACT", "RNU_FLAG"]
+    bonus: 8
+    description: "New company + RNU flag"
+  - codes: ["PAYMENT_WITHOUT_ACT", "PAYMENTS_EXCEED_CONTRACT"]
+    bonus: 10
+    description: "Pay without acts + exceeded contract"
+  - codes: ["SHORT_DEADLINE", "LAST_MINUTE_CHANGES", "FEW_BIDS"]
+    bonus: 8
+    description: "Short deadline + last-minute changes + few bids"
+  - codes: ["BANK_DETAILS_REUSE", "COMMON_REQUISITES"]
+    bonus: 10
+    description: "Shared bank details + shared contacts (shell companies)"

@@ -354,7 +354,7 @@ async def _load_lots(client: OWSClient, buy_ids: list[int]) -> int:
     total = 0
     for i in range(start, len(chunks_list)):
         ch = chunks_list[i]
-        async for batch in client.graphql_paginate(
+        async for batch, _ in client.graphql_paginate(
             GQL_LOTS, "Lots", variables={"filter": {"trdBuyId": ch}}
         ):
             total += await _process_lots_batch(batch)
@@ -428,7 +428,7 @@ async def _subject_topup(client: OWSClient, buy_ids: list[int]) -> int:
     if not missing:
         return 0
     count = 0
-    async for batch in client.graphql_paginate(GQL_SUBJECT, "Subjects", max_records=50_000):
+    async for batch, next_id in client.graphql_paginate(GQL_SUBJECT, "Subjects", max_records=50_000):
         rows = []
         for item in batch:
             bin_val = item.get("bin")

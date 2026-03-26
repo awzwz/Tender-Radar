@@ -105,6 +105,7 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - WATCHPACK_POLLING=true
     ports:
       - "3002:3000"
     depends_on:
@@ -113,6 +114,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
+    command: sh -c "rm -rf .next/* && npm run dev"
     restart: unless-stopped
 
 volumes:

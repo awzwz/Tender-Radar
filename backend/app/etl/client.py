@@ -443,18 +443,19 @@ class OWSClient:
         max_records: int = 0,
         page_size: int = 50,
         variables: dict | None = None,
-    ) -> AsyncGenerator[list[dict], None]:
+        initial_after: int = 0,
+    ) -> AsyncGenerator[tuple[list[dict], int], None]:
         """
-        Yields batches of records from a GraphQL query using `limit` and `after`.
+        Yields (batch, next_id) from a GraphQL query using `limit` and `after`.
         Stops when `max_records` is reached (if > 0) or no more records.
         """
-        url = f"{self.base_url}/v3/graphql" # Changed from /graphql to /v3/graphql to match existing graphql method
-        headers = {"Authorization": f"Bearer {self.token}", "Content-Type": "application/json", "Accept": "application/json"} # Added Content-Type and Accept
+        url = f"{self.base_url}/v3/graphql"
+        headers = {"Authorization": f"Bearer {self.token}", "Content-Type": "application/json", "Accept": "application/json"}
 
         # Merge pagination vars into the user-provided variables map, or create a new one
         vars_payload = variables.copy() if variables else {}
 
-        last_id = 0
+        last_id = initial_after
         fetched_total = 0
 
         while True:
@@ -482,12 +483,15 @@ class OWSClient:
                     f"(after={last_id}, limit={page_size})"
                 )
                 raise RuntimeError(f"GraphQL query error for {data_key}: {err_msg}")
-
             data = result.get("data", {}).get(data_key, [])
             if not data:
                 break
 
-            yield data
+            # Use extensions.pageInfo for cursor
+            page_info = result.get("extensions", {}).get("pageInfo", {})
+            next_id = page_info.get("lastId")
+
+            yield data, next_id
             fetched_total += len(data)
 
             if max_records > 0 and fetched_total >= max_records:
@@ -499,7 +503,7 @@ class OWSClient:
             if not page_info.get("hasNextPage", False):
                 break
 
-            last_id = page_info.get("lastId")
+            last_id = next_id
             if not last_id:
                 break
 

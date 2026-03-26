@@ -147,7 +147,7 @@ class BackfillETL:
         # Cap at 200 BINs total — each needs its own API call
         for bin_val in bins[:200]:
             try:
-                async for batch in self.client.graphql_paginate(
+                async for batch, _ in self.client.graphql_paginate(
                     GQL_CONTRACT, "Contract",
                     variables={"filter": {"supplierBiin": bin_val}}
                 ):
@@ -169,7 +169,7 @@ class BackfillETL:
 
     async def _load_trd_app_by_buy_ids(self, ids: list[int]) -> int:
         count = 0
-        async for batch in self.client.graphql_paginate(
+        async for batch, _ in self.client.graphql_paginate(
             GQL_TRD_APP, "TrdApp",
             variables={"filter": {"buyId": ids}}
         ):
@@ -178,7 +178,7 @@ class BackfillETL:
 
     async def _load_trd_buy_by_ids(self, ids: list[int]) -> int:
         count = 0
-        async for batch in self.client.graphql_paginate(
+        async for batch, _ in self.client.graphql_paginate(
             GQL_TRD_BUY, "TrdBuy",
             variables={"filter": {"id": ids}}
         ):
@@ -187,7 +187,7 @@ class BackfillETL:
 
     async def _load_lots_by_buy_ids(self, ids: list[int]) -> int:
         count = 0
-        async for batch in self.client.graphql_paginate(
+        async for batch, _ in self.client.graphql_paginate(
             GQL_LOTS, "Lots",
             variables={"filter": {"trdBuyId": ids}}
         ):
@@ -237,7 +237,7 @@ class BackfillETL:
         NOTE: This can be large; for MVP bootstrap we cap by bootstrap_limit if set.
         """
         count = 0
-        async for batch in self.client.graphql_paginate(
+        async for batch, _ in self.client.graphql_paginate(
             GQL_SUBJECT, "Subjects",
             max_records=self.bootstrap_limit,
             variables=None,
@@ -349,7 +349,7 @@ class BackfillETL:
 
     async def _load_trd_buy(self) -> int:
         count = 0
-        async for batch in self.client.graphql_paginate(
+        async for batch, _ in self.client.graphql_paginate(
             GQL_TRD_BUY, "TrdBuy",
             max_records=self.bootstrap_limit,
             variables={"filter": {"publishDate": [self.ows_date_from, self.ows_date_to]}},
@@ -463,7 +463,7 @@ class BackfillETL:
         if not ids: return 0
         count = 0
         for ch in self._chunks(list(ids), 200):
-            async for batch in self.client.graphql_paginate(GQL_TRD_APP, "TrdApp", variables={"filter": {"buyId": ch}}):
+            async for batch, _ in self.client.graphql_paginate(GQL_TRD_APP, "TrdApp", variables={"filter": {"buyId": ch}}):
                 count += await self._process_trd_app_batch(batch)
                 logger.info(f"TrdApp upserted: {count}")
         return count
@@ -634,12 +634,12 @@ class BackfillETL:
         for ch in self._chunks(list(trd_ids), 150):
             query = GQL_CONTRACT if use_nested_query else GQL_CONTRACT_FLAT
             try:
-                async for batch in self.client.graphql_paginate(query, "Contract", variables={"filter": {"trdBuyId": ch}}):
+                async for batch, _ in self.client.graphql_paginate(query, "Contract", variables={"filter": {"trdBuyId": ch}}):
                     total_contracts += await self._process_contract_batch(batch)
             except RuntimeError as e:
                 if use_nested_query:
                     use_nested_query = False
-                    async for batch in self.client.graphql_paginate(GQL_CONTRACT_FLAT, "Contract", variables={"filter": {"trdBuyId": ch}}):
+                    async for batch, _ in self.client.graphql_paginate(GQL_CONTRACT_FLAT, "Contract", variables={"filter": {"trdBuyId": ch}}):
                         total_contracts += await self._process_contract_batch(batch)
         return total_contracts
 
@@ -648,7 +648,7 @@ class BackfillETL:
 
     async def _load_rnu(self) -> int:
         count = 0
-        async for batch in self.client.graphql_paginate(GQL_RNU, "Rnu", variables=None):
+        async for batch, _ in self.client.graphql_paginate(GQL_RNU, "Rnu", variables=None):
             rows = []
             for item in batch:
                 rows.append({
@@ -677,7 +677,7 @@ class BackfillETL:
 
     async def _load_treasury_pay(self) -> int:
         count = 0
-        async for batch in self.client.graphql_paginate(GQL_TREASURY_PAY, "TreasuryPay"):
+        async for batch, _ in self.client.graphql_paginate(GQL_TREASURY_PAY, "TreasuryPay"):
             rows = []
             for item in batch:
                 rows.append({
@@ -720,7 +720,7 @@ class BackfillETL:
         """Load contract acts — gracefully skip if not in schema."""
         count = 0
         try:
-            async for batch in self.client.graphql_paginate(GQL_CONTRACT_ACT, "Acts"):
+            async for batch, _ in self.client.graphql_paginate(GQL_CONTRACT_ACT, "Acts"):
                 rows = []
                 for item in batch:
                     rows.append({
@@ -756,7 +756,7 @@ class BackfillETL:
         """Load contract payments — gracefully skip if not in schema."""
         count = 0
         try:
-            async for batch in self.client.graphql_paginate(GQL_CONTRACT_PAYMENT, "ContractPayment"):
+            async for batch, _ in self.client.graphql_paginate(GQL_CONTRACT_PAYMENT, "ContractPayment"):
                 rows = []
                 for item in batch:
                     rows.append({
@@ -788,7 +788,7 @@ class BackfillETL:
         """Load contract spec sums — gracefully skip if not in schema."""
         count = 0
         try:
-            async for batch in self.client.graphql_paginate(GQL_CONTRACT_SPEC_SUM, "ContractSpecSum"):
+            async for batch, _ in self.client.graphql_paginate(GQL_CONTRACT_SPEC_SUM, "ContractSpecSum"):
                 rows = []
                 for item in batch:
                     rows.append({
