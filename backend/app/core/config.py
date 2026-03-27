@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     app_env: str = "development"
     app_host: str = "0.0.0.0"
     app_port: int = 8000
-    cors_origins: str = "https://tender-radar-eta.vercel.app"
+    cors_origins: str = "*"
 
     # ETL
     etl_backfill_date_from: str = "2024-01-01"
