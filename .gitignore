@@ -42,3 +42,4 @@ backend/alembic/versions/*.pyc
 # Database dumps
 *.dump
 *.sql.gz
+backend/db_dump/full_backup.sql

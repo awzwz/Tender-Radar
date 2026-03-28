@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
-import { Sparkles, Shield, BarChart3, Search, Lock, User, AlertTriangle } from "lucide-react";
+import { Shield, BarChart3, Search, Lock, User, AlertTriangle } from "lucide-react";
+import Image from "next/image";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -44,9 +45,7 @@ export default function LoginPage() {
 
                 <div className="relative z-10 max-w-md text-center">
                     {/* Logo */}
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-600 shadow-2xl shadow-indigo-500/30 mb-8">
-                        <Sparkles className="h-9 w-9 text-white" />
-                    </div>
+                    <Image src="/logo.png" alt="Tender Risk Radar" width={80} height={80} className="rounded-3xl shadow-2xl shadow-indigo-500/30 mb-8 inline-block" />
 
                     <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
                         Tender Risk Radar
@@ -87,9 +86,7 @@ export default function LoginPage() {
                 <div className="relative z-10 w-full max-w-sm bg-white rounded-3xl shadow-2xl shadow-indigo-900/30 p-8">
                     {/* Mobile logo */}
                     <div className="flex lg:hidden items-center gap-3 mb-8">
-                        <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center">
-                            <Sparkles className="h-5 w-5 text-white" />
-                        </div>
+                        <Image src="/logo.png" alt="Logo" width={40} height={40} className="rounded-xl" />
                         <div>
                             <div className="text-sm font-bold text-slate-900">Tender Risk Radar</div>
                             <div className="text-xs text-slate-500">AI Risk Platform</div>

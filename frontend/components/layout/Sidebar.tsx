@@ -15,13 +15,13 @@ import {
     Building,
     ChevronLeft,
     ChevronRight,
-    Sparkles,
     LogOut,
     Menu,
     X,
     Building2,
     ClipboardList,
 } from "lucide-react";
+import Image from "next/image";
 
 /* ── Types ──────────────────────────────────────────────────────────── */
 export type NavId =
@@ -151,9 +151,7 @@ export default function Sidebar({ activeNav, onNavChange, onLogout, collapsed: c
             {/* ── Brand ─────────────────────────────── */}
             <div className={`flex items-center gap-3 px-4 pt-5 pb-4 ${collapsed ? "justify-center" : ""}`}>
                 <div className="relative flex-shrink-0">
-                    <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                        <Sparkles className="h-5 w-5 text-white" />
-                    </div>
+                    <Image src="/logo.png" alt="Logo" width={40} height={40} className="rounded-2xl shadow-lg shadow-indigo-500/20" />
                     <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-500 border-2 border-[var(--sidebar)]" />
                 </div>
                 {!collapsed && (
