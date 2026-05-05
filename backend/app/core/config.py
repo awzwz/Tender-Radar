@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     app_host: str = "0.0.0.0"
     app_port: int = 8000
     cors_origins: str = "*"
+    # Starlette returns 400 on preflight if Origin is not allowed (see CORSMiddleware.preflight_response).
+    # Matches apex + www so Railway does not need two separate CORS_ORIGINS entries.
+    # Set to "-" in env to disable regex and rely only on cors_origins.
+    cors_origin_regex: str = r"^https://(www\.)?tender-radar\.online$"
 
     # ETL
     etl_backfill_date_from: str = "2024-01-01"
@@ -66,6 +70,13 @@ class Settings(BaseSettings):
         if raw == "*":
             return ["*"]
         return [o.strip() for o in raw.split(",") if o.strip()]
+
+    @property
+    def cors_origin_regex_pattern(self) -> str | None:
+        s = self.cors_origin_regex.strip()
+        if not s or s == "-":
+            return None
+        return s
 
     class Config:
         env_file = ".env"
