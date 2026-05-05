@@ -21,7 +21,7 @@ from sqlalchemy.pool import NullPool
 async def engine():
     """Create a test database engine using the real DB URL."""
     from app.core.config import settings
-    engine = create_async_engine(settings.database_url, echo=False, poolclass=NullPool)
+    engine = create_async_engine(settings.database_url_resolved, echo=False, poolclass=NullPool)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield engine

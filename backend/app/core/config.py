@@ -78,6 +78,18 @@ class Settings(BaseSettings):
             return None
         return s
 
+    @property
+    def database_url_resolved(self) -> str:
+        """Railway/Supabase often provide postgresql://…; SQLAlchemy async needs postgresql+asyncpg://"""
+        u = self.database_url.strip()
+        if u.startswith("postgresql+asyncpg://"):
+            return u
+        if u.startswith("postgresql://"):
+            return "postgresql+asyncpg://" + u.removeprefix("postgresql://")
+        if u.startswith("postgres://"):
+            return "postgresql+asyncpg://" + u.removeprefix("postgres://")
+        return u
+
     class Config:
         env_file = ".env"
         case_sensitive = False
