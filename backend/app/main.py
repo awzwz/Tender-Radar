@@ -1,10 +1,39 @@
+import logging
+import os
+import traceback
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from app.core.config import settings
+from sqlalchemy import text
+
 from app.api.v1 import router as api_router
-import traceback
+from app.core.config import settings
+from app.core.database import dispose_engine, engine
+
+logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if os.getenv("SKIP_DB_STARTUP_CHECK") != "1":
+        try:
+            async with engine.connect() as conn:
+                await conn.execute(text("SELECT 1"))
+        except Exception as e:
+            logger.critical(
+                "DATABASE_URL is invalid or the database is unreachable at startup. "
+                "On Railway: Variables → DATABASE_URL must match your Postgres provider "
+                "(postgresql+asyncpg://…). If you see tenant/user … not found, paste a fresh URI "
+                "from Neon/Supabase/Railway Postgres. Underlying error: %s",
+                e,
+            )
+            raise
+    yield
+    await dispose_engine()
+
 
 app = FastAPI(
     title="Tender Risk Radar",
@@ -12,6 +41,7 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
+    lifespan=lifespan,
 )
 
 _origins = settings.cors_origins_list
