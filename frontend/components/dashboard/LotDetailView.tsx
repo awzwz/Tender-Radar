@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { api, LotDetail, ExplanationResponse, IndicatorDetails } from "@/lib/api";
 import { Badge, Chip, DividerSpacer, ProgressBar, SectionTitle, money } from "@/components/shared/ui";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 const EVIDENCE_LABELS: Record<string, string> = {
   // Dates & Timings
@@ -112,12 +113,13 @@ function formatWinnerSequence(sequence: any) {
 
 function BinLink({ bin, label, isCustomer = false }: { bin: string; label?: string; isCustomer?: boolean }) {
   const router = useRouter();
+  const { t } = useI18n();
   const href = isCustomer ? `/customers/${bin}` : `/suppliers/${bin}`;
   return (
     <button
       onClick={() => router.push(href)}
       className="text-indigo-300 hover:text-indigo-200 hover:underline font-mono text-xs"
-      title="Открыть карточку компании"
+      title={t("lotDetail.openCompanyCard")}
     >
       {label ?? bin}
     </button>
@@ -129,9 +131,10 @@ function LotDetailView({
 }: {
   lotId: number | null; onCreateCase: (note: string, lotId: number) => void;
 }) {
+  const { t } = useI18n();
   const [data, setData] = useState<LotDetail | null>(null);
   const [loading, setLoading] = useState(false);
-  const [note, setNote] = useState("Проверить ТЗ/обоснование цены и историю побед поставщика у заказчика.");
+  const [note, setNote] = useState(t("lotDetail.defaultNote"));
   const [explanation, setExplanation] = useState<ExplanationResponse | null>(null);
   const [explainLoading, setExplainLoading] = useState(false);
   const [indicatorDetail, setIndicatorDetail] = useState<IndicatorDetails | null>(null);
@@ -161,7 +164,7 @@ function LotDetailView({
       const result = await api.explainLot(lotId, force);
       setExplanation(result);
     } catch (err) {
-      setExplanation({ explanation: "Ошибка генерации объяснения", error: String(err) });
+      setExplanation({ explanation: t("lotDetail.explainError"), error: String(err) });
     } finally {
       setExplainLoading(false);
     }
@@ -177,7 +180,7 @@ function LotDetailView({
     return (
       <div className="flex flex-col items-center justify-center h-64 text-[var(--text-muted)] space-y-2">
         <FileText className="h-10 w-10" />
-        <div className="text-sm">Выбери лот из Dashboard или Risk List</div>
+        <div className="text-sm">{t("lotDetail.emptyState")}</div>
       </div>
     );
   }
@@ -185,7 +188,7 @@ function LotDetailView({
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64 text-[var(--text-muted)]">
-        <RefreshCw className="h-5 w-5 animate-spin mr-2" /> Загрузка...
+        <RefreshCw className="h-5 w-5 animate-spin mr-2" /> {t("lotDetail.loading")}
       </div>
     );
   }
@@ -193,7 +196,7 @@ function LotDetailView({
   if (!data) {
     return (
       <div className="flex items-center justify-center h-64 text-rose-500 dark:text-rose-400 text-sm">
-        Ошибка загрузки лота
+        {t("lotDetail.loadError")}
       </div>
     );
   }
@@ -205,20 +208,20 @@ function LotDetailView({
     <div className="space-y-4">
       <SectionTitle
         icon={<FileText className="h-4 w-4 text-indigo-200" />}
-        title="Lot Detail"
-        hint="Карточка расследования: риск + причины + evidence"
+        title={t("lotDetail.title")}
+        hint={t("lotDetail.subtitle")}
       />
 
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-4">
         {/* Header */}
         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
           <div className="flex-1 min-w-0">
-            <div className="text-lg font-semibold text-[var(--text-main)]">{lot.name_ru || "Лот"}</div>
+            <div className="text-lg font-semibold text-[var(--text-main)]">{lot.name_ru || t("lotDetail.lotFallback")}</div>
             <div className="mt-1 text-sm text-[var(--text-muted)]">
               {tender && <>№{tender.number_anno} · </>}
-              Заказчик: <span className="text-[var(--text-main)]">{lot.customer_name || lot.customer_bin}</span>
+              {t("lotDetail.customer")}: <span className="text-[var(--text-main)]">{lot.customer_name || lot.customer_bin}</span>
               {contract && (
-                <> · Поставщик:{" "}
+                <> · {t("lotDetail.supplier")}:{" "}
                   <button
                     onClick={() => router.push(`/suppliers/${contract.supplier_biin}`)}
                     className="text-indigo-600 dark:text-indigo-300 hover:underline"
@@ -229,38 +232,38 @@ function LotDetailView({
               )}
             </div>
             <div className="mt-1 text-sm text-[var(--text-muted)]">
-              Сумма: <span className="text-[var(--text-main)] font-medium">{money(lot.amount)}</span>
+              {t("lotDetail.amount")}: <span className="text-[var(--text-main)] font-medium">{money(lot.amount)}</span>
               {tender && (
-                <> · Период: <span className="text-[var(--text-main)]">{tender.start_date?.slice(0, 10)} — {tender.end_date?.slice(0, 10)}</span></>
+                <> · {t("lotDetail.period")}: <span className="text-[var(--text-main)]">{tender.start_date?.slice(0, 10)} — {tender.end_date?.slice(0, 10)}</span></>
               )}
             </div>
             {lot.dumping_flag && (
-              <span className="mt-2 inline-block rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs text-amber-600 dark:text-amber-200">⚠ Демпинг</span>
+              <span className="mt-2 inline-block rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs text-amber-600 dark:text-amber-200">{t("lotDetail.dumping")}</span>
             )}
           </div>
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-right flex-shrink-0">
-            <div className="text-xs text-[var(--text-muted)]">Final risk</div>
+            <div className="text-xs text-[var(--text-muted)]">{t("lotDetail.finalRisk")}</div>
             <div className="mt-1"><Badge level={risk.level} score={Math.round(risk.score_final ?? risk.score)} /></div>
             <div className="mt-2 w-36"><ProgressBar value={risk.score_final ?? risk.score} /></div>
-            <div className="mt-1 text-[11px] text-[var(--text-muted)]">Индикаторов: {triggeredFlags.length}/31</div>
+            <div className="mt-1 text-[11px] text-[var(--text-muted)]">{t("lotDetail.indicatorsCount", { n: triggeredFlags.length })}</div>
             {/* Risk breakdown gauges */}
             <div className="mt-3 space-y-1.5 text-left">
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-[var(--text-muted)]">Rules</span>
+                <span className="text-[var(--text-muted)]">{t("lotDetail.rules")}</span>
                 <span className="text-[var(--text-main)] font-mono">{risk.score_rules != null ? Math.round(risk.score_rules) : '—'}</span>
               </div>
               <div className="h-1 w-full rounded-full bg-[var(--border)] overflow-hidden">
                 <div className="h-full bg-amber-500 transition-all" style={{ width: `${risk.score_rules ?? 0}%` }} />
               </div>
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-[var(--text-muted)]">ML</span>
+                <span className="text-[var(--text-muted)]">{t("lotDetail.ml")}</span>
                 <span className="text-[var(--text-main)] font-mono">{risk.score_ml != null ? (risk.score_ml * 100).toFixed(0) + '%' : '—'}</span>
               </div>
               <div className="h-1 w-full rounded-full bg-[var(--border)] overflow-hidden">
                 <div className="h-full bg-indigo-500 transition-all" style={{ width: `${(risk.score_ml ?? 0) * 100}%` }} />
               </div>
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-[var(--text-muted)]">Final</span>
+                <span className="text-[var(--text-muted)]">{t("lotDetail.final")}</span>
                 <span className="text-[var(--text-main)] font-mono">{risk.score_final != null ? Math.round(risk.score_final) : '—'}</span>
               </div>
               <div className="h-1 w-full rounded-full bg-[var(--border)] overflow-hidden">
@@ -276,11 +279,11 @@ function LotDetailView({
           {/* Triggered Flags */}
           <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-hover)] p-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-sm font-semibold text-[var(--text-main)]">Triggered flags</div>
-              <span className="text-xs text-[var(--text-muted)]">evidence-based</span>
+              <div className="text-sm font-semibold text-[var(--text-main)]">{t("lotDetail.triggeredFlags")}</div>
+              <span className="text-xs text-[var(--text-muted)]">{t("lotDetail.evidenceBased")}</span>
             </div>
             {triggeredFlags.length === 0 ? (
-              <div className="text-xs text-[var(--text-muted)] py-4 text-center">Сигналов риска нет</div>
+              <div className="text-xs text-[var(--text-muted)] py-4 text-center">{t("lotDetail.noRiskSignals")}</div>
             ) : (
               <div className="space-y-2">
                 {triggeredFlags.map((f, i) => (
@@ -293,11 +296,11 @@ function LotDetailView({
                       <div className="flex-1 min-w-0">
                         <span className="rounded-md border border-[var(--border)] bg-[var(--surface-hover)] px-2 py-0.5 text-[11px] text-[var(--text-main)] font-mono">{f.code}</span>
                         {f.code !== "CUSTOMER_WINNER_CONCENTRATION" && (
-                          <span className="ml-2 text-[10px] text-[var(--text-muted)] group-hover:text-indigo-500 dark:group-hover:text-indigo-400">Подробнее →</span>
+                          <span className="ml-2 text-[10px] text-[var(--text-muted)] group-hover:text-indigo-500 dark:group-hover:text-indigo-400">{t("lotDetail.more")}</span>
                         )}
                         {f.value !== null && (
                           <div className="mt-1 text-xs text-[var(--text-muted)]">
-                            Evidence: <span className="font-mono text-[var(--text-main)]">{String(f.value)}</span>
+                            {t("lotDetail.evidence")}: <span className="font-mono text-[var(--text-main)]">{String(f.value)}</span>
                           </div>
                         )}
                         {f.evidence && Object.keys(f.evidence).length > 0 && (
@@ -318,11 +321,11 @@ function LotDetailView({
             )}
 
             <div className="mt-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
-              <div className="text-xs text-[var(--text-muted)] mb-2">Что проверить дальше</div>
+              <div className="text-xs text-[var(--text-muted)] mb-2">{t("lotDetail.whatToCheckNext")}</div>
               <ul className="list-disc pl-4 text-sm text-[var(--text-main)] space-y-1">
-                <li>Сравнить цену с медианой в категории/регионе</li>
-                <li>Проверить критерии допуска и сроки</li>
-                <li>Историю побед supplier↔customer за 90 дней</li>
+                <li>{t("lotDetail.check1")}</li>
+                <li>{t("lotDetail.check2")}</li>
+                <li>{t("lotDetail.check3")}</li>
               </ul>
             </div>
 
@@ -331,7 +334,7 @@ function LotDetailView({
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Bot className="h-4 w-4 text-indigo-500 dark:text-indigo-300" />
-                  <span className="text-xs font-semibold text-indigo-700 dark:text-indigo-200">AI Explanation</span>
+                  <span className="text-xs font-semibold text-indigo-700 dark:text-indigo-200">{t("lotDetail.aiExplanation")}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <button
@@ -339,14 +342,14 @@ function LotDetailView({
                     disabled={explainLoading}
                     className="rounded-xl bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-400 transition disabled:opacity-50"
                   >
-                    {explainLoading ? <><RefreshCw className="h-3 w-3 animate-spin inline mr-1" />Генерация...</> : 'Объяснить'}
+                    {explainLoading ? <><RefreshCw className="h-3 w-3 animate-spin inline mr-1" />{t("lotDetail.generating")}</> : t("lotDetail.explain")}
                   </button>
                   {explanation?.cached && (
                     <button
                       onClick={() => handleExplain(true)}
                       disabled={explainLoading}
                       className="rounded-xl border border-indigo-500/30 px-2 py-1.5 text-xs text-indigo-600 dark:text-indigo-300 hover:bg-indigo-500/10 transition disabled:opacity-50"
-                      title="Перегенерировать"
+                      title={t("lotDetail.regenerate")}
                     >
                       <RefreshCw className="h-3 w-3" />
                     </button>
@@ -359,7 +362,7 @@ function LotDetailView({
                     <div className="text-xs text-rose-500 dark:text-rose-300">{explanation.error}</div>
                   )}
                   {explanation.eligible === false && (
-                    <div className="text-xs text-[var(--text-muted)]">Объяснение недоступно: {explanation.reason}</div>
+                    <div className="text-xs text-[var(--text-muted)]">{t("lotDetail.explanationUnavailable", { reason: explanation.reason ?? "" })}</div>
                   )}
                   {explanation.explanation && (
                     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3">
@@ -371,14 +374,14 @@ function LotDetailView({
                   {explanation.spec_analysis && (
                     <div className={`rounded-xl border p-3 ${explanation.spec_analysis.risky ? "border-amber-500/30 bg-amber-500/10" : "border-emerald-500/20 bg-emerald-500/5"}`}>
                       <div className={`text-xs font-semibold mb-1 ${explanation.spec_analysis.risky ? "text-amber-600 dark:text-amber-200" : "text-emerald-600 dark:text-emerald-200"}`}>
-                        {explanation.spec_analysis.risky ? "⚠️ Анализ спецификаций: РИСК" : "✓ Анализ спецификаций: низкий риск"}
+                        {explanation.spec_analysis.risky ? t("lotDetail.specRisk") : t("lotDetail.specLowRisk")}
                       </div>
                       <p className="text-sm text-[var(--text-main)]">{explanation.spec_analysis.reasoning}</p>
                     </div>
                   )}
                   {explanation.checklist && explanation.checklist.length > 0 && (
                     <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3">
-                      <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-200 mb-1">✅ Что проверить</div>
+                      <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-200 mb-1">{t("lotDetail.whatToCheck")}</div>
                       <ul className="list-disc pl-4 text-sm text-[var(--text-main)] space-y-1">
                         {explanation.checklist.map((item, i) => (
                           <li key={i}>{item}</li>
@@ -388,7 +391,7 @@ function LotDetailView({
                   )}
                   {explanation.model_used && (
                     <div className="text-[10px] text-[var(--text-muted)]">
-                      {explanation.cached ? '📋 Кэш' : '🤖 Свежая генерация'} · {explanation.model_used}
+                      {explanation.cached ? t("lotDetail.cache") : t("lotDetail.freshGeneration")} · {explanation.model_used}
                     </div>
                   )}
                 </div>
@@ -399,8 +402,8 @@ function LotDetailView({
           {/* Create Case */}
           <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-hover)] p-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-sm font-semibold text-[var(--text-main)]">Причины риска (top)</div>
-              <span className="text-xs text-[var(--text-muted)]">из модели</span>
+              <div className="text-sm font-semibold text-[var(--text-main)]">{t("lotDetail.topReasons")}</div>
+              <span className="text-xs text-[var(--text-muted)]">{t("lotDetail.fromModel")}</span>
             </div>
             <div className="space-y-2">
               {risk.top_reasons.map((r: any, i: number) => (
@@ -422,26 +425,26 @@ function LotDetailView({
                 </div>
               ))}
               {risk.top_reasons.length === 0 && (
-                <div className="text-xs text-[var(--text-muted)] py-2 text-center">Нет данных</div>
+                <div className="text-xs text-[var(--text-muted)] py-2 text-center">{t("lotDetail.noData")}</div>
               )}
             </div>
 
             <DividerSpacer />
 
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
-              <div className="text-xs text-[var(--text-muted)] mb-2">Create case</div>
+              <div className="text-xs text-[var(--text-muted)] mb-2">{t("lotDetail.createCase")}</div>
               <textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 className="h-20 w-full resize-none rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-sm text-[var(--text-main)] outline-none placeholder:opacity-50"
               />
               <div className="mt-2 flex items-center justify-between gap-2">
-                <div className="text-xs text-[var(--text-muted)]">Станет меткой для ML</div>
+                <div className="text-xs text-[var(--text-muted)]">{t("lotDetail.willBecomeLabel")}</div>
                 <button
                   onClick={() => onCreateCase(note, lot.id)}
                   className="rounded-xl bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-400 transition"
                 >
-                  Create
+                  {t("lotDetail.create")}
                 </button>
               </div>
             </div>
@@ -449,7 +452,7 @@ function LotDetailView({
             <div className="mt-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2">
               <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
                 <CheckCircle2 className="h-4 w-4 text-emerald-500 dark:text-emerald-300" />
-                Explainability: flags + evidence + причины
+                {t("lotDetail.explainability")}
               </div>
             </div>
           </div>
@@ -478,23 +481,23 @@ function LotDetailView({
             <div className="p-4 overflow-auto flex-1">
               {indicatorDetailLoading ? (
                 <div className="flex items-center justify-center py-12 text-[var(--text-muted)]">
-                  <RefreshCw className="h-6 w-6 animate-spin mr-2" /> Загрузка...
+                  <RefreshCw className="h-6 w-6 animate-spin mr-2" /> {t("lotDetail.loading")}
                 </div>
               ) : indicatorDetail?.code === "CAROUSEL_PATTERN" && indicatorDetail.contracts ? (
                 <div className="space-y-4">
                   <div className="text-xs text-[var(--text-muted)] space-y-1">
-                    <p>Заказчик: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_name || indicatorDetail.customer_bin} isCustomer /> ({indicatorDetail.customer_bin})</p>
-                    <p>Ротаций: <span className="text-[var(--text-main)] font-mono">{indicatorDetail.rotation_count}</span> · Уникальных победителей: <span className="font-mono">{indicatorDetail.unique_winners}</span></p>
+                    <p>{t("lotDetail.customer")}: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_name || indicatorDetail.customer_bin} isCustomer /> ({indicatorDetail.customer_bin})</p>
+                    <p>{t("lotDetail.rotations")}: <span className="text-[var(--text-main)] font-mono">{indicatorDetail.rotation_count}</span> · {t("lotDetail.uniqueWinners")}: <span className="font-mono">{indicatorDetail.unique_winners}</span></p>
                   </div>
-                  <div className="text-xs font-medium text-[var(--text-main)] mb-2">Цепочка контрактов (хронологически):</div>
+                  <div className="text-xs font-medium text-[var(--text-main)] mb-2">{t("lotDetail.contractChain")}</div>
                   <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
                     <table className="w-full text-xs">
                       <thead>
                         <tr className="border-b border-[var(--border)] text-[var(--text-muted)] text-left">
-                          <th className="px-3 py-2">№ контракта</th>
-                          <th className="px-3 py-2">Дата</th>
-                          <th className="px-3 py-2">Поставщик (БИН)</th>
-                          <th className="px-3 py-2">Сумма</th>
+                          <th className="px-3 py-2">{t("lotDetail.contractNumber")}</th>
+                          <th className="px-3 py-2">{t("lotDetail.date")}</th>
+                          <th className="px-3 py-2">{t("lotDetail.supplierBin")}</th>
+                          <th className="px-3 py-2">{t("lotDetail.amountCol")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -517,18 +520,18 @@ function LotDetailView({
               ) : indicatorDetail?.code === "RECURRING_WINNER" && indicatorDetail.contracts ? (
                 <div className="space-y-4">
                   <div className="text-xs text-[var(--text-muted)] space-y-1">
-                    <p>Заказчик: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_bin} isCustomer /></p>
-                    <p>Поставщик: <BinLink bin={indicatorDetail.supplier_biin!} label={indicatorDetail.supplier_name || indicatorDetail.supplier_biin} /> ({indicatorDetail.supplier_biin})</p>
+                    <p>{t("lotDetail.customer")}: <BinLink bin={indicatorDetail.customer_bin!} label={indicatorDetail.customer_bin} isCustomer /></p>
+                    <p>{t("lotDetail.supplier")}: <BinLink bin={indicatorDetail.supplier_biin!} label={indicatorDetail.supplier_name || indicatorDetail.supplier_biin} /> ({indicatorDetail.supplier_biin})</p>
                   </div>
-                  <div className="text-xs font-medium text-[var(--text-main)] mb-2">Контракты поставщика у заказчика:</div>
+                  <div className="text-xs font-medium text-[var(--text-main)] mb-2">{t("lotDetail.supplierContractsAtCustomer")}</div>
                   <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
                     <table className="w-full text-xs">
                       <thead>
                         <tr className="border-b border-[var(--border)] text-[var(--text-muted)] text-left">
-                          <th className="px-3 py-2">№ контракта</th>
-                          <th className="px-3 py-2">Дата</th>
-                          <th className="px-3 py-2">Сумма</th>
-                          <th className="px-3 py-2">Тендер</th>
+                          <th className="px-3 py-2">{t("lotDetail.contractNumber")}</th>
+                          <th className="px-3 py-2">{t("lotDetail.date")}</th>
+                          <th className="px-3 py-2">{t("lotDetail.amountCol")}</th>
+                          <th className="px-3 py-2">{t("lotDetail.tender")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -556,7 +559,7 @@ function LotDetailView({
                   ))}
                 </div>
               ) : (
-                <div className="text-sm text-[var(--text-muted)] py-8 text-center">Нет расширенных данных для этого индикатора</div>
+                <div className="text-sm text-[var(--text-muted)] py-8 text-center">{t("lotDetail.noExtendedData")}</div>
               )}
             </div>
           </div>

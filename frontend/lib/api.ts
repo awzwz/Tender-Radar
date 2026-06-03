@@ -89,6 +89,9 @@ export const api = {
         );
     },
 
+    dashboardRegions: () =>
+        apiFetch<{ regions: RegionStat[]; unmatched: number }>("/dashboard/regions"),
+
     lot: (id: number) => apiFetch<LotDetail>(`/lots/${id}`),
 
     lotIndicatorDetails: (lotId: number, code: string) =>
@@ -197,6 +200,16 @@ export interface DashboardTenderItem {
     max_lot_score: number;
     avg_lot_score: number;
     category: "main_high" | "single_case" | "regular";
+}
+
+export interface RegionStat {
+    id: string;
+    name_ru: string;
+    count: number;
+    avg_risk: number;
+    high: number;
+    medium: number;
+    low: number;
 }
 
 export interface LotDetail {

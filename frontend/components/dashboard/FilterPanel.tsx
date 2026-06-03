@@ -4,6 +4,7 @@ import React from "react";
 import { Search } from "lucide-react";
 import { Badge, ProgressBar } from "@/components/shared/ui";
 import type { DashboardItem } from "@/lib/api";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 interface FilterPanelProps {
     search: string;
@@ -26,17 +27,18 @@ export default function FilterPanel({
     selectedItem,
     onOpenDetail,
 }: FilterPanelProps) {
+    const { t } = useI18n();
     return (
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-4">
             {/* Search */}
             <div>
-                <div className="text-xs text-[var(--text-muted)] mb-2 font-medium uppercase tracking-wider">Quick search</div>
+                <div className="text-xs text-[var(--text-muted)] mb-2 font-medium uppercase tracking-wider">{t("filter.search.label")}</div>
                 <div className="flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2.5 focus-within:border-indigo-500/40 transition-colors">
                     <Search className="h-4 w-4 flex-shrink-0 text-[var(--text-muted)]" />
                     <input
                         value={search}
                         onChange={(e) => onSearchChange(e.target.value)}
-                        placeholder="номер, заказчик..."
+                        placeholder={t("filter.search.ph")}
                         className="w-full bg-transparent text-sm outline-none placeholder:text-[var(--text-muted)] text-[var(--text-main)]"
                     />
                 </div>
@@ -45,7 +47,7 @@ export default function FilterPanel({
             {/* Min risk slider */}
             <div>
                 <div className="flex items-center justify-between text-xs text-[var(--text-muted)] mb-2">
-                    <span className="font-medium uppercase tracking-wider">Min risk</span>
+                    <span className="font-medium uppercase tracking-wider">{t("filter.minRisk")}</span>
                     <span className="font-semibold text-slate-900 dark:text-white tabular-nums">{minRisk}</span>
                 </div>
                 <input
@@ -69,7 +71,7 @@ export default function FilterPanel({
                             : "border-[var(--border)] bg-[var(--surface-hover)] text-[var(--text-muted)] hover:border-[var(--border-hover)] hover:text-[var(--text-main)] my-0.5"
                             }`}
                     >
-                        {l || "ALL"}
+                        {l || t("filter.level.all")}
                     </button>
                 ))}
             </div>
@@ -78,9 +80,9 @@ export default function FilterPanel({
             <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3">
                 <div className="flex items-center justify-between">
                     <div>
-                        <div className="text-xs font-semibold text-[var(--text-main)]">Selected Lot</div>
+                        <div className="text-xs font-semibold text-[var(--text-main)]">{t("filter.selected.title")}</div>
                         <div className="text-[11px] text-[var(--text-muted)] truncate mt-0.5 max-w-[180px]">
-                            {selectedItem?.tender_number || "Не выбран"}
+                            {selectedItem?.tender_number || t("filter.selected.none")}
                         </div>
                     </div>
                     {selectedItem && (
@@ -88,7 +90,7 @@ export default function FilterPanel({
                             onClick={onOpenDetail}
                             className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-[11px] text-[var(--text-muted)] hover:border-[var(--border-hover)] hover:text-[var(--text-main)] transition-all"
                         >
-                            Open
+                            {t("filter.selected.open")}
                         </button>
                     )}
                 </div>

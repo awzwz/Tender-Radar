@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { DashboardItem } from "@/lib/api";
 import { Badge, Chip, ProgressBar, SectionTitle, money } from "@/components/shared/ui";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 /* ── Types ──────────────────────────────────────────────────────────── */
 type SortKey = "risk_score" | "amount" | "lot_name" | "customer_name";
@@ -76,6 +77,7 @@ function Pagination({
 export default function RiskListView({
     items, loading, onOpenLot, onLoadMore, hasMore,
 }: RiskListViewProps) {
+    const { t } = useI18n();
     const [sortKey, setSortKey] = useState<SortKey>("risk_score");
     const [sortDir, setSortDir] = useState<SortDir>("desc");
     const [tablePage, setTablePage] = useState(1);
@@ -126,31 +128,31 @@ export default function RiskListView({
             <div className="flex items-center justify-between">
                 <SectionTitle
                     icon={<ListFilter className="h-4 w-4 text-indigo-500 dark:text-indigo-200" />}
-                    title="Risk List"
-                    hint="Сортируемая таблица · Клик по заголовку для сортировки"
+                    title={t("riskList.title")}
+                    hint={t("riskList.hint")}
                 />
                 <div className="text-[11px] text-[var(--text-muted)]">
-                    {sorted.length} items · page {tablePage}/{totalPages}
+                    {t("riskList.itemsPage", { n: sorted.length, page: tablePage, total: totalPages })}
                 </div>
             </div>
 
             {loading && items.length === 0 ? (
                 <div className="flex items-center justify-center py-16 text-[var(--text-muted)]">
-                    <RefreshCw className="h-5 w-5 animate-spin mr-2" /> Загрузка...
+                    <RefreshCw className="h-5 w-5 animate-spin mr-2" /> {t("riskList.loading")}
                 </div>
             ) : items.length === 0 ? (
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-8 text-sm text-[var(--text-muted)] text-center">
-                    Нет результатов. Уменьши Min risk или измени фильтр.
+                    {t("riskList.empty")}
                 </div>
             ) : (
                 <>
                     {/* Table header */}
                     <div className="hidden md:grid grid-cols-[1fr_120px_120px_100px_80px] gap-3 px-4 py-2 border-b border-[var(--border)]">
-                        {colBtn("lot_name", "Лот")}
-                        {colBtn("customer_name", "Заказчик")}
-                        {colBtn("amount", "Сумма")}
-                        {colBtn("risk_score", "Risk")}
-                        <div className="text-[11px] text-[var(--text-muted)] text-center">Action</div>
+                        {colBtn("lot_name", t("riskList.col.lot"))}
+                        {colBtn("customer_name", t("riskList.col.customer"))}
+                        {colBtn("amount", t("riskList.col.amount"))}
+                        {colBtn("risk_score", t("riskList.col.risk"))}
+                        <div className="text-[11px] text-[var(--text-muted)] text-center">{t("riskList.col.action")}</div>
                     </div>
 
                     {/* Rows */}
@@ -163,7 +165,7 @@ export default function RiskListView({
                                 {/* Desktop row */}
                                 <div className="hidden md:grid grid-cols-[1fr_120px_120px_100px_80px] gap-3 items-center px-4 py-3">
                                     <div className="min-w-0">
-                                        <div className="text-sm font-medium text-[var(--text-main)] truncate transition-colors">{l.lot_name || "Без названия"}</div>
+                                        <div className="text-sm font-medium text-[var(--text-main)] truncate transition-colors">{l.lot_name || t("riskList.noName")}</div>
                                         <div className="mt-0.5 text-[10px] text-[var(--text-muted)] truncate">{l.tender_number} · {l.publish_date?.slice(0, 10)}</div>
                                         {l.top_reasons.length > 0 && (
                                             <div className="mt-1.5 flex flex-wrap gap-1">
@@ -184,7 +186,7 @@ export default function RiskListView({
                                             onClick={() => onOpenLot(l.lot_id)}
                                             className="rounded-lg bg-indigo-500/15 border border-indigo-500/25 px-2.5 py-1.5 text-[11px] font-medium text-indigo-700 dark:text-indigo-200 hover:bg-indigo-500/25 transition-all"
                                         >
-                                            Open
+                                            {t("riskList.open")}
                                         </button>
                                     </div>
                                 </div>
@@ -193,14 +195,14 @@ export default function RiskListView({
                                 <div className="md:hidden p-3">
                                     <div className="flex items-start justify-between gap-2">
                                         <div className="flex-1 min-w-0">
-                                            <div className="text-sm font-medium text-[var(--text-main)] truncate">{l.lot_name || "Без названия"}</div>
+                                            <div className="text-sm font-medium text-[var(--text-main)] truncate">{l.lot_name || t("riskList.noName")}</div>
                                             <div className="mt-0.5 text-[10px] text-[var(--text-muted)] truncate">{l.tender_number} · {l.customer_name || l.customer_bin}</div>
                                         </div>
                                         <Badge level={l.risk_level} score={Math.round(l.risk_score)} />
                                     </div>
                                     <div className="mt-2 flex items-center justify-between">
                                         <div className="text-xs text-[var(--text-muted)]">{money(l.amount)}</div>
-                                        <button onClick={() => onOpenLot(l.lot_id)} className="rounded-lg bg-indigo-500 px-3 py-1 text-xs text-white hover:bg-indigo-400 transition">Open</button>
+                                        <button onClick={() => onOpenLot(l.lot_id)} className="rounded-lg bg-indigo-500 px-3 py-1 text-xs text-white hover:bg-indigo-400 transition">{t("riskList.open")}</button>
                                     </div>
                                     <div className="mt-2"><ProgressBar value={l.risk_score} /></div>
                                 </div>
@@ -218,7 +220,7 @@ export default function RiskListView({
                             disabled={loading}
                             className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-3 text-xs text-[var(--text-muted)] hover:bg-[var(--surface-hover)] transition disabled:opacity-40"
                         >
-                            {loading ? "Загрузка..." : "Загрузить ещё с сервера"}
+                            {loading ? t("riskList.loading") : t("riskList.loadMoreServer")}
                         </button>
                     )}
                 </>

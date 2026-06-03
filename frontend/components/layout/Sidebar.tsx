@@ -9,7 +9,6 @@ import {
     Briefcase,
     Bot,
     Shield,
-    Search,
     FileCheck2,
     ChevronLeft,
     ChevronRight,
@@ -20,6 +19,7 @@ import {
     ClipboardList,
 } from "lucide-react";
 import Image from "next/image";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 /* ── Types ──────────────────────────────────────────────────────────── */
 export type NavId =
@@ -43,23 +43,23 @@ interface SidebarProps {
 
 interface NavItem {
     id: NavId;
-    label: string;
+    labelKey: string;
     icon: React.ReactNode;
-    hint: string;
+    hintKey: string;
     badge?: string;
     group: "main" | "tools" | "ai";
 }
 
 const NAV_ITEMS: NavItem[] = [
-    { id: "dashboard", label: "Dashboard", icon: <LayoutDashboard className="h-5 w-5" />, hint: "Сводка рисков", group: "main" },
-    { id: "risk-list", label: "Risk List", icon: <ListFilter className="h-5 w-5" />, hint: "Лоты · фильтры", group: "main" },
-    { id: "tender-list", label: "Тендеры", icon: <ClipboardList className="h-5 w-5" />, hint: "Список тендеров", group: "main" },
-    { id: "detail", label: "Lot Detail", icon: <FileText className="h-5 w-5" />, hint: "Причины риска", group: "main" },
-    { id: "cases", label: "Cases", icon: <Briefcase className="h-5 w-5" />, hint: "Рабочее место", group: "main" },
-    { id: "specnorm", label: "Tender Analysis", icon: <FileCheck2 className="h-5 w-5" />, hint: "Spec vs Norm · LLM", group: "tools", badge: "AI" },
-    { id: "bidcheck", label: "BidCheck", icon: <Shield className="h-5 w-5" />, hint: "Parse PDF · Suppliers", group: "tools" },
-    { id: "company-search", label: "Company Intel", icon: <Building2 className="h-5 w-5" />, hint: "Досье по БИН / имени", group: "tools", badge: "Live" },
-    { id: "ai-assistant", label: "AI Assistant", icon: <Bot className="h-5 w-5" />, hint: "MCP · tool-based", group: "ai", badge: "New" },
+    { id: "dashboard", labelKey: "nav.dashboard", icon: <LayoutDashboard className="h-5 w-5" />, hintKey: "nav.dashboard.hint", group: "main" },
+    { id: "risk-list", labelKey: "nav.lots", icon: <ListFilter className="h-5 w-5" />, hintKey: "nav.lots.hint", group: "main" },
+    { id: "tender-list", labelKey: "nav.tenders", icon: <ClipboardList className="h-5 w-5" />, hintKey: "nav.tenders.hint", group: "main" },
+    { id: "detail", labelKey: "nav.detail", icon: <FileText className="h-5 w-5" />, hintKey: "nav.detail.hint", group: "main" },
+    { id: "cases", labelKey: "nav.cases", icon: <Briefcase className="h-5 w-5" />, hintKey: "nav.cases.hint", group: "main" },
+    { id: "specnorm", labelKey: "nav.specnorm", icon: <FileCheck2 className="h-5 w-5" />, hintKey: "nav.specnorm.hint", group: "tools", badge: "AI" },
+    { id: "bidcheck", labelKey: "nav.bidcheck", icon: <Shield className="h-5 w-5" />, hintKey: "nav.bidcheck.hint", group: "tools" },
+    { id: "company-search", labelKey: "nav.company", icon: <Building2 className="h-5 w-5" />, hintKey: "nav.company.hint", group: "tools", badge: "Live" },
+    { id: "ai-assistant", labelKey: "nav.ai", icon: <Bot className="h-5 w-5" />, hintKey: "nav.ai.hint", group: "ai", badge: "New" },
 ];
 
 /* ── Group label ────────────────────────────────────────────────────── */
@@ -78,10 +78,12 @@ function SidebarNavItem({
 }: {
     item: NavItem; active: boolean; collapsed: boolean; onClick: () => void;
 }) {
+    const { t } = useI18n();
+    const label = t(item.labelKey);
     return (
         <button
             onClick={onClick}
-            title={collapsed ? item.label : undefined}
+            title={collapsed ? label : undefined}
             className={`
         group relative w-full flex items-center gap-3 rounded-xl px-3 py-2.5
         transition-all duration-200
@@ -102,8 +104,8 @@ function SidebarNavItem({
 
             {!collapsed && (
                 <div className="flex-1 min-w-0 text-left">
-                    <div className="text-[13px] font-medium leading-tight text-[var(--text-main)]">{item.label}</div>
-                    <div className="text-[10px] text-[var(--text-muted)] mt-0.5 truncate">{item.hint}</div>
+                    <div className="text-[13px] font-medium leading-tight text-[var(--text-main)]">{label}</div>
+                    <div className="text-[10px] text-[var(--text-muted)] mt-0.5 truncate">{t(item.hintKey)}</div>
                 </div>
             )}
 
@@ -118,6 +120,7 @@ function SidebarNavItem({
 
 /* ── Sidebar ────────────────────────────────────────────────────────── */
 export default function Sidebar({ activeNav, onNavChange, onLogout, collapsed: collapsedProp, onCollapsedChange }: SidebarProps) {
+    const { t } = useI18n();
     const [collapsedLocal, setCollapsedLocal] = useState(false);
     const collapsed = collapsedProp !== undefined ? collapsedProp : collapsedLocal;
     const setCollapsed = (val: boolean) => {
@@ -151,29 +154,18 @@ export default function Sidebar({ activeNav, onNavChange, onLogout, collapsed: c
                 {!collapsed && (
                     <div className="overflow-hidden">
                         <div className="text-sm font-bold text-[var(--text-main)] tracking-tight">Tender Radar</div>
-                        <div className="text-[10px] text-[var(--text-muted)] font-medium">AI Risk Platform</div>
+                        <div className="text-[10px] text-[var(--text-muted)] font-medium">{t("brand.subtitle")}</div>
                     </div>
                 )}
             </div>
 
-            {/* ── Search placeholder ────────────────── */}
-            {!collapsed && (
-                <div className="px-3 mb-4">
-                    <div className="flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2.5 transition-colors hover:border-[var(--border-hover)]">
-                        <Search className="h-4 w-4 text-[var(--text-muted)] flex-shrink-0" />
-                        <span className="text-sm text-[var(--text-muted)]">Quick search...</span>
-                        <span className="ml-auto text-[10px] text-[var(--text-muted)] border border-[var(--border)] rounded px-1.5 py-0.5 font-mono">⌘K</span>
-                    </div>
-                </div>
-            )}
-
             {/* ── Navigation ────────────────────────── */}
             <nav className="flex-1 overflow-y-auto px-2 space-y-0.5">
-                <GroupLabel label="Menu" collapsed={collapsed} />
+                <GroupLabel label={t("nav.group.menu")} collapsed={collapsed} />
                 {renderGroup("main")}
-                <GroupLabel label="Tools" collapsed={collapsed} />
+                <GroupLabel label={t("nav.group.tools")} collapsed={collapsed} />
                 {renderGroup("tools")}
-                <GroupLabel label="AI" collapsed={collapsed} />
+                <GroupLabel label={t("nav.group.ai")} collapsed={collapsed} />
                 {renderGroup("ai")}
             </nav>
 
@@ -185,7 +177,7 @@ export default function Sidebar({ activeNav, onNavChange, onLogout, collapsed: c
                 >
                     {collapsed
                         ? <ChevronRight className="h-4 w-4 mx-auto" />
-                        : <><ChevronLeft className="h-4 w-4" /><span className="text-xs">Свернуть</span></>
+                        : <><ChevronLeft className="h-4 w-4" /><span className="text-xs">{t("action.collapse")}</span></>
                     }
                 </button>
 
@@ -194,7 +186,7 @@ export default function Sidebar({ activeNav, onNavChange, onLogout, collapsed: c
                     className={`w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-[var(--text-muted)] hover:text-rose-500 hover:bg-rose-500/10 transition-all ${collapsed ? "justify-center" : ""}`}
                 >
                     <LogOut className="h-4 w-4 flex-shrink-0" />
-                    {!collapsed && <span className="text-xs">Выйти</span>}
+                    {!collapsed && <span className="text-xs">{t("action.logout")}</span>}
                 </button>
             </div>
         </div>

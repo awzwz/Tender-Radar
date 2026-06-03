@@ -4,16 +4,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { api, DashboardTenderItem } from "@/lib/api";
 import { money, Badge } from "@/components/shared/ui";
 import { ChevronDown, ChevronUp, RefreshCw } from "lucide-react";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 type Category = "all" | "main_high" | "single_case" | "regular";
 type SortKey = "score" | "amount" | "date";
 
-const CATEGORY_LABELS: Record<Category, string> = {
-    all: "Все",
-    main_high: "MAIN HIGH",
-    single_case: "Single Case",
-    regular: "Regular",
-};
+const CATEGORIES: Category[] = ["all", "main_high", "single_case", "regular"];
 
 const CATEGORY_COLORS: Record<string, string> = {
     main_high: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300",
@@ -32,6 +28,7 @@ interface Props {
 }
 
 export default function TenderListView({ onOpenTender }: Props) {
+    const { t } = useI18n();
     const [items, setItems] = useState<DashboardTenderItem[]>([]);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
@@ -108,19 +105,19 @@ export default function TenderListView({ onOpenTender }: Props) {
             {/* Header + filters */}
             <div className="flex flex-wrap items-center gap-3">
                 <div>
-                    <h2 className="text-lg font-semibold text-[var(--text-main)]">Тендеры</h2>
-                    <p className="text-xs text-[var(--text-muted)]">{total} тендеров в базе</p>
+                    <h2 className="text-lg font-semibold text-[var(--text-main)]">{t("tenderList.title")}</h2>
+                    <p className="text-xs text-[var(--text-muted)]">{t("tenderList.inBase", { n: total })}</p>
                 </div>
                 <div className="ml-auto flex flex-wrap gap-2 items-center">
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Поиск по номеру / БИН..."
+                        placeholder={t("tenderList.searchPh")}
                         className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                     {/* Category filter */}
                     <div className="flex gap-1">
-                        {(Object.keys(CATEGORY_LABELS) as Category[]).map((c) => (
+                        {CATEGORIES.map((c) => (
                             <button
                                 key={c}
                                 onClick={() => { setCategory(c); setPage(1); }}
@@ -129,7 +126,7 @@ export default function TenderListView({ onOpenTender }: Props) {
                                     : "border border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--surface-hover)]"
                                     }`}
                             >
-                                {CATEGORY_LABELS[c]}
+                                {t(`tenderList.category.${c}`)}
                             </button>
                         ))}
                     </div>
@@ -147,21 +144,21 @@ export default function TenderListView({ onOpenTender }: Props) {
                 <table className="w-full text-sm">
                     <thead className="border-b border-[var(--border)] bg-[var(--surface)]">
                         <tr>
-                            <th className="px-4 py-3 text-left font-medium text-[var(--text-muted)]">Тендер</th>
-                            <th className="px-4 py-3 text-left font-medium text-[var(--text-muted)]">БИН заказчика</th>
+                            <th className="px-4 py-3 text-left font-medium text-[var(--text-muted)]">{t("tenderList.col.tender")}</th>
+                            <th className="px-4 py-3 text-left font-medium text-[var(--text-muted)]">{t("tenderList.col.customerBin")}</th>
                             <th
                                 className="px-4 py-3 text-right font-medium text-[var(--text-muted)] cursor-pointer hover:text-[var(--text-main)]"
                                 onClick={() => toggleSort("amount")}
                             >
-                                Сумма <SortIcon k="amount" />
+                                {t("tenderList.col.amount")} <SortIcon k="amount" />
                             </th>
-                            <th className="px-4 py-3 text-center font-medium text-[var(--text-muted)]">Лоты HIGH/всего</th>
-                            <th className="px-4 py-3 text-center font-medium text-[var(--text-muted)]">Категория</th>
+                            <th className="px-4 py-3 text-center font-medium text-[var(--text-muted)]">{t("tenderList.col.lotsHighTotal")}</th>
+                            <th className="px-4 py-3 text-center font-medium text-[var(--text-muted)]">{t("tenderList.col.category")}</th>
                             <th
                                 className="px-4 py-3 text-right font-medium text-[var(--text-muted)] cursor-pointer hover:text-[var(--text-main)]"
                                 onClick={() => toggleSort("score")}
                             >
-                                Риск <SortIcon k="score" />
+                                {t("tenderList.col.risk")} <SortIcon k="score" />
                             </th>
                         </tr>
                     </thead>
@@ -170,13 +167,13 @@ export default function TenderListView({ onOpenTender }: Props) {
                             <tr>
                                 <td colSpan={6} className="px-4 py-12 text-center text-[var(--text-muted)]">
                                     <RefreshCw className="h-5 w-5 animate-spin mx-auto mb-2" />
-                                    Загрузка...
+                                    {t("tenderList.loading")}
                                 </td>
                             </tr>
                         ) : sorted.length === 0 ? (
                             <tr>
                                 <td colSpan={6} className="px-4 py-12 text-center text-[var(--text-muted)]">
-                                    Тендеры не найдены
+                                    {t("tenderList.notFound")}
                                 </td>
                             </tr>
                         ) : (
@@ -202,7 +199,7 @@ export default function TenderListView({ onOpenTender }: Props) {
                                     </td>
                                     <td className="px-4 py-3 text-center">
                                         <span className={`rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase ${CATEGORY_COLORS[item.category] || CATEGORY_COLORS.regular}`}>
-                                            {item.category === "main_high" ? "Main High" : item.category === "single_case" ? "Single Case" : "Regular"}
+                                            {item.category === "main_high" ? t("tenderList.category.main_high") : item.category === "single_case" ? t("tenderList.category.single_case") : t("tenderList.category.regular")}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3 text-right">
@@ -230,7 +227,7 @@ export default function TenderListView({ onOpenTender }: Props) {
                         disabled={loading}
                         className="rounded-xl border border-[var(--border)] px-6 py-2 text-sm text-[var(--text-muted)] hover:bg-[var(--surface-hover)] transition disabled:opacity-50"
                     >
-                        {loading ? "Загрузка..." : `Загрузить ещё (${total - sorted.length})`}
+                        {loading ? t("tenderList.loading") : t("tenderList.loadMore", { n: total - sorted.length })}
                     </button>
                 </div>
             )}

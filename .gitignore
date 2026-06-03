@@ -43,3 +43,13 @@ backend/alembic/versions/*.pyc
 *.dump
 *.sql.gz
 backend/db_dump/full_backup.sql
+
+# Visual brainstorm companion
+.superpowers/
+
+# Local portable Postgres
+.local/
+
+# Large DB dump transfer artifacts (never commit)
+tender_dump*.zip
+*.sql.zip

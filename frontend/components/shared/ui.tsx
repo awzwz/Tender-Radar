@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ShieldAlert } from "lucide-react";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 export const money = (n: number) =>
@@ -98,6 +99,7 @@ export function StatCard({
     tone: "danger" | "warn" | "ok" | "neutral";
     subtitle?: string;
 }) {
+    const { t } = useI18n();
     const border = {
         danger: "border-rose-500/20 bg-rose-500/10 hover:bg-rose-500/20",
         warn: "border-amber-500/20 bg-amber-500/10 hover:bg-amber-500/20",
@@ -122,7 +124,7 @@ export function StatCard({
                 </div>
                 <div className="text-3xl font-bold text-[var(--text-main)] tracking-tight">{value}</div>
                 <div className="mt-2 h-px w-full bg-[var(--border)]" />
-                <div className="mt-2 text-[11px] text-[var(--text-muted)]">{subtitle || "Updated daily"}</div>
+                <div className="mt-2 text-[11px] text-[var(--text-muted)]">{subtitle || t("ui.updatedDaily")}</div>
             </div>
         </div>
     );

@@ -2,14 +2,13 @@
 
 import React, { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
+import KZMap from "./KZMap";
 import {
     LayoutDashboard,
     Sparkles,
     RefreshCw,
     TrendingUp,
     TrendingDown,
-    ArrowUpRight,
-    Clock,
     Activity,
 } from "lucide-react";
 import { DashboardItem, DashboardTenderItem } from "@/lib/api";
@@ -20,6 +19,7 @@ import {
     StatCard,
     money,
 } from "@/components/shared/ui";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 // Lazy-load ApexCharts to avoid SSR issues
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -75,6 +75,7 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
 
 /* ── Donut Chart ────────────────────────────────────────────────────── */
 function RiskDonut({ high, medium, low }: { high: number; medium: number; low: number }) {
+    const { t } = useI18n();
     const total = high + medium + low || 1;
     return (
         <Chart
@@ -102,7 +103,7 @@ function RiskDonut({ high, medium, low }: { high: number; medium: number; low: n
                                 show: true,
                                 total: {
                                     show: true,
-                                    label: "Total",
+                                    label: t("dash.dist.total"),
                                     color: "#64748B", // text-muted equivalent
                                     fontSize: "11px",
                                     formatter: () => String(total),
@@ -123,40 +124,6 @@ function RiskDonut({ high, medium, low }: { high: number; medium: number; low: n
     );
 }
 
-/* ── Activity Feed item ─────────────────────────────────────────────── */
-function ActivityItem({
-    lot,
-    onClick,
-}: {
-    lot: DashboardItem;
-    onClick: () => void;
-}) {
-    const color =
-        lot.risk_level === "HIGH" ? "bg-rose-500" : lot.risk_level === "MEDIUM" ? "bg-amber-500" : "bg-emerald-500";
-    return (
-        <button
-            onClick={onClick}
-            className="w-full flex items-start gap-3 rounded-xl p-2.5 hover:bg-[var(--surface-hover)] transition-all text-left group"
-        >
-            <div className="relative mt-1">
-                <div className={`h-2.5 w-2.5 rounded-full ${color} ring-4 ring-[var(--surface-hover)]`} />
-            </div>
-            <div className="flex-1 min-w-0">
-                <div className="text-xs font-medium text-[var(--text-main)] truncate group-hover:text-indigo-500 dark:group-hover:text-white transition-colors">
-                    {lot.lot_name || "Без названия"}
-                </div>
-                <div className="text-[10px] text-[var(--text-muted)] mt-0.5 truncate">
-                    {lot.tender_number} · {lot.customer_name || lot.customer_bin}
-                </div>
-            </div>
-            <div className="flex flex-col items-end flex-shrink-0">
-                <span className="text-[10px] font-mono text-[var(--text-muted)]">{Math.round(lot.risk_score)}</span>
-                <ArrowUpRight className="h-3 w-3 text-[var(--text-muted)] group-hover:text-indigo-400 transition-colors" />
-            </div>
-        </button>
-    );
-}
-
 /* ── Main Dashboard ─────────────────────────────────────────────────── */
 export default function DashboardView({
     items,
@@ -168,6 +135,7 @@ export default function DashboardView({
     tenderItems,
     tenderLoading,
 }: DashboardViewProps) {
+    const { t } = useI18n();
     const [entityMode, setEntityMode] = useState<"lots" | "tenders">("lots");
 
     const stats = useMemo(() => {
@@ -197,30 +165,27 @@ export default function DashboardView({
     const sparkMed = useMemo(() => Array.from({ length: 7 }, (_, i) => Math.max(0, activeStats.med + Math.round((Math.random() - 0.5) * activeStats.med * 0.3))), [activeStats.med]);
     const sparkLow = useMemo(() => Array.from({ length: 7 }, (_, i) => Math.max(0, activeStats.low + Math.round((Math.random() - 0.5) * activeStats.low * 0.3))), [activeStats.low]);
 
-    // Recent lots for activity feed
-    const recentLots = [...items].slice(0, 8);
-
     return (
         <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <SectionTitle
                     icon={<LayoutDashboard className="h-4 w-4 text-indigo-200" />}
-                    title="Dashboard"
-                    hint="Общий обзор рисков и аналитика"
+                    title={t("dash.title")}
+                    hint={t("dash.hint")}
                 />
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setEntityMode("lots")}
                         className={`rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${entityMode === "lots" ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-700 dark:text-indigo-200 shadow-sm shadow-indigo-500/10" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:bg-[var(--surface-hover)]"}`}
                     >
-                        Лоты
+                        {t("dash.toggle.lots")}
                     </button>
                     <button
                         onClick={() => setEntityMode("tenders")}
                         className={`rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${entityMode === "tenders" ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-700 dark:text-indigo-200 shadow-sm shadow-indigo-500/10" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:bg-[var(--surface-hover)]"}`}
                     >
-                        Тендеры
+                        {t("dash.toggle.tenders")}
                     </button>
                 </div>
             </div>
@@ -271,60 +236,28 @@ export default function DashboardView({
                     <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                             <div className="h-2.5 w-2.5 rounded-full bg-slate-400" />
-                            <span className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider font-semibold">Avg risk</span>
+                            <span className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider font-semibold">{t("dash.card.avgRisk")}</span>
                         </div>
                         <Sparkles className="h-3.5 w-3.5 text-[var(--text-muted)]" />
                     </div>
                     <div className="text-3xl font-bold text-[var(--text-main)] mt-1">{activeStats.avg}</div>
                     <div className="mt-3 h-px w-full bg-[var(--border)]" />
-                    <div className="mt-2 text-[11px] text-[var(--text-muted)]">Scored: {activeStats.scored}</div>
+                    <div className="mt-2 text-[11px] text-[var(--text-muted)]">{t("dash.card.scored", { n: activeStats.scored })}</div>
                 </div>
             </div>
 
-            {/* ── Tender extra stats ── */}
-            {entityMode === "tenders" && (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4">
-                        <div className="text-xs text-rose-700 dark:text-rose-200 uppercase tracking-wider">HIGH (2+ high lots)</div>
-                        <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{tenderStatsUi.mainHigh}</div>
-                    </div>
-                    <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4">
-                        <div className="text-xs text-amber-700 dark:text-amber-200 uppercase tracking-wider">Single-case alerts</div>
-                        <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{tenderStatsUi.singleCase}</div>
-                    </div>
-                </div>
-            )}
+            {/* ── Kazakhstan risk map ── */}
+            <KZMap />
 
-            {/* ── Two columns: Donut + Activity Feed ── */}
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_320px]">
-                {/* Donut chart */}
-                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-                    <SectionTitle
-                        icon={<Sparkles className="h-4 w-4 text-emerald-500 dark:text-emerald-200" />}
-                        title="Risk Distribution"
-                        hint={entityMode === "lots" ? "Распределение лотов по уровням" : "Распределение тендеров по уровням"}
-                    />
-                    <div className="mt-4 flex justify-center">
-                        <RiskDonut high={activeStats.high} medium={activeStats.med} low={activeStats.low} />
-                    </div>
-                </div>
-
-                {/* Activity Feed */}
-                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                        <Clock className="h-4 w-4 text-indigo-500 dark:text-indigo-300" />
-                        <span className="text-sm font-semibold text-[var(--text-main)]">Activity Feed</span>
-                        <span className="ml-auto text-[10px] text-[var(--text-muted)]">latest</span>
-                    </div>
-                    <div className="space-y-0.5 max-h-[300px] overflow-y-auto pr-1">
-                        {recentLots.length === 0 ? (
-                            <div className="text-xs text-[var(--text-muted)] text-center py-8">Нет данных</div>
-                        ) : (
-                            recentLots.map((lot, i) => (
-                                <ActivityItem key={`${lot.lot_id}-${i}`} lot={lot} onClick={() => onOpenLot(lot.lot_id)} />
-                            ))
-                        )}
-                    </div>
+            {/* ── Risk Distribution ── */}
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+                <SectionTitle
+                    icon={<Sparkles className="h-4 w-4 text-emerald-500 dark:text-emerald-200" />}
+                    title={t("dash.dist.title")}
+                    hint={entityMode === "lots" ? t("dash.dist.hint.lots") : t("dash.dist.hint.tenders")}
+                />
+                <div className="mt-4 flex justify-center">
+                    <RiskDonut high={activeStats.high} medium={activeStats.med} low={activeStats.low} />
                 </div>
             </div>
 
@@ -332,21 +265,21 @@ export default function DashboardView({
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
                 <div className="flex items-center justify-between mb-3">
                     <div>
-                        <div className="text-sm font-semibold text-[var(--text-main)]">{entityMode === "lots" ? "Top risky lots" : "Top risky tenders"}</div>
+                        <div className="text-sm font-semibold text-[var(--text-main)]">{entityMode === "lots" ? t("dash.top.title.lots") : t("dash.top.title.tenders")}</div>
                         <div className="text-[11px] text-[var(--text-muted)] mt-0.5">
-                            {entityMode === "lots" ? "Нажми, чтобы открыть карточку" : "Агрегированные риски"}
+                            {entityMode === "lots" ? t("dash.top.hint.lots") : t("dash.top.hint.tenders")}
                         </div>
                     </div>
-                    <div className="text-[11px] text-[var(--text-muted)]">Total: {entityMode === "lots" ? total : (tenderStats?.total_tenders ?? 0)}</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">{t("dash.top.total", { n: entityMode === "lots" ? total : (tenderStats?.total_tenders ?? 0) })}</div>
                 </div>
 
                 {(entityMode === "lots" && loading) || (entityMode === "tenders" && tenderLoading) ? (
                     <div className="flex items-center justify-center py-12 text-[var(--text-muted)]">
-                        <RefreshCw className="h-5 w-5 animate-spin mr-2" /> Загрузка...
+                        <RefreshCw className="h-5 w-5 animate-spin mr-2" /> {t("dash.loading")}
                     </div>
                 ) : (entityMode === "lots" ? topLots : topTenders).length === 0 ? (
                     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 text-sm text-[var(--text-muted)] text-center">
-                        Данных пока нет — ETL ещё загружает
+                        {t("dash.empty")}
                     </div>
                 ) : (
                     <div className="space-y-2">
@@ -359,7 +292,7 @@ export default function DashboardView({
                                 >
                                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                                         <div className="flex-1 min-w-0">
-                                            <div className="text-sm font-medium text-[var(--text-main)] truncate">{l.lot_name || "Без названия"}</div>
+                                            <div className="text-sm font-medium text-[var(--text-main)] truncate">{l.lot_name || t("dash.noName")}</div>
                                             <div className="mt-0.5 text-[11px] text-[var(--text-muted)] truncate">{l.tender_number} · {l.customer_name || l.customer_bin}</div>
                                         </div>
                                         <div className="flex items-center gap-3 flex-shrink-0">
@@ -370,21 +303,21 @@ export default function DashboardView({
                                     <div className="mt-2"><ProgressBar value={l.risk_score} /></div>
                                 </button>
                             ))
-                            : topTenders.map((t, idx) => (
-                                <div key={`${t.trd_buy_id}-${idx}`} className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3">
+                            : topTenders.map((tn, idx) => (
+                                <div key={`${tn.trd_buy_id}-${idx}`} className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3">
                                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                                         <div className="flex-1 min-w-0">
-                                            <div className="text-sm font-medium text-[var(--text-main)] truncate">{t.tender_name || "Без названия"}</div>
+                                            <div className="text-sm font-medium text-[var(--text-main)] truncate">{tn.tender_name || t("dash.noName")}</div>
                                             <div className="mt-0.5 text-[11px] text-[var(--text-muted)] truncate">
-                                                {t.tender_number} · Лотов: {t.lots_count} · HIGH-лотов: {t.high_lots_count}
+                                                {t("dash.tender.meta", { number: tn.tender_number, lots: tn.lots_count, high: tn.high_lots_count })}
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-3 flex-shrink-0">
-                                            <div className="text-[11px] text-[var(--text-muted)]">{money(t.total_sum)}</div>
-                                            <Badge level={t.risk_level} score={Math.round(t.risk_score)} />
+                                            <div className="text-[11px] text-[var(--text-muted)]">{money(tn.total_sum)}</div>
+                                            <Badge level={tn.risk_level} score={Math.round(tn.risk_score)} />
                                         </div>
                                     </div>
-                                    <div className="mt-2"><ProgressBar value={t.risk_score} /></div>
+                                    <div className="mt-2"><ProgressBar value={tn.risk_score} /></div>
                                 </div>
                             ))}
                     </div>

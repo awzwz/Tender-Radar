@@ -4,9 +4,12 @@ import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { Shield, BarChart3, Search, Lock, User, AlertTriangle } from "lucide-react";
 import Image from "next/image";
+import { useI18n } from "@/components/providers/LanguageProvider";
+import { LanguageToggle } from "@/components/layout/LanguageToggle";
 
 export default function LoginPage() {
     const router = useRouter();
+    const { t } = useI18n();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -24,12 +27,12 @@ export default function LoginPage() {
                 router.push("/");
             } else {
                 const detail = Array.isArray(data.detail) ? data.detail[0]?.msg : data.detail;
-                setError(detail || "Неверные данные");
+                setError(detail || t("login.err.invalid"));
             }
         } catch (e: unknown) {
-            const msg = e instanceof Error ? e.message : "Ошибка входа";
+            const msg = e instanceof Error ? e.message : t("login.err.generic");
             const isNetwork = /failed|load failed|network|fetch/i.test(msg);
-            setError(isNetwork ? "Нет связи с сервером. Проверьте подключение или статус бэкенда." : msg);
+            setError(isNetwork ? t("login.err.network") : msg);
         } finally {
             setLoading(false);
         }
@@ -37,6 +40,11 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen flex">
+            {/* Language toggle (top-right) */}
+            <div className="absolute top-4 right-4 z-20">
+                <LanguageToggle />
+            </div>
+
             {/* ── Left branding panel ── */}
             <div className="hidden lg:flex flex-1 flex-col items-center justify-center bg-[#F1F5F9] relative overflow-hidden px-12">
                 {/* Subtle background circles */}
@@ -51,15 +59,15 @@ export default function LoginPage() {
                         Tender Risk Radar
                     </h1>
                     <p className="text-slate-500 text-base mb-12">
-                        AI-платформа анализа рисков государственных закупок
+                        {t("login.tagline")}
                     </p>
 
                     {/* Feature cards */}
                     <div className="space-y-4 text-left">
                         {[
-                            { icon: <BarChart3 className="h-5 w-5 text-indigo-500" />, label: "Dashboard рисков", sub: "Сводная аналитика HIGH / MEDIUM / LOW" },
-                            { icon: <Shield className="h-5 w-5 text-violet-500" />, label: "BidCheck", sub: "Проверка соответствия поставщиков ТЗ" },
-                            { icon: <Search className="h-5 w-5 text-emerald-500" />, label: "Tender Analysis", sub: "LLM-анализ технических спецификаций" },
+                            { icon: <BarChart3 className="h-5 w-5 text-indigo-500" />, label: t("login.feature.dashboard"), sub: t("login.feature.dashboard.sub") },
+                            { icon: <Shield className="h-5 w-5 text-violet-500" />, label: t("login.feature.bidcheck"), sub: t("login.feature.bidcheck.sub") },
+                            { icon: <Search className="h-5 w-5 text-emerald-500" />, label: t("login.feature.specnorm"), sub: t("login.feature.specnorm.sub") },
                         ].map(({ icon, label, sub }) => (
                             <div key={label} className="flex items-center gap-4 rounded-2xl bg-white border border-slate-200/80 px-4 py-3.5 shadow-sm">
                                 <div className="flex-shrink-0 h-10 w-10 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100">
@@ -89,18 +97,18 @@ export default function LoginPage() {
                         <Image src="/logo.png" alt="Logo" width={40} height={40} className="rounded-xl" />
                         <div>
                             <div className="text-sm font-bold text-slate-900">Tender Risk Radar</div>
-                            <div className="text-xs text-slate-500">AI Risk Platform</div>
+                            <div className="text-xs text-slate-500">{t("brand.subtitle")}</div>
                         </div>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-slate-900 mb-1">Добро пожаловать!</h2>
-                    <p className="text-slate-500 text-sm mb-7">Войдите в систему для продолжения</p>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-1">{t("login.welcome")}</h2>
+                    <p className="text-slate-500 text-sm mb-7">{t("login.subtitle")}</p>
 
                     <form onSubmit={handleLogin} className="space-y-4">
                         {/* Username */}
                         <div>
                             <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
-                                Логин
+                                {t("login.username")}
                             </label>
                             <div className="relative">
                                 <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -109,7 +117,7 @@ export default function LoginPage() {
                                     value={username}
                                     onChange={e => setUsername(e.target.value)}
                                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
-                                    placeholder="Введите логин"
+                                    placeholder={t("login.username.ph")}
                                     required
                                 />
                             </div>
@@ -118,7 +126,7 @@ export default function LoginPage() {
                         {/* Password */}
                         <div>
                             <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
-                                Пароль
+                                {t("login.password")}
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -153,14 +161,14 @@ export default function LoginPage() {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                                     </svg>
-                                    Вход...
+                                    {t("login.signingIn")}
                                 </span>
-                            ) : "Войти"}
+                            ) : t("login.signin")}
                         </button>
                     </form>
 
                     <p className="mt-6 text-center text-xs text-slate-400">
-                        Tender Risk Radar · AI-анализ госзакупок
+                        {t("login.footer")}
                     </p>
                 </div>
             </div>

@@ -8,7 +8,6 @@ import {
   Bot,
   ListFilter,
   Sparkles,
-  Download,
   Play,
   X,
 } from "lucide-react";
@@ -25,6 +24,7 @@ import AIAssistant from "@/components/dashboard/AIAssistant";
 import CompanyProfileView from "@/components/dashboard/CompanyProfileView";
 import TenderListView from "@/components/dashboard/TenderListView";
 import { money } from "@/components/shared/ui";
+import { useI18n } from "@/components/providers/LanguageProvider";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type CaseStatus = "NEW" | "IN_REVIEW" | "CONFIRMED" | "DISMISSED";
@@ -37,6 +37,7 @@ type Nav = NavId;
 
 export default function AIProcurePage() {
   const router = useRouter();
+  const { t } = useI18n();
 
   // Auth check
   useEffect(() => {
@@ -237,24 +238,24 @@ export default function AIProcurePage() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-indigo-500 dark:text-indigo-300" />
-                <h2 className="text-lg font-semibold text-[var(--text-main)]">Добро пожаловать в Tender Radar</h2>
+                <h2 className="text-lg font-semibold text-[var(--text-main)]">{t("onboarding.title")}</h2>
               </div>
               <button onClick={closeOnboarding} className="rounded-xl p-2 text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)] transition">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <ul className="space-y-3 text-sm text-[var(--text-main)] mb-6">
-              <li className="flex gap-2"><ShieldAlert className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>Risk Score 0–100</strong> — общий уровень риска (LOW/MEDIUM/HIGH)</span></li>
-              <li className="flex gap-2"><FileText className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>Lot Detail</strong> — карточка лота с индикаторами и AI-объяснением</span></li>
-              <li className="flex gap-2"><Bot className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>Объяснить</strong> — AI анализирует риски и манипулятивные спецификации</span></li>
-              <li className="flex gap-2"><ListFilter className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>Фильтры</strong> — min risk, уровень, поиск по номеру/заказчику</span></li>
+              <li className="flex gap-2"><ShieldAlert className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>{t("onboarding.score.b")}</strong>{t("onboarding.score.t")}</span></li>
+              <li className="flex gap-2"><FileText className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>{t("onboarding.detail.b")}</strong>{t("onboarding.detail.t")}</span></li>
+              <li className="flex gap-2"><Bot className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>{t("onboarding.explain.b")}</strong>{t("onboarding.explain.t")}</span></li>
+              <li className="flex gap-2"><ListFilter className="h-4 w-4 flex-shrink-0 text-indigo-500 dark:text-indigo-300 mt-0.5" /><span><strong>{t("onboarding.filters.b")}</strong>{t("onboarding.filters.t")}</span></li>
             </ul>
             <div className="flex gap-2">
               <button onClick={runDemo} className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-400 transition flex items-center justify-center gap-2">
-                <Play className="h-4 w-4" /> Запустить демо
+                <Play className="h-4 w-4" /> {t("onboarding.run")}
               </button>
               <button onClick={closeOnboarding} className="rounded-xl border border-[var(--border)] px-4 py-2.5 text-sm text-[var(--text-main)] hover:bg-[var(--surface-hover)] transition">
-                Пропустить
+                {t("onboarding.skip")}
               </button>
             </div>
           </div>
@@ -275,7 +276,6 @@ export default function AIProcurePage() {
         {/* Header */}
         <Header
           totalLots={total || globalStats?.total_lots || 0}
-          onRunDemo={runDemo}
           onExportCSV={exportCSV}
         />
 
@@ -345,24 +345,24 @@ export default function AIProcurePage() {
             {nav === "specnorm" && (
               <div className="flex flex-col items-center justify-center py-20 text-[var(--text-muted)] space-y-3">
                 <FileText className="h-12 w-12" />
-                <div className="text-sm">Tender Analysis загружается...</div>
+                <div className="text-sm">{t("stub.specnorm.loading")}</div>
                 <a
                   href="/specnorm"
                   className="rounded-xl bg-indigo-500 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-400 transition"
                 >
-                  Открыть Tender Analysis
+                  {t("stub.specnorm.open")}
                 </a>
               </div>
             )}
             {nav === "bidcheck" && (
               <div className="flex flex-col items-center justify-center py-20 text-[var(--text-muted)] space-y-3">
                 <FileText className="h-12 w-12" />
-                <div className="text-sm">BidCheck загружается...</div>
+                <div className="text-sm">{t("stub.bidcheck.loading")}</div>
                 <a
                   href="/bidcheck"
                   className="rounded-xl bg-emerald-500 px-4 py-2 text-xs font-medium text-white hover:bg-emerald-400 transition"
                 >
-                  Открыть BidCheck
+                  {t("stub.bidcheck.open")}
                 </a>
               </div>
             )}
@@ -375,19 +375,6 @@ export default function AIProcurePage() {
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="px-6 py-4 border-t border-[var(--border)] flex flex-col gap-2 text-xs md:flex-row md:items-center md:justify-between text-[var(--text-muted)]">
-          <div>
-            API:{" "}
-            <span className="rounded border border-[var(--border)] bg-[var(--surface-hover)] px-2 py-0.5 font-mono">GET /dashboard</span>{" "}
-            <span className="rounded border border-[var(--border)] bg-[var(--surface-hover)] px-2 py-0.5 font-mono">GET /lots/:id</span>{" "}
-            <span className="rounded border border-[var(--border)] bg-[var(--surface-hover)] px-2 py-0.5 font-mono">POST /notes</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Download className="h-3.5 w-3.5" />
-            <span>PDF/CSV export (post‑MVP)</span>
-          </div>
-        </footer>
       </div>
     </div>
   );

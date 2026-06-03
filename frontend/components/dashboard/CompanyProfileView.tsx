@@ -35,6 +35,9 @@ import {
 } from "lucide-react";
 import { api, CompanyProfile, CompanySearchResult } from "@/lib/api";
 import { money } from "@/components/shared/ui";
+import { useI18n } from "@/components/providers/LanguageProvider";
+
+type TFn = (key: string, params?: Record<string, string | number>) => string;
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -66,36 +69,36 @@ function RiskBadge({ level, score }: { level: string; score: number }) {
     );
 }
 
-const FLAG_LABELS: Record<string, string> = {
-    // Original checks
-    BLACKLISTED: "В реестре недобросовестных поставщиков",
-    LOW_EXECUTION_RATE: "Низкий процент исполнения контрактов (<50%)",
-    OVERDUE_ACTS: "Просроченные акты выполненных работ",
-    FINES_PRESENT: "Начислены штрафы",
-    HIGH_CUSTOMER_CONCENTRATION: "Высокая зависимость от одного заказчика (>80%)",
-    HIGH_SINGLE_SOURCE_RATE: "Высокая доля единственных источников (>50%)",
-    MANY_CANCELLED_TENDERS: "Много отменённых тендеров",
-    HIGH_SUPPLIER_CONCENTRATION: "Высокая зависимость от одного поставщика (>70%)",
-    // OWS additional checks
-    AVG_OVERDUE_DAYS: "Высокая средняя просрочка актов (>30 дней)",
-    VOLUME_SPIKE: "Резкий рост объёмов контрактов (>3x за год)",
-    YOUNG_COMPANY_BIG_VOLUME: "Молодая компания с крупными контрактами",
-    DIVERSE_OKED: "Работает в >5 разных отраслях ОКЭД",
-    HIGH_ADDENDUM_RATE: "Высокая доля дополнений к контрактам (>30%)",
-    // Complaints
-    COMPLAINTS_ON_PURCHASES: "Множественные жалобы на закупки",
-    HIGH_COMPLAINT_SATISFACTION_RATE: "Высокий % удовлетворённых жалоб",
-    SATISFIED_COMPLAINTS_RISK: "Удовлетворённые жалобы (подтверждённые нарушения)",
-    // Affiliations
-    SHARED_BANK_ACCOUNT: "Общий банковский счёт с другими компаниями",
-    SHARED_CONTACTS: "Общие контакты с другими компаниями",
-    FREQUENT_COBIDDERS: "Частые совместные участия в тендерах",
-    // Tax (ba.prg.kz)
-    TAX_ANOMALY: "Налоговые аномалии (LLM-анализ)",
-    // Court cases
-    COURT_CASES_RISK: "Судебные дела — риск по результатам LLM-анализа",
-    MANY_COURT_CASES: "Множество судебных дел как ответчик",
-};
+// Flag CODES are stable identifiers; their human-readable labels are translated.
+const FLAG_CODES = [
+    "BLACKLISTED",
+    "LOW_EXECUTION_RATE",
+    "OVERDUE_ACTS",
+    "FINES_PRESENT",
+    "HIGH_CUSTOMER_CONCENTRATION",
+    "HIGH_SINGLE_SOURCE_RATE",
+    "MANY_CANCELLED_TENDERS",
+    "HIGH_SUPPLIER_CONCENTRATION",
+    "AVG_OVERDUE_DAYS",
+    "VOLUME_SPIKE",
+    "YOUNG_COMPANY_BIG_VOLUME",
+    "DIVERSE_OKED",
+    "HIGH_ADDENDUM_RATE",
+    "COMPLAINTS_ON_PURCHASES",
+    "HIGH_COMPLAINT_SATISFACTION_RATE",
+    "SATISFIED_COMPLAINTS_RISK",
+    "SHARED_BANK_ACCOUNT",
+    "SHARED_CONTACTS",
+    "FREQUENT_COBIDDERS",
+    "TAX_ANOMALY",
+    "COURT_CASES_RISK",
+    "MANY_COURT_CASES",
+];
+
+function flagLabel(code: string, t: TFn): string {
+    if (FLAG_CODES.includes(code)) return t(`company.flag.${code}`);
+    return code;
+}
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
@@ -140,9 +143,11 @@ function MetricCard({
 function PartnerBar({
     partners,
     label,
+    t,
 }: {
     partners: { bin: string; count: number; sum: number }[];
     label: string;
+    t: TFn;
 }) {
     if (!partners || partners.length === 0) return null;
     const maxSum = Math.max(...partners.map((p) => p.sum));
@@ -153,7 +158,7 @@ function PartnerBar({
                 <div key={p.bin} className="group">
                     <div className="flex items-center justify-between mb-0.5 text-xs">
                         <span className="font-mono text-[var(--text-main)] truncate max-w-[180px]">{p.bin}</span>
-                        <span className="text-[var(--text-muted)] ml-2 shrink-0">{p.count} конт. · {fmt(p.sum)}</span>
+                        <span className="text-[var(--text-muted)] ml-2 shrink-0">{t("company.partner.contractsAbbr", { n: p.count })} · {fmt(p.sum)}</span>
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-[var(--border)] overflow-hidden">
                         <div
@@ -167,14 +172,14 @@ function PartnerBar({
     );
 }
 
-function YearChart({ byYear }: { byYear: Record<string, { count: number; sum: number }> }) {
+function YearChart({ byYear, t }: { byYear: Record<string, { count: number; sum: number }>; t: TFn }) {
     const entries = Object.entries(byYear).filter(([k]) => k !== "unknown").sort();
     if (entries.length === 0) return null;
     const maxSum = Math.max(...entries.map(([, v]) => v.sum));
 
     return (
         <div className="space-y-2">
-            <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Динамика по годам</div>
+            <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">{t("company.chart.byYear")}</div>
             <div className="flex items-end gap-1.5 h-20">
                 {entries.map(([year, v]) => (
                     <div key={year} className="flex-1 flex flex-col items-center gap-1 group">
@@ -182,7 +187,7 @@ function YearChart({ byYear }: { byYear: Record<string, { count: number; sum: nu
                             <div
                                 className="w-full rounded-t bg-indigo-500/70 hover:bg-indigo-500 transition-all"
                                 style={{ height: `${Math.max((v.sum / maxSum) * 64, 4)}px` }}
-                                title={`${year}: ${v.count} контр. · ${fmt(v.sum)}`}
+                                title={`${year}: ${t("company.chart.contractsAbbr", { n: v.count })} · ${fmt(v.sum)}`}
                             />
                         </div>
                         <span className="text-[9px] text-[var(--text-muted)]">{year}</span>
@@ -193,23 +198,23 @@ function YearChart({ byYear }: { byYear: Record<string, { count: number; sum: nu
     );
 }
 
-function ContractTable({ contracts, role }: { contracts: Record<string, unknown>[]; role: "supplier" | "customer" }) {
+function ContractTable({ contracts, role, t }: { contracts: Record<string, unknown>[]; role: "supplier" | "customer"; t: TFn }) {
     const [expanded, setExpanded] = useState(false);
     const shown = expanded ? contracts : contracts.slice(0, 5);
-    if (contracts.length === 0) return <p className="text-xs text-[var(--text-muted)]">Нет данных</p>;
+    if (contracts.length === 0) return <p className="text-xs text-[var(--text-muted)]">{t("company.common.noData")}</p>;
     return (
         <div>
             <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
                 <table className="min-w-full text-xs">
                     <thead>
                         <tr className="border-b border-[var(--border)] bg-[var(--surface-hover)]">
-                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">Номер</th>
+                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">{t("company.contracts.col.number")}</th>
                             <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">
-                                {role === "supplier" ? "Заказчик (БИН)" : "Поставщик (БИН)"}
+                                {role === "supplier" ? t("company.contracts.col.customerBin") : t("company.contracts.col.supplierBin")}
                             </th>
-                            <th className="px-3 py-2 text-right text-[var(--text-muted)] font-medium">Сумма</th>
-                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">Дата</th>
-                            <th className="px-3 py-2 text-center text-[var(--text-muted)] font-medium">Статус</th>
+                            <th className="px-3 py-2 text-right text-[var(--text-muted)] font-medium">{t("company.contracts.col.sum")}</th>
+                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">{t("company.contracts.col.date")}</th>
+                            <th className="px-3 py-2 text-center text-[var(--text-muted)] font-medium">{t("company.contracts.col.status")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -255,7 +260,7 @@ function ContractTable({ contracts, role }: { contracts: Record<string, unknown>
                     onClick={() => setExpanded(!expanded)}
                     className="mt-2 text-xs text-indigo-500 hover:text-indigo-400 transition-colors flex items-center gap-1"
                 >
-                    {expanded ? "Свернуть" : `Показать все ${contracts.length} контрактов`}
+                    {expanded ? t("company.common.collapse") : t("company.contracts.showAll", { n: contracts.length })}
                     <ChevronRight className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-90" : ""}`} />
                 </button>
             )}
@@ -263,7 +268,7 @@ function ContractTable({ contracts, role }: { contracts: Record<string, unknown>
     );
 }
 
-function ComplaintsTable({ complaints }: { complaints: Record<string, unknown>[] }) {
+function ComplaintsTable({ complaints, t }: { complaints: Record<string, unknown>[]; t: TFn }) {
     const [expanded, setExpanded] = useState(false);
     const shown = expanded ? complaints : complaints.slice(0, 5);
     if (complaints.length === 0) return null;
@@ -273,11 +278,11 @@ function ComplaintsTable({ complaints }: { complaints: Record<string, unknown>[]
                 <table className="min-w-full text-xs">
                     <thead>
                         <tr className="border-b border-[var(--border)] bg-[var(--surface-hover)]">
-                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">№ жалобы</th>
-                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">Дата подачи</th>
-                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">Статус</th>
-                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">Тендер</th>
-                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">Организатор</th>
+                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">{t("company.complaints.col.number")}</th>
+                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">{t("company.complaints.col.dateSubmitted")}</th>
+                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">{t("company.complaints.col.status")}</th>
+                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">{t("company.complaints.col.tender")}</th>
+                            <th className="px-3 py-2 text-left text-[var(--text-muted)] font-medium">{t("company.complaints.col.organizer")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -321,7 +326,7 @@ function ComplaintsTable({ complaints }: { complaints: Record<string, unknown>[]
                     onClick={() => setExpanded(!expanded)}
                     className="mt-2 text-xs text-indigo-500 hover:text-indigo-400 transition-colors flex items-center gap-1"
                 >
-                    {expanded ? "Свернуть" : `Показать все ${complaints.length} жалоб`}
+                    {expanded ? t("company.common.collapse") : t("company.complaints.showAll", { n: complaints.length })}
                     <ChevronRight className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-90" : ""}`} />
                 </button>
             )}
@@ -332,6 +337,7 @@ function ComplaintsTable({ complaints }: { complaints: Record<string, unknown>[]
 // ── Main Component ─────────────────────────────────────────────────────────────
 
 export default function CompanyProfileView() {
+    const { t } = useI18n();
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState<CompanySearchResult[]>([]);
     const [suggestLoading, setSuggestLoading] = useState(false);
@@ -392,12 +398,12 @@ export default function CompanyProfileView() {
             const data = await api.companyProfile(bin);
             setProfile(data);
         } catch (e: unknown) {
-            const msg = e instanceof Error ? e.message : "Ошибка загрузки";
+            const msg = e instanceof Error ? e.message : t("company.err.load");
             setProfileError(msg);
         } finally {
             setProfileLoading(false);
         }
-    }, []);
+    }, [t]);
 
     const runLlmAnalysis = useCallback(async () => {
         if (!profile) return;
@@ -408,12 +414,12 @@ export default function CompanyProfileView() {
             const res = await api.companyAnalyze(profile.bin, profile);
             setLlmNarrative(res.narrative);
         } catch (e: unknown) {
-            const msg = e instanceof Error ? e.message : "Ошибка LLM";
+            const msg = e instanceof Error ? e.message : t("company.err.llm");
             setLlmError(msg);
         } finally {
             setLlmLoading(false);
         }
-    }, [profile]);
+    }, [profile, t]);
 
     function handleSubmit(e: React.SyntheticEvent) {
         e.preventDefault();
@@ -434,14 +440,14 @@ export default function CompanyProfileView() {
         setLlmError(null);
         api.companySearch(q).then((res) => {
             if (res.results.length === 0) {
-                setProfileError(`Компания "${q}" не найдена в реестре OWS. Проверьте название или введите БИН.`);
+                setProfileError(t("company.err.notFound", { q }));
                 setProfileLoading(false);
                 return;
             }
             const s = res.results[0];
             const bin = s.bin || s.iin;
             if (!bin) {
-                setProfileError("Не удалось определить БИН компании. Попробуйте выбрать из списка.");
+                setProfileError(t("company.err.noBin"));
                 setProfileLoading(false);
                 return;
             }
@@ -451,10 +457,10 @@ export default function CompanyProfileView() {
             api.companyProfile(bin).then((data) => {
                 setProfile(data);
             }).catch((e: unknown) => {
-                setProfileError(e instanceof Error ? e.message : "Ошибка загрузки профиля");
+                setProfileError(e instanceof Error ? e.message : t("company.err.loadProfile"));
             }).finally(() => setProfileLoading(false));
         }).catch((e: unknown) => {
-            setProfileError(e instanceof Error ? e.message : "Ошибка поиска");
+            setProfileError(e instanceof Error ? e.message : t("company.err.search"));
             setProfileLoading(false);
         });
     }
@@ -469,11 +475,11 @@ export default function CompanyProfileView() {
     // Shared report data builder
     function buildReportData() {
         if (!profile) return null;
-        const name = profile.subject?.nameRu || profile.subject?.fullNameRu || profile.subject?.nameKz || profileDisplayName || `БИН: ${profile.bin}`;
+        const name = profile.subject?.nameRu || profile.subject?.fullNameRu || profile.subject?.nameKz || profileDisplayName || `${t("company.bin")}: ${profile.bin}`;
         const sup = profile.as_supplier.metrics;
         const cust = profile.as_customer.metrics;
         const date = new Date(profile.fetched_at).toLocaleString("ru-RU");
-        const flagLines = profile.risk.flags.map((f) => FLAG_LABELS[f] || f);
+        const flagLines = profile.risk.flags.map((f) => flagLabel(f, t));
         return { name, sup, cust, date, flagLines };
     }
 
@@ -483,36 +489,36 @@ export default function CompanyProfileView() {
         if (!d || !profile) return;
         const { name, sup, cust, date, flagLines } = d;
         const lines = [
-            `# Досье компании: ${name}`,
-            `**БИН:** ${profile.bin}`,
-            `**Дата анализа:** ${date}`,
-            `**Статус РНУ:** ${profile.rnu.is_blacklisted ? "ВНЕСЁН В РЕЕСТР НЕДОБРОСОВЕСТНЫХ" : "Чистый"}`,
-            `**Риск-уровень:** ${profile.risk.level} (score: ${profile.risk.score}/100)`,
+            `# ${t("company.report.title")}: ${name}`,
+            `**${t("company.bin")}:** ${profile.bin}`,
+            `**${t("company.report.analysisDate")}:** ${date}`,
+            `**${t("company.report.rnuStatus")}:** ${profile.rnu.is_blacklisted ? t("company.report.rnuListedCaps") : t("company.report.rnuClean")}`,
+            `**${t("company.report.riskLevel")}:** ${profile.risk.level} (score: ${profile.risk.score}/100)`,
             ``,
-            `## Флаги риска`,
+            `## ${t("company.report.riskFlags")}`,
             ...flagLines.map((f) => `- ${f}`),
             ``,
-            `## Как поставщик`,
-            `- Всего контрактов: ${sup.total_contracts}`,
-            `- Общая сумма: ${fmt(sup.total_sum)}`,
-            `- Исполнение: ${sup.execution_rate}% (факт: ${fmt(sup.executed_sum)})`,
-            `- Уникальных заказчиков: ${sup.unique_customers}`,
-            `- Просрочки актов: ${sup.overdue_count}`,
-            `- Штрафы: ${sup.fines_count}`,
-            `- Средний контракт: ${fmt(sup.avg_contract_size)}`,
-            `- Выплачено казначейством: ${fmt(sup.treasury_paid)}`,
+            `## ${t("company.section.asSupplier")}`,
+            `- ${t("company.metric.totalContracts")}: ${sup.total_contracts}`,
+            `- ${t("company.metric.totalSum")}: ${fmt(sup.total_sum)}`,
+            `- ${t("company.metric.execution")}: ${sup.execution_rate}% (${t("company.metric.actual")}: ${fmt(sup.executed_sum)})`,
+            `- ${t("company.metric.uniqueCustomers")}: ${sup.unique_customers}`,
+            `- ${t("company.report.overdueActs")}: ${sup.overdue_count}`,
+            `- ${t("company.metric.fines")}: ${sup.fines_count}`,
+            `- ${t("company.report.avgContract")}: ${fmt(sup.avg_contract_size)}`,
+            `- ${t("company.metric.treasuryPaid")}: ${fmt(sup.treasury_paid)}`,
             ``,
-            `## Как заказчик`,
-            `- Всего тендеров: ${cust.total_tenders}`,
-            `- Всего контрактов: ${cust.total_contracts}`,
-            `- Объём закупок: ${fmt(cust.total_procurement_sum)}`,
-            `- Уникальных поставщиков: ${cust.unique_suppliers}`,
-            `- Доля единственного источника: ${cust.single_source_rate}% (${cust.single_source_count} тендеров)`,
-            `- Отменённые тендеры: ${cust.cancelled_tenders}`,
+            `## ${t("company.section.asCustomer")}`,
+            `- ${t("company.metric.totalTenders")}: ${cust.total_tenders}`,
+            `- ${t("company.metric.totalContracts")}: ${cust.total_contracts}`,
+            `- ${t("company.metric.procurementVolume")}: ${fmt(cust.total_procurement_sum)}`,
+            `- ${t("company.metric.uniqueSuppliers")}: ${cust.unique_suppliers}`,
+            `- ${t("company.report.singleSourceShare")}: ${cust.single_source_rate}% (${t("company.report.tendersCount", { n: cust.single_source_count })})`,
+            `- ${t("company.metric.cancelledTenders")}: ${cust.cancelled_tenders}`,
             ``,
         ];
-        if (llmNarrative) lines.push(`## AI Анализ`, ``, llmNarrative, ``);
-        lines.push(`---`, `Источник: OWS API v3 goszakup.gov.kz · Tender Radar`);
+        if (llmNarrative) lines.push(`## ${t("company.ai.title")}`, ``, llmNarrative, ``);
+        lines.push(`---`, `${t("company.report.source")}: OWS API v3 goszakup.gov.kz · Tender Radar`);
         const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -531,12 +537,12 @@ export default function CompanyProfileView() {
         const riskBg = profile.risk.level === "HIGH" ? "#fee2e2" : profile.risk.level === "MEDIUM" ? "#fef3c7" : "#d1fae5";
         const flagsHtml = flagLines.length > 0
             ? flagLines.map((f) => `<span class="flag">${f}</span>`).join("")
-            : "<span class='flag-ok'>Нет флагов риска</span>";
+            : `<span class='flag-ok'>${t("company.report.noRiskFlags")}</span>`;
         const narrativeHtml = llmNarrative
-            ? `<h2>AI Анализ</h2><div class="narrative">${llmNarrative.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br/>")}</div>`
+            ? `<h2>${t("company.ai.title")}</h2><div class="narrative">${llmNarrative.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br/>")}</div>`
             : "";
         const html = `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"/>
-<title>Досье: ${name}</title>
+<title>${t("company.report.titleShort")}: ${name}</title>
 <style>
   body{font-family:'Segoe UI',Arial,sans-serif;max-width:800px;margin:0 auto;padding:32px;color:#1e293b;font-size:14px;}
   h1{font-size:22px;font-weight:700;border-bottom:3px solid #6366f1;padding-bottom:12px;margin-bottom:8px;}
@@ -554,37 +560,37 @@ export default function CompanyProfileView() {
   @media print{body{padding:16px}button{display:none}}
 </style></head><body>
 <h1>${name}</h1>
-<div class="meta">БИН: <strong>${profile.bin}</strong> &nbsp;·&nbsp; Дата анализа: ${date} &nbsp;·&nbsp; Источник: OWS API v3</div>
+<div class="meta">${t("company.bin")}: <strong>${profile.bin}</strong> &nbsp;·&nbsp; ${t("company.report.analysisDate")}: ${date} &nbsp;·&nbsp; ${t("company.report.source")}: OWS API v3</div>
 <div style="margin-bottom:16px;">
-  <span class="risk-badge">Риск: ${profile.risk.level} · ${profile.risk.score}/100</span>
-  &nbsp; <span style="font-size:12px;color:${profile.rnu.is_blacklisted ? "#dc2626" : "#059669"}">${profile.rnu.is_blacklisted ? "⛔ В реестре недобросовестных поставщиков" : "✓ Не в реестре РНУ"}</span>
+  <span class="risk-badge">${t("company.report.risk")}: ${profile.risk.level} · ${profile.risk.score}/100</span>
+  &nbsp; <span style="font-size:12px;color:${profile.rnu.is_blacklisted ? "#dc2626" : "#059669"}">${profile.rnu.is_blacklisted ? "⛔ " + t("company.report.rnuListedInline") : "✓ " + t("company.report.rnuNotListed")}</span>
 </div>
-<h2>Флаги риска</h2>
+<h2>${t("company.report.riskFlags")}</h2>
 <div>${flagsHtml}</div>
-<h2>Как поставщик</h2>
+<h2>${t("company.section.asSupplier")}</h2>
 <table>
-  <tr><th>Показатель</th><th>Значение</th></tr>
-  <tr><td>Всего контрактов</td><td>${sup.total_contracts}</td></tr>
-  <tr><td>Общая сумма</td><td>${fmt(sup.total_sum)}</td></tr>
-  <tr><td>Исполнение</td><td>${sup.execution_rate}%</td></tr>
-  <tr><td>Уникальных заказчиков</td><td>${sup.unique_customers}</td></tr>
-  <tr><td>Просрочки актов</td><td>${sup.overdue_count}</td></tr>
-  <tr><td>Штрафы</td><td>${sup.fines_count}</td></tr>
-  <tr><td>Средний контракт</td><td>${fmt(sup.avg_contract_size)}</td></tr>
-  <tr><td>Выплачено казначейством</td><td>${fmt(sup.treasury_paid)}</td></tr>
+  <tr><th>${t("company.report.col.indicator")}</th><th>${t("company.report.col.value")}</th></tr>
+  <tr><td>${t("company.metric.totalContracts")}</td><td>${sup.total_contracts}</td></tr>
+  <tr><td>${t("company.metric.totalSum")}</td><td>${fmt(sup.total_sum)}</td></tr>
+  <tr><td>${t("company.metric.execution")}</td><td>${sup.execution_rate}%</td></tr>
+  <tr><td>${t("company.metric.uniqueCustomers")}</td><td>${sup.unique_customers}</td></tr>
+  <tr><td>${t("company.report.overdueActs")}</td><td>${sup.overdue_count}</td></tr>
+  <tr><td>${t("company.metric.fines")}</td><td>${sup.fines_count}</td></tr>
+  <tr><td>${t("company.report.avgContract")}</td><td>${fmt(sup.avg_contract_size)}</td></tr>
+  <tr><td>${t("company.metric.treasuryPaid")}</td><td>${fmt(sup.treasury_paid)}</td></tr>
 </table>
-<h2>Как заказчик</h2>
+<h2>${t("company.section.asCustomer")}</h2>
 <table>
-  <tr><th>Показатель</th><th>Значение</th></tr>
-  <tr><td>Всего тендеров</td><td>${cust.total_tenders}</td></tr>
-  <tr><td>Всего контрактов</td><td>${cust.total_contracts}</td></tr>
-  <tr><td>Объём закупок</td><td>${fmt(cust.total_procurement_sum)}</td></tr>
-  <tr><td>Уникальных поставщиков</td><td>${cust.unique_suppliers}</td></tr>
-  <tr><td>Доля единственного источника</td><td>${cust.single_source_rate}%</td></tr>
-  <tr><td>Отменённые тендеры</td><td>${cust.cancelled_tenders}</td></tr>
+  <tr><th>${t("company.report.col.indicator")}</th><th>${t("company.report.col.value")}</th></tr>
+  <tr><td>${t("company.metric.totalTenders")}</td><td>${cust.total_tenders}</td></tr>
+  <tr><td>${t("company.metric.totalContracts")}</td><td>${cust.total_contracts}</td></tr>
+  <tr><td>${t("company.metric.procurementVolume")}</td><td>${fmt(cust.total_procurement_sum)}</td></tr>
+  <tr><td>${t("company.metric.uniqueSuppliers")}</td><td>${cust.unique_suppliers}</td></tr>
+  <tr><td>${t("company.report.singleSourceShare")}</td><td>${cust.single_source_rate}%</td></tr>
+  <tr><td>${t("company.metric.cancelledTenders")}</td><td>${cust.cancelled_tenders}</td></tr>
 </table>
 ${narrativeHtml}
-<div class="footer">Tender Radar · OWS API v3 goszakup.gov.kz · Только для справки, не является юридическим заключением</div>
+<div class="footer">Tender Radar · OWS API v3 goszakup.gov.kz · ${t("company.report.disclaimer")}</div>
 <script>window.onload=function(){window.print();}<\/script>
 </body></html>`;
         const w = window.open("", "_blank");
@@ -600,7 +606,7 @@ ${narrativeHtml}
         const parts = [
             `Компания: ${name} (БИН: ${profile.bin})`,
             `Риск-уровень: ${profile.risk.level} (score=${profile.risk.score}/100)`,
-            `Флаги: ${profile.risk.flags.map(f => FLAG_LABELS[f] || f).join(", ") || "нет"}`,
+            `Флаги: ${profile.risk.flags.map(f => flagLabel(f, t)).join(", ") || "нет"}`,
             `РНУ (недобросовестный поставщик): ${profile.rnu.is_blacklisted ? "ДА" : "нет"}`,
             `Как поставщик: ${sup.total_contracts} контр. на ${fmt(sup.total_sum)}, исполнение ${sup.execution_rate}%, просрочки ${sup.overdue_count}, штрафы ${sup.fines_count}`,
             `Как заказчик: ${cust.total_tenders} тендеров, закупки ${fmt(cust.total_procurement_sum)}, ЕИ ${cust.single_source_rate}%`,
@@ -648,13 +654,13 @@ ${narrativeHtml}
             });
             const data = await res.json();
             if (!res.ok) {
-                const errMsg = data.detail || data.error || `Ошибка сервера ${res.status}`;
+                const errMsg = data.detail || data.error || t("company.chat.err.server", { status: res.status });
                 setChatMessages([...newMessages, { role: "assistant", text: `⚠️ ${errMsg}` }]);
             } else {
-                setChatMessages([...newMessages, { role: "assistant", text: data.text || "Получен пустой ответ" }]);
+                setChatMessages([...newMessages, { role: "assistant", text: data.text || t("company.chat.err.empty") }]);
             }
         } catch (err) {
-            const msg = err instanceof Error ? err.message : "Ошибка соединения";
+            const msg = err instanceof Error ? err.message : t("company.chat.err.connection");
             setChatMessages([...newMessages, { role: "assistant", text: `⚠️ ${msg}` }]);
         } finally {
             setChatLoading(false);
@@ -674,8 +680,8 @@ ${narrativeHtml}
                     <Building2 className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                    <h2 className="text-base font-bold text-[var(--text-main)]">Company Intel</h2>
-                    <p className="text-xs text-[var(--text-muted)]">Досье по БИН или названию — данные из реестра Goszakup в реальном времени</p>
+                    <h2 className="text-base font-bold text-[var(--text-main)]">{t("company.header.title")}</h2>
+                    <p className="text-xs text-[var(--text-muted)]">{t("company.header.subtitle")}</p>
                 </div>
                 <span className="ml-auto rounded-full bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 text-[10px] font-semibold text-indigo-500 uppercase tracking-wider">
                     Live OWS
@@ -695,7 +701,7 @@ ${narrativeHtml}
                                 onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
                                 onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
                                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                                placeholder="Введите БИН (12 цифр) или название компании..."
+                                placeholder={t("company.search.placeholder")}
                                 className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] pl-10 pr-4 py-3 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-indigo-500 transition-colors"
                             />
                             {suggestLoading && (
@@ -706,7 +712,7 @@ ${narrativeHtml}
                             type="submit"
                             className="rounded-2xl bg-indigo-500 hover:bg-indigo-400 px-5 py-3 text-sm font-medium text-white transition-colors shrink-0"
                         >
-                            Найти
+                            {t("company.search.submit")}
                         </button>
                     </div>
                 </form>
@@ -726,11 +732,11 @@ ${narrativeHtml}
                                     <Building2 className="h-4 w-4 text-indigo-500" />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-medium text-[var(--text-main)] truncate">{s.nameRu || "Без названия"}</div>
+                                    <div className="text-sm font-medium text-[var(--text-main)] truncate">{s.nameRu || t("company.common.untitled")}</div>
                                     <div className="text-xs text-[var(--text-muted)] flex items-center gap-2 mt-0.5">
                                         <span className="font-mono">{s.bin || s.iin || "—"}</span>
-                                        {s.supplier && <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">Поставщик</span>}
-                                        {s.customer && <span className="rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">Заказчик</span>}
+                                        {s.supplier && <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">{t("company.badge.supplier")}</span>}
+                                        {s.customer && <span className="rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">{t("company.badge.customer")}</span>}
                                     </div>
                                 </div>
                                 <ChevronRight className="h-4 w-4 text-[var(--text-muted)] shrink-0" />
@@ -752,8 +758,8 @@ ${narrativeHtml}
                         </div>
                     </div>
                     <div className="text-center space-y-1">
-                        <p className="text-sm font-medium text-[var(--text-main)]">Введите БИН или название компании</p>
-                        <p className="text-xs text-[var(--text-muted)]">Система загрузит актуальные данные прямо из реестра Goszakup</p>
+                        <p className="text-sm font-medium text-[var(--text-main)]">{t("company.empty.title")}</p>
+                        <p className="text-xs text-[var(--text-muted)]">{t("company.empty.subtitle")}</p>
                     </div>
                     <div className="flex gap-2 flex-wrap justify-center">
                         {["ТОО «Казахтелеком»", "АО «КазМунайГаз»", "160540017468"].map((ex) => (
@@ -778,9 +784,9 @@ ${narrativeHtml}
                         </div>
                     </div>
                     <div className="text-center space-y-1">
-                        <p className="text-sm font-medium text-[var(--text-main)]">Загружаем данные из OWS...</p>
-                        <p className="text-xs text-[var(--text-muted)]">Контракты · Тендеры · Реестр · Жалобы · KGD · Суды · Аффилированность</p>
-                        <p className="text-[10px] text-[var(--text-muted)] mt-1">Для крупных компаний это может занять 10–30 секунд</p>
+                        <p className="text-sm font-medium text-[var(--text-main)]">{t("company.loading.title")}</p>
+                        <p className="text-xs text-[var(--text-muted)]">{t("company.loading.sources")}</p>
+                        <p className="text-[10px] text-[var(--text-muted)] mt-1">{t("company.loading.hint")}</p>
                     </div>
                 </div>
             )}
@@ -790,7 +796,7 @@ ${narrativeHtml}
                 <div className="flex items-start gap-3 rounded-2xl border border-rose-500/20 bg-rose-500/8 p-4">
                     <XCircle className="h-5 w-5 text-rose-500 shrink-0 mt-0.5" />
                     <div>
-                        <p className="text-sm font-medium text-rose-600 dark:text-rose-400">Ошибка загрузки</p>
+                        <p className="text-sm font-medium text-rose-600 dark:text-rose-400">{t("company.err.load")}</p>
                         <p className="text-xs text-[var(--text-muted)] mt-0.5">{profileError}</p>
                     </div>
                 </div>
@@ -808,24 +814,24 @@ ${narrativeHtml}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 flex-wrap">
                                     <h3 className="text-lg font-bold text-[var(--text-main)] truncate">
-                                        {profile.subject?.nameRu || profile.subject?.fullNameRu || profile.subject?.nameKz || profileDisplayName || `БИН: ${profile.bin}`}
+                                        {profile.subject?.nameRu || profile.subject?.fullNameRu || profile.subject?.nameKz || profileDisplayName || `${t("company.bin")}: ${profile.bin}`}
                                     </h3>
                                     {profile.rnu.is_blacklisted && (
                                         <span className="rounded-full bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider flex items-center gap-1">
-                                            <AlertTriangle className="h-3 w-3" /> Недобросовестный поставщик
+                                            <AlertTriangle className="h-3 w-3" /> {t("company.badge.unreliableSupplier")}
                                         </span>
                                     )}
                                 </div>
                                 <div className="mt-1.5 flex items-center gap-3 flex-wrap text-xs text-[var(--text-muted)]">
                                     <span className="font-mono">{profile.bin}</span>
                                     {profile.subject?.regdate && (
-                                        <span>Рег: {profile.subject.regdate.slice(0, 10)}</span>
+                                        <span>{t("company.label.reg")}: {profile.subject.regdate.slice(0, 10)}</span>
                                     )}
                                     {isSupplier && (
-                                        <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">Поставщик</span>
+                                        <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">{t("company.badge.supplier")}</span>
                                     )}
                                     {isCustomer && (
-                                        <span className="rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">Заказчик</span>
+                                        <span className="rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase">{t("company.badge.customer")}</span>
                                     )}
                                     {profile.subject?.email && (
                                         <span className="flex items-center gap-1"><Info className="h-3 w-3" />{profile.subject.email}</span>
@@ -850,14 +856,14 @@ ${narrativeHtml}
                                 className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-[var(--border-hover)] transition-colors"
                             >
                                 <Download className="h-3.5 w-3.5" />
-                                PDF / печать
+                                {t("company.export.pdf")}
                             </button>
                             <button
                                 onClick={() => { setShowChat(!showChat); if (!showChat && chatMessages.length === 0) setChatMessages([]); }}
                                 className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-colors ${showChat ? "border-indigo-500/40 bg-indigo-500/10 text-indigo-500" : "border-[var(--border)] bg-[var(--surface-hover)] text-[var(--text-muted)] hover:text-[var(--text-main)]"}`}
                             >
                                 <MessageSquare className="h-3.5 w-3.5" />
-                                AI Ассистент
+                                {t("company.ai.assistant")}
                                 <ChevronDown className={`h-3 w-3 transition-transform ${showChat ? "rotate-180" : ""}`} />
                             </button>
                         </div>
@@ -868,7 +874,7 @@ ${narrativeHtml}
                                 {profile.risk.flags.map((flag) => (
                                     <span key={flag} className="inline-flex items-center gap-1 rounded-xl bg-[var(--surface-hover)] border border-[var(--border)] px-2.5 py-1 text-[11px] text-[var(--text-muted)]">
                                         <AlertTriangle className="h-3 w-3 text-amber-500" />
-                                        {FLAG_LABELS[flag] || flag}
+                                        {flagLabel(flag, t)}
                                     </span>
                                 ))}
                             </div>
@@ -878,7 +884,7 @@ ${narrativeHtml}
                     {/* Tab Navigation */}
                     <div className="flex gap-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1">
                         {(["overview", "supplier", "customer"] as const).map((tab) => {
-                            const labels = { overview: "Обзор", supplier: "Как поставщик", customer: "Как заказчик" };
+                            const labels = { overview: t("company.tab.overview"), supplier: t("company.section.asSupplier"), customer: t("company.section.asCustomer") };
                             const counts = {
                                 overview: null,
                                 supplier: profile.as_supplier.metrics.total_contracts,
@@ -910,16 +916,16 @@ ${narrativeHtml}
                             {/* KPIs */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <MetricCard
-                                    label="Контракты (поставщик)"
+                                    label={t("company.kpi.contractsSupplier")}
                                     value={profile.as_supplier.metrics.total_contracts}
-                                    sub={profile.as_supplier.metrics.total_contracts > 0 ? fmt(profile.as_supplier.metrics.total_sum) : "нет данных"}
+                                    sub={profile.as_supplier.metrics.total_contracts > 0 ? fmt(profile.as_supplier.metrics.total_sum) : t("company.common.noData")}
                                     tone={profile.as_supplier.metrics.total_contracts > 0 ? "neutral" : "neutral"}
                                     icon={<Package className="h-3.5 w-3.5" />}
                                 />
                                 <MetricCard
-                                    label="Исполнение"
+                                    label={t("company.metric.execution")}
                                     value={`${profile.as_supplier.metrics.execution_rate}%`}
-                                    sub={`факт: ${fmt(profile.as_supplier.metrics.executed_sum)}`}
+                                    sub={`${t("company.metric.actual")}: ${fmt(profile.as_supplier.metrics.executed_sum)}`}
                                     tone={
                                         profile.as_supplier.metrics.total_contracts === 0 ? "neutral" :
                                             profile.as_supplier.metrics.execution_rate >= 80 ? "ok" :
@@ -928,16 +934,16 @@ ${narrativeHtml}
                                     icon={<TrendingUp className="h-3.5 w-3.5" />}
                                 />
                                 <MetricCard
-                                    label="Тендеры (заказчик)"
+                                    label={t("company.kpi.tendersCustomer")}
                                     value={profile.as_customer.metrics.total_tenders}
-                                    sub={`контракты: ${profile.as_customer.metrics.total_contracts}`}
+                                    sub={`${t("company.kpi.contractsLabel")}: ${profile.as_customer.metrics.total_contracts}`}
                                     tone="neutral"
                                     icon={<FileText className="h-3.5 w-3.5" />}
                                 />
                                 <MetricCard
-                                    label="Статус РНУ"
-                                    value={profile.rnu.is_blacklisted ? "В реестре" : "Чистый"}
-                                    sub={profile.rnu.is_blacklisted ? `${profile.rnu.active_count} активных записей` : "Не в реестре недобросовестных"}
+                                    label={t("company.kpi.rnuStatus")}
+                                    value={profile.rnu.is_blacklisted ? t("company.rnu.listed") : t("company.rnu.clean")}
+                                    sub={profile.rnu.is_blacklisted ? t("company.rnu.activeRecords", { n: profile.rnu.active_count }) : t("company.rnu.notListed")}
                                     tone={profile.rnu.is_blacklisted ? "danger" : "ok"}
                                     icon={profile.rnu.is_blacklisted ? <ShieldAlert className="h-3.5 w-3.5" /> : <ShieldCheck className="h-3.5 w-3.5" />}
                                 />
@@ -950,10 +956,10 @@ ${narrativeHtml}
                                     <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-4">
                                         <div className="flex items-center gap-2 text-sm font-semibold text-[var(--text-main)]">
                                             <BarChart3 className="h-4 w-4 text-indigo-500" />
-                                            Как поставщик — суммы по годам
+                                            {t("company.chart.supplierByYear")}
                                         </div>
-                                        <YearChart byYear={profile.as_supplier.metrics.by_year} />
-                                        <PartnerBar partners={profile.as_supplier.metrics.top_customers} label="Топ заказчики" />
+                                        <YearChart byYear={profile.as_supplier.metrics.by_year} t={t} />
+                                        <PartnerBar partners={profile.as_supplier.metrics.top_customers} label={t("company.partner.topCustomers")} t={t} />
                                     </div>
                                 )}
 
@@ -962,10 +968,10 @@ ${narrativeHtml}
                                     <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-4">
                                         <div className="flex items-center gap-2 text-sm font-semibold text-[var(--text-main)]">
                                             <BarChart3 className="h-4 w-4 text-violet-500" />
-                                            Как заказчик — суммы по годам
+                                            {t("company.chart.customerByYear")}
                                         </div>
-                                        <YearChart byYear={profile.as_customer.metrics.by_year} />
-                                        <PartnerBar partners={profile.as_customer.metrics.top_suppliers} label="Топ поставщики" />
+                                        <YearChart byYear={profile.as_customer.metrics.by_year} t={t} />
+                                        <PartnerBar partners={profile.as_customer.metrics.top_suppliers} label={t("company.partner.topSuppliers")} t={t} />
                                     </div>
                                 )}
                             </div>
@@ -975,14 +981,14 @@ ${narrativeHtml}
                                 <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-4">
                                     <div className="flex items-center gap-2 mb-3">
                                         <ShieldAlert className="h-4 w-4 text-rose-500" />
-                                        <span className="text-sm font-semibold text-rose-600 dark:text-rose-400">Реестр недобросовестных поставщиков</span>
+                                        <span className="text-sm font-semibold text-rose-600 dark:text-rose-400">{t("company.rnu.registryTitle")}</span>
                                     </div>
                                     <div className="space-y-2">
                                         {profile.rnu.records.slice(0, 3).map((r: Record<string, unknown>, i: number) => (
                                             <div key={i} className="text-xs text-[var(--text-muted)] flex gap-2">
                                                 <span className="font-mono">{String(r.startDate || "").slice(0, 10)}</span>
                                                 <span>→</span>
-                                                <span className="font-mono">{String(r.endDate || "бессрочно").slice(0, 10)}</span>
+                                                <span className="font-mono">{r.endDate ? String(r.endDate).slice(0, 10) : t("company.rnu.indefinite")}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -994,13 +1000,13 @@ ${narrativeHtml}
                                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-3">
                                     <div className="flex items-center gap-2">
                                         <Landmark className="h-4 w-4 text-indigo-500" />
-                                        <span className="text-sm font-semibold text-[var(--text-main)]">Налоговые отчисления</span>
+                                        <span className="text-sm font-semibold text-[var(--text-main)]">{t("company.tax.title")}</span>
                                         <span className="ml-auto rounded-full bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 text-[9px] font-semibold text-indigo-500 uppercase tracking-wider">BA.PRG.KZ</span>
                                     </div>
 
                                     {/* Total KPI */}
                                     <MetricCard
-                                        label="Общая сумма налоговых отчислений"
+                                        label={t("company.tax.totalLabel")}
                                         value={fmt(profile.kgd.total_tax_paid)}
                                         tone="neutral"
                                         icon={<Banknote className="h-3.5 w-3.5" />}
@@ -1011,9 +1017,9 @@ ${narrativeHtml}
                                         <table className="w-full text-xs">
                                             <thead>
                                                 <tr className="bg-[var(--surface-alt)]">
-                                                    <th className="px-3 py-2 text-left font-medium text-[var(--text-muted)]">Год</th>
-                                                    <th className="px-3 py-2 text-right font-medium text-[var(--text-muted)]">Сумма</th>
-                                                    <th className="px-3 py-2 text-right font-medium text-[var(--text-muted)]">Изменение</th>
+                                                    <th className="px-3 py-2 text-left font-medium text-[var(--text-muted)]">{t("company.tax.col.year")}</th>
+                                                    <th className="px-3 py-2 text-right font-medium text-[var(--text-muted)]">{t("company.tax.col.amount")}</th>
+                                                    <th className="px-3 py-2 text-right font-medium text-[var(--text-muted)]">{t("company.tax.col.change")}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-[var(--border)]">
@@ -1039,7 +1045,7 @@ ${narrativeHtml}
                                         <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-3 space-y-1">
                                             <div className="flex items-center gap-1.5">
                                                 <TrendingUp className="h-3.5 w-3.5 text-indigo-500" />
-                                                <span className="text-xs font-semibold text-indigo-500">AI-анализ налоговых данных</span>
+                                                <span className="text-xs font-semibold text-indigo-500">{t("company.tax.aiTitle")}</span>
                                                 {profile.kgd.llm_analysis.risk_level && (
                                                     <span className={`ml-auto rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
                                                         profile.kgd.llm_analysis.risk_level === "high" ? "bg-red-500/10 text-red-500" :
@@ -1071,41 +1077,41 @@ ${narrativeHtml}
                                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-3">
                                     <div className="flex items-center gap-2">
                                         <Megaphone className="h-4 w-4 text-amber-500" />
-                                        <span className="text-sm font-semibold text-[var(--text-main)]">Жалобы</span>
+                                        <span className="text-sm font-semibold text-[var(--text-main)]">{t("company.complaints.title")}</span>
                                         <span className="ml-auto text-xs text-[var(--text-muted)]">goszakup.kz</span>
                                     </div>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                        <MetricCard label="Всего жалоб" value={profile.complaints.total} tone="neutral" icon={<FileText className="h-3.5 w-3.5" />} />
+                                        <MetricCard label={t("company.complaints.total")} value={profile.complaints.total} tone="neutral" icon={<FileText className="h-3.5 w-3.5" />} />
                                         <MetricCard
-                                            label="Как поставщик"
+                                            label={t("company.section.asSupplier")}
                                             value={profile.complaints.complaints_as_supplier}
-                                            sub="объект жалобы"
+                                            sub={t("company.complaints.subTarget")}
                                             tone={profile.complaints.complaints_as_supplier > 3 ? "warn" : "neutral"}
                                         />
                                         <MetricCard
-                                            label="Как заказчик"
+                                            label={t("company.section.asCustomer")}
                                             value={profile.complaints.complaints_as_customer}
-                                            sub="на закупки"
+                                            sub={t("company.complaints.subOnPurchases")}
                                             tone={profile.complaints.complaints_as_customer > 3 ? "warn" : "neutral"}
                                         />
                                         <MetricCard
-                                            label="Удовлетворено"
+                                            label={t("company.complaints.satisfied")}
                                             value={`${profile.complaints.satisfaction_rate}%`}
-                                            sub={`${profile.complaints.satisfied_count} из ${profile.complaints.total}`}
+                                            sub={t("company.complaints.satisfiedOf", { a: profile.complaints.satisfied_count, b: profile.complaints.total })}
                                             tone={profile.complaints.satisfaction_rate > 50 ? "danger" : profile.complaints.satisfaction_rate > 25 ? "warn" : "ok"}
                                         />
                                     </div>
                                     {profile.complaints.complaints.length > 0 && (
-                                        <ComplaintsTable complaints={profile.complaints.complaints} />
+                                        <ComplaintsTable complaints={profile.complaints.complaints} t={t} />
                                     )}
                                     {/* LLM analyses of satisfied complaints */}
                                     {profile.complaints.llm_analyses && profile.complaints.llm_analyses.length > 0 && (
                                         <div className="space-y-2 mt-2">
-                                            <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">LLM-анализ удовлетворённых жалоб</div>
+                                            <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">{t("company.complaints.llmTitle")}</div>
                                             {profile.complaints.llm_analyses.map((a, i) => (
                                                 <div key={i} className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 space-y-1">
                                                     <div className="flex items-center gap-2 flex-wrap">
-                                                        <span className="font-mono text-xs text-[var(--text-main)]">Жалоба #{a.complaint_number || i + 1}</span>
+                                                        <span className="font-mono text-xs text-[var(--text-main)]">{t("company.complaints.itemLabel", { n: a.complaint_number || i + 1 })}</span>
                                                         {a.violation_type && (
                                                             <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] text-amber-600 dark:text-amber-400">{a.violation_type}</span>
                                                         )}
@@ -1137,21 +1143,21 @@ ${narrativeHtml}
                                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-3">
                                     <div className="flex items-center gap-2">
                                         <Scale className="h-4 w-4 text-violet-500" />
-                                        <span className="text-sm font-semibold text-[var(--text-main)]">Судебные дела</span>
+                                        <span className="text-sm font-semibold text-[var(--text-main)]">{t("company.court.title")}</span>
                                         <span className="ml-auto text-xs text-[var(--text-muted)]">sud.gov.kz</span>
                                     </div>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                        <MetricCard label="Всего дел" value={profile.court_cases.total} tone="neutral" icon={<Scale className="h-3.5 w-3.5" />} />
-                                        <MetricCard label="Как истец" value={profile.court_cases.as_plaintiff} tone="neutral" />
+                                        <MetricCard label={t("company.court.total")} value={profile.court_cases.total} tone="neutral" icon={<Scale className="h-3.5 w-3.5" />} />
+                                        <MetricCard label={t("company.court.asPlaintiff")} value={profile.court_cases.as_plaintiff} tone="neutral" />
                                         <MetricCard
-                                            label="Как ответчик"
+                                            label={t("company.court.asDefendant")}
                                             value={profile.court_cases.as_defendant}
                                             tone={profile.court_cases.as_defendant > 3 ? "warn" : "neutral"}
                                         />
                                         <MetricCard
-                                            label="Влияние на надёжность"
+                                            label={t("company.court.reliabilityImpact")}
                                             value={`${profile.court_cases.avg_reliability_impact}/10`}
-                                            sub="LLM-оценка"
+                                            sub={t("company.court.llmScore")}
                                             tone={
                                                 profile.court_cases.avg_reliability_impact >= 7 ? "danger" :
                                                 profile.court_cases.avg_reliability_impact >= 4 ? "warn" : "ok"
@@ -1162,11 +1168,11 @@ ${narrativeHtml}
                                     {/* LLM analyses of individual cases */}
                                     {profile.court_cases.llm_analyses.length > 0 && (
                                         <div className="space-y-2 mt-2">
-                                            <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">LLM-анализ решений</div>
+                                            <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">{t("company.court.llmTitle")}</div>
                                             {profile.court_cases.llm_analyses.map((a, i) => (
                                                 <div key={i} className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 space-y-1">
                                                     <div className="flex items-center gap-2 flex-wrap">
-                                                        <span className="font-mono text-xs text-[var(--text-main)]">{a.case_number || `Дело #${i + 1}`}</span>
+                                                        <span className="font-mono text-xs text-[var(--text-main)]">{a.case_number || t("company.court.caseLabel", { n: i + 1 })}</span>
                                                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                                                             a.role === "ответчик" ? "bg-rose-500/10 text-rose-600 dark:text-rose-400" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                                                         }`}>
@@ -1190,7 +1196,7 @@ ${narrativeHtml}
                                                             {a.reliability_impact}/10
                                                         </span>
                                                     </div>
-                                                    {a.amount && <div className="text-xs text-[var(--text-muted)]">Сумма: {fmt(a.amount)}</div>}
+                                                    {a.amount && <div className="text-xs text-[var(--text-muted)]">{t("company.court.amount")}: {fmt(a.amount)}</div>}
                                                     <p className="text-xs text-[var(--text-main)] leading-relaxed">{a.summary}</p>
                                                 </div>
                                             ))}
@@ -1204,16 +1210,16 @@ ${narrativeHtml}
                                 <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-3">
                                     <div className="flex items-center gap-2">
                                         <Link2 className="h-4 w-4 text-amber-500" />
-                                        <span className="text-sm font-semibold text-[var(--text-main)]">Связанные компании</span>
+                                        <span className="text-sm font-semibold text-[var(--text-main)]">{t("company.affil.title")}</span>
                                         <span className="ml-auto rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
-                                            {profile.affiliations.total_links} связей
+                                            {t("company.affil.linksCount", { n: profile.affiliations.total_links })}
                                         </span>
                                     </div>
 
                                     {profile.affiliations.shared_bank_accounts.length > 0 && (
                                         <div className="space-y-1.5">
                                             <div className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1">
-                                                <Banknote className="h-3 w-3" /> Общие банковские счета
+                                                <Banknote className="h-3 w-3" /> {t("company.affil.sharedBankAccounts")}
                                             </div>
                                             {profile.affiliations.shared_bank_accounts.map((a, i) => (
                                                 <div key={i} className="flex items-center gap-2 text-xs rounded-lg bg-[var(--surface)] border border-[var(--border)] px-3 py-2">
@@ -1227,7 +1233,7 @@ ${narrativeHtml}
                                     {profile.affiliations.shared_contacts.length > 0 && (
                                         <div className="space-y-1.5">
                                             <div className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1">
-                                                <Users className="h-3 w-3" /> Общие контакты
+                                                <Users className="h-3 w-3" /> {t("company.affil.sharedContacts")}
                                             </div>
                                             {profile.affiliations.shared_contacts.map((a, i) => (
                                                 <div key={i} className="flex items-center gap-2 text-xs rounded-lg bg-[var(--surface)] border border-[var(--border)] px-3 py-2">
@@ -1242,13 +1248,13 @@ ${narrativeHtml}
                                     {profile.affiliations.cobid_partners.length > 0 && (
                                         <div className="space-y-1.5">
                                             <div className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1">
-                                                <Link2 className="h-3 w-3" /> Co-bidding партнёры
+                                                <Link2 className="h-3 w-3" /> {t("company.affil.cobidders")}
                                             </div>
                                             {profile.affiliations.cobid_partners.map((a, i) => (
                                                 <div key={i} className="flex items-center gap-2 text-xs rounded-lg bg-[var(--surface)] border border-[var(--border)] px-3 py-2">
                                                     <span className="font-mono text-[var(--text-main)]">{a.bin}</span>
                                                     <span className="text-[var(--text-muted)] truncate">{a.name}</span>
-                                                    <span className="ml-auto text-[10px] text-amber-600 dark:text-amber-400 font-semibold">{a.times_together}x вместе</span>
+                                                    <span className="ml-auto text-[10px] text-amber-600 dark:text-amber-400 font-semibold">{t("company.affil.timesTogether", { n: a.times_together ?? 0 })}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -1262,42 +1268,42 @@ ${narrativeHtml}
                     {activeTab === "supplier" && (
                         <div className="space-y-5">
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <MetricCard label="Всего контрактов" value={profile.as_supplier.metrics.total_contracts} tone="neutral" icon={<Package className="h-3.5 w-3.5" />} />
-                                <MetricCard label="Общая сумма" value={fmt(profile.as_supplier.metrics.total_sum)} tone="neutral" icon={<ArrowUpRight className="h-3.5 w-3.5" />} />
+                                <MetricCard label={t("company.metric.totalContracts")} value={profile.as_supplier.metrics.total_contracts} tone="neutral" icon={<Package className="h-3.5 w-3.5" />} />
+                                <MetricCard label={t("company.metric.totalSum")} value={fmt(profile.as_supplier.metrics.total_sum)} tone="neutral" icon={<ArrowUpRight className="h-3.5 w-3.5" />} />
                                 <MetricCard
-                                    label="Исполнение"
+                                    label={t("company.metric.execution")}
                                     value={`${profile.as_supplier.metrics.execution_rate}%`}
-                                    sub={`факт: ${fmt(profile.as_supplier.metrics.executed_sum)}`}
+                                    sub={`${t("company.metric.actual")}: ${fmt(profile.as_supplier.metrics.executed_sum)}`}
                                     tone={profile.as_supplier.metrics.execution_rate >= 80 ? "ok" : profile.as_supplier.metrics.execution_rate >= 50 ? "warn" : "danger"}
                                     icon={<TrendingUp className="h-3.5 w-3.5" />}
                                 />
-                                <MetricCard label="Уникальных заказчиков" value={profile.as_supplier.metrics.unique_customers} tone="neutral" icon={<Users className="h-3.5 w-3.5" />} />
+                                <MetricCard label={t("company.metric.uniqueCustomers")} value={profile.as_supplier.metrics.unique_customers} tone="neutral" icon={<Users className="h-3.5 w-3.5" />} />
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <MetricCard
-                                    label="Просрочки"
+                                    label={t("company.metric.overdue")}
                                     value={profile.as_supplier.metrics.overdue_count}
                                     tone={profile.as_supplier.metrics.overdue_count > 0 ? "warn" : "ok"}
                                     icon={<Clock className="h-3.5 w-3.5" />}
                                 />
                                 <MetricCard
-                                    label="Штрафы"
+                                    label={t("company.metric.fines")}
                                     value={profile.as_supplier.metrics.fines_count}
                                     tone={profile.as_supplier.metrics.fines_count > 0 ? "danger" : "ok"}
                                     icon={<AlertTriangle className="h-3.5 w-3.5" />}
                                 />
-                                <MetricCard label="Ср. сумма контракта" value={fmt(profile.as_supplier.metrics.avg_contract_size)} tone="neutral" />
-                                <MetricCard label="Выплачено казначейством" value={fmt(profile.as_supplier.metrics.treasury_paid)} tone="neutral" />
+                                <MetricCard label={t("company.metric.avgContractSize")} value={fmt(profile.as_supplier.metrics.avg_contract_size)} tone="neutral" />
+                                <MetricCard label={t("company.metric.treasuryPaid")} value={fmt(profile.as_supplier.metrics.treasury_paid)} tone="neutral" />
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-4">
-                                    <YearChart byYear={profile.as_supplier.metrics.by_year} />
-                                    <PartnerBar partners={profile.as_supplier.metrics.top_customers} label="Топ-5 заказчиков по сумме" />
+                                    <YearChart byYear={profile.as_supplier.metrics.by_year} t={t} />
+                                    <PartnerBar partners={profile.as_supplier.metrics.top_customers} label={t("company.partner.top5Customers")} t={t} />
                                 </div>
                                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                                    <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3">Последние контракты</div>
-                                    <ContractTable contracts={profile.as_supplier.contracts as unknown as Record<string, unknown>[]} role="supplier" />
+                                    <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3">{t("company.contracts.recent")}</div>
+                                    <ContractTable contracts={profile.as_supplier.contracts as unknown as Record<string, unknown>[]} role="supplier" t={t} />
                                 </div>
                             </div>
                         </div>
@@ -1307,32 +1313,32 @@ ${narrativeHtml}
                     {activeTab === "customer" && (
                         <div className="space-y-5">
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <MetricCard label="Всего тендеров" value={profile.as_customer.metrics.total_tenders} tone="neutral" icon={<FileText className="h-3.5 w-3.5" />} />
-                                <MetricCard label="Всего контрактов" value={profile.as_customer.metrics.total_contracts} tone="neutral" icon={<Package className="h-3.5 w-3.5" />} />
-                                <MetricCard label="Объём закупок" value={fmt(profile.as_customer.metrics.total_procurement_sum)} tone="neutral" icon={<TrendingDown className="h-3.5 w-3.5" />} />
-                                <MetricCard label="Уникальных поставщиков" value={profile.as_customer.metrics.unique_suppliers} tone="neutral" icon={<Users className="h-3.5 w-3.5" />} />
+                                <MetricCard label={t("company.metric.totalTenders")} value={profile.as_customer.metrics.total_tenders} tone="neutral" icon={<FileText className="h-3.5 w-3.5" />} />
+                                <MetricCard label={t("company.metric.totalContracts")} value={profile.as_customer.metrics.total_contracts} tone="neutral" icon={<Package className="h-3.5 w-3.5" />} />
+                                <MetricCard label={t("company.metric.procurementVolume")} value={fmt(profile.as_customer.metrics.total_procurement_sum)} tone="neutral" icon={<TrendingDown className="h-3.5 w-3.5" />} />
+                                <MetricCard label={t("company.metric.uniqueSuppliers")} value={profile.as_customer.metrics.unique_suppliers} tone="neutral" icon={<Users className="h-3.5 w-3.5" />} />
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <MetricCard
-                                    label="Единственный источник"
+                                    label={t("company.metric.singleSource")}
                                     value={`${profile.as_customer.metrics.single_source_rate}%`}
-                                    sub={`${profile.as_customer.metrics.single_source_count} тендеров`}
+                                    sub={t("company.report.tendersCount", { n: profile.as_customer.metrics.single_source_count })}
                                     tone={profile.as_customer.metrics.single_source_rate > 50 ? "warn" : profile.as_customer.metrics.single_source_rate > 80 ? "danger" : "ok"}
                                     icon={<ShieldAlert className="h-3.5 w-3.5" />}
                                 />
                                 <MetricCard
-                                    label="Отменённые тендеры"
+                                    label={t("company.metric.cancelledTenders")}
                                     value={profile.as_customer.metrics.cancelled_tenders}
                                     tone={profile.as_customer.metrics.cancelled_tenders > 5 ? "warn" : "ok"}
                                     icon={<XCircle className="h-3.5 w-3.5" />}
                                 />
                                 <MetricCard
-                                    label="Статус РНУ"
-                                    value={profile.rnu.is_blacklisted ? "В реестре" : "Чистый"}
+                                    label={t("company.kpi.rnuStatus")}
+                                    value={profile.rnu.is_blacklisted ? t("company.rnu.listed") : t("company.rnu.clean")}
                                     tone={profile.rnu.is_blacklisted ? "danger" : "ok"}
                                     icon={<ShieldCheck className="h-3.5 w-3.5" />}
                                 />
-                                <MetricCard label="Ср. сумма контракта" value={
+                                <MetricCard label={t("company.metric.avgContractSize")} value={
                                     profile.as_customer.metrics.total_contracts > 0
                                         ? fmt(profile.as_customer.metrics.total_procurement_sum / profile.as_customer.metrics.total_contracts)
                                         : "—"
@@ -1341,12 +1347,12 @@ ${narrativeHtml}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-4">
-                                    <YearChart byYear={profile.as_customer.metrics.by_year} />
-                                    <PartnerBar partners={profile.as_customer.metrics.top_suppliers} label="Топ-5 поставщиков по сумме" />
+                                    <YearChart byYear={profile.as_customer.metrics.by_year} t={t} />
+                                    <PartnerBar partners={profile.as_customer.metrics.top_suppliers} label={t("company.partner.top5Suppliers")} t={t} />
                                 </div>
                                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                                    <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3">Последние контракты</div>
-                                    <ContractTable contracts={profile.as_customer.contracts as unknown as Record<string, unknown>[]} role="customer" />
+                                    <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3">{t("company.contracts.recent")}</div>
+                                    <ContractTable contracts={profile.as_customer.contracts as unknown as Record<string, unknown>[]} role="customer" t={t} />
                                 </div>
                             </div>
                         </div>
@@ -1361,8 +1367,8 @@ ${narrativeHtml}
                                     <Bot className="h-4 w-4 text-white" />
                                 </div>
                                 <div>
-                                    <div className="text-sm font-semibold text-[var(--text-main)]">AI Анализ компании</div>
-                                    <div className="text-[11px] text-[var(--text-muted)]">Экспертный нарратив на основе метрик OWS</div>
+                                    <div className="text-sm font-semibold text-[var(--text-main)]">{t("company.ai.companyTitle")}</div>
+                                    <div className="text-[11px] text-[var(--text-muted)]">{t("company.ai.companySubtitle")}</div>
                                 </div>
                             </div>
                             <button
@@ -1371,8 +1377,8 @@ ${narrativeHtml}
                                 className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50 transition-all shadow-sm shadow-indigo-500/20"
                             >
                                 {llmLoading
-                                    ? <><Loader2 className="h-4 w-4 animate-spin" /> Анализирую...</>
-                                    : <><Sparkles className="h-4 w-4" /> {llmNarrative ? "Обновить" : "Запустить анализ"}</>
+                                    ? <><Loader2 className="h-4 w-4 animate-spin" /> {t("company.ai.analyzing")}</>
+                                    : <><Sparkles className="h-4 w-4" /> {llmNarrative ? t("company.ai.refresh") : t("company.ai.run")}</>
                                 }
                             </button>
                         </div>
@@ -1382,8 +1388,8 @@ ${narrativeHtml}
                             <div className="flex flex-col items-center justify-center py-10 gap-3 text-[var(--text-muted)]">
                                 <Sparkles className="h-8 w-8 text-indigo-500/40" />
                                 <div className="text-center">
-                                    <p className="text-sm text-[var(--text-main)]">AI-анализ ещё не запущен</p>
-                                    <p className="text-xs mt-0.5">Нажми «Запустить анализ» — GPT изучит метрики и выдаст экспертный вывод</p>
+                                    <p className="text-sm text-[var(--text-main)]">{t("company.ai.notRun")}</p>
+                                    <p className="text-xs mt-0.5">{t("company.ai.notRunHint")}</p>
                                 </div>
                             </div>
                         )}
@@ -1391,7 +1397,7 @@ ${narrativeHtml}
                         {llmLoading && (
                             <div className="flex flex-col items-center justify-center py-10 gap-3 text-[var(--text-muted)]">
                                 <Loader2 className="h-7 w-7 text-indigo-500 animate-spin" />
-                                <p className="text-sm">Отправляю метрики в GPT и жду ответа...</p>
+                                <p className="text-sm">{t("company.ai.sending")}</p>
                             </div>
                         )}
 
@@ -1399,7 +1405,7 @@ ${narrativeHtml}
                             <div className="flex items-start gap-3 m-5 rounded-xl border border-rose-500/20 bg-rose-500/8 p-4">
                                 <XCircle className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
                                 <div>
-                                    <p className="text-sm font-medium text-rose-600 dark:text-rose-400">Ошибка LLM</p>
+                                    <p className="text-sm font-medium text-rose-600 dark:text-rose-400">{t("company.err.llm")}</p>
                                     <p className="text-xs text-[var(--text-muted)] mt-0.5">{llmError}</p>
                                 </div>
                             </div>
@@ -1467,7 +1473,7 @@ ${narrativeHtml}
                                 </div>
                                 <div className="mt-4 pt-3 border-t border-[var(--border)] flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
                                     <Bot className="h-3 w-3" />
-                                    На основе данных OWS · Только для справки, не является юридическим заключением
+                                    {t("company.ai.disclaimer")}
                                 </div>
                             </div>
                         )}
@@ -1481,9 +1487,9 @@ ${narrativeHtml}
                                     <Bot className="h-3.5 w-3.5 text-white" />
                                 </div>
                                 <div>
-                                    <div className="text-sm font-semibold text-[var(--text-main)]">AI Ассистент</div>
+                                    <div className="text-sm font-semibold text-[var(--text-main)]">{t("company.ai.assistant")}</div>
                                     <div className="text-[10px] text-[var(--text-muted)]">
-                                        Знает контекст этой компании · Задавай любые вопросы
+                                        {t("company.chat.subtitle")}
                                     </div>
                                 </div>
                                 <button
@@ -1500,8 +1506,8 @@ ${narrativeHtml}
                                     <div className="flex flex-col items-center justify-center h-full gap-2 text-[var(--text-muted)]">
                                         <MessageSquare className="h-7 w-7 text-indigo-500/40" />
                                         <p className="text-sm text-center">
-                                            Спроси что-нибудь о компании<br />
-                                            <span className="text-xs">Например: «Есть ли признаки аффилированности?»</span>
+                                            {t("company.chat.emptyTitle")}<br />
+                                            <span className="text-xs">{t("company.chat.emptyExample")}</span>
                                         </p>
                                     </div>
                                 )}
@@ -1533,7 +1539,7 @@ ${narrativeHtml}
                                     value={chatInput}
                                     onChange={(e) => setChatInput(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendChatMessage()}
-                                    placeholder="Задай вопрос об этой компании..."
+                                    placeholder={t("company.chat.placeholder")}
                                     className="flex-1 rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-indigo-500 transition-colors"
                                 />
                                 <button
@@ -1550,7 +1556,7 @@ ${narrativeHtml}
                     {/* Footer */}
                     <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)] pt-2 border-t border-[var(--border)]">
                         <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-                        Данные загружены {new Date(profile.fetched_at).toLocaleString("ru-RU")} · Источник: OWS API v3 goszakup.gov.kz
+                        {t("company.footer.loadedAt", { date: new Date(profile.fetched_at).toLocaleString("ru-RU") })} · {t("company.report.source")}: OWS API v3 goszakup.gov.kz
                     </div>
                 </div>
             )}
