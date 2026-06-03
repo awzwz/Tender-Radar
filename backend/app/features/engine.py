@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 # Load weights config
 _WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), "weights.yaml")
-with open(_WEIGHTS_PATH) as f:
+with open(_WEIGHTS_PATH, encoding="utf-8") as f:
     _CONFIG = yaml.safe_load(f)
 
 WEIGHTS = {k: v["weight"] for k, v in _CONFIG["indicators"].items()}

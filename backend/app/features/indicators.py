@@ -26,7 +26,7 @@ _EMPTY = {"flag": False, "value": None, "evidence": {}}
 
 # ─── Load configurable thresholds ─────────────────────────────────────────────
 _WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), "weights.yaml")
-with open(_WEIGHTS_PATH) as _f:
+with open(_WEIGHTS_PATH, encoding="utf-8") as _f:
     _CFG = yaml.safe_load(_f)
 _THR = _CFG.get("indicator_thresholds", {})
 

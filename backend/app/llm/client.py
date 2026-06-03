@@ -37,3 +37,21 @@ class LLMClient:
         except Exception as e:
             logger.error(f"OpenAI API error: {e}")
             raise
+
+    @retry(stop=stop_after_attempt(2), wait=wait_exponential(multiplier=1, min=2, max=10))
+    async def chat_completion(self, messages: list, temperature: float = 0.3) -> str:
+        """Multi-turn chat completion. `messages` is a full OpenAI-format list
+        (system + alternating user/assistant turns). Used by the AI Assistant
+        so conversation history keeps its role structure instead of being
+        flattened into one string."""
+        try:
+            response = await self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                max_tokens=self.max_tokens,
+                temperature=temperature,
+            )
+            return response.choices[0].message.content or ""
+        except Exception as e:
+            logger.error(f"OpenAI chat error: {e}")
+            raise

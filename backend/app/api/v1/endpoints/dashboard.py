@@ -345,3 +345,82 @@ async def get_dashboard_lots(
         "limit": limit,
         "items": items,
     }
+
+
+# (shapeName matching public/geo/kz-regions.json, name_ru, keywords lowercased).
+# Order matters: most specific first; bare "алматы" -> city is checked last.
+_REGION_RULES = [
+    ("Astana", "Астана", ["астан", "нур-султан", "нұр-сұлтан"]),
+    ("Almaty Region", "Алматинская обл.", ["алматинск", "талдыкорган", "талдықорған", "алматы област", "алматы обл"]),
+    ("South Kazakhstan Region", "Туркестанская обл. / Шымкент", ["шымкент", "чимкент", "южно-казахстан", "түркістан", "туркестан"]),
+    ("Karaganda Region", "Карагандинская обл.", ["караганд", "қараганд", "темиртау", "жезказган", "ұлытау", "улытау"]),
+    ("Aktobe Region", "Актюбинская обл.", ["актюбинск", "актобе", "ақтөбе"]),
+    ("Atyrau Region", "Атырауская обл.", ["атырау", "гурьев"]),
+    ("Kostanay Region", "Костанайская обл.", ["костанай", "кустанай", "қостанай"]),
+    ("Pavlodar Region", "Павлодарская обл.", ["павлодар", "екибастуз", "екібастұз"]),
+    ("Kyzylorda Region", "Кызылординская обл.", ["кызылорд", "қызылорд", "кзыл-орд"]),
+    ("Jambyl Region", "Жамбылская обл.", ["жамбыл", "джамбул", "тараз"]),
+    ("West Kazakhstan Region", "Западно-Казахстанская обл.", ["западно-казахстан", "батыс қазақстан", "уральск", "орал"]),
+    ("East Kazakhstan Region", "Восточно-Казахстанская обл.", ["восточно-казахстан", "шығыс қазақстан", "усть-каменогорск", "өскемен", "семей", "абай"]),
+    ("North Kazakhstan Region", "Северо-Казахстанская обл.", ["северо-казахстан", "солтүстік қазақстан", "петропавловск"]),
+    ("Akmola Region", "Акмолинская обл.", ["акмолинск", "ақмола", "кокшетау", "көкшетау", "целиноград"]),
+    ("Mangystau Region", "Мангистауская обл.", ["мангыстау", "мангистау", "маңғыстау", "актау", "жанаозен", "жаңаөзен"]),
+    ("Almaty", "Алматы (город)", ["алматы"]),
+]
+
+
+@router.get("/regions")
+async def get_dashboard_regions(
+    db: AsyncSession = Depends(get_db),
+    _=Depends(require_viewer),
+):
+    """Aggregate lot risk by Kazakhstan region, derived from customer_name.
+    Each region `id` matches the `shapeName` in frontend public/geo/kz-regions.json."""
+    rows = (await db.execute(
+        select(Lot.customer_name, RiskScore.score_final, RiskScore.score, RiskScore.level)
+        .join(
+            RiskScore,
+            and_(RiskScore.entity_type == "lot", RiskScore.entity_id == cast(Lot.id, String)),
+            isouter=False,
+        )
+        .where(Lot.is_deleted == False)
+    )).all()
+
+    agg = {sid: {"name_ru": nru, "count": 0, "sum": 0.0, "high": 0, "medium": 0, "low": 0}
+           for sid, nru, _kw in _REGION_RULES}
+    unmatched = 0
+    for cname, sfin, sc, level in rows:
+        name = (cname or "").lower()
+        matched = None
+        for sid, _nru, kws in _REGION_RULES:
+            if any(k in name for k in kws):
+                matched = sid
+                break
+        if matched is None:
+            unmatched += 1
+            continue
+        a = agg[matched]
+        a["count"] += 1
+        a["sum"] += float(sfin if sfin is not None else (sc or 0))
+        lv = (level or "LOW").upper()
+        if lv == "HIGH":
+            a["high"] += 1
+        elif lv == "MEDIUM":
+            a["medium"] += 1
+        else:
+            a["low"] += 1
+
+    regions = []
+    for sid, nru, _kw in _REGION_RULES:
+        a = agg[sid]
+        avg = round(a["sum"] / a["count"], 1) if a["count"] else 0.0
+        regions.append({
+            "id": sid,
+            "name_ru": nru,
+            "count": a["count"],
+            "avg_risk": avg,
+            "high": a["high"],
+            "medium": a["medium"],
+            "low": a["low"],
+        })
+    return {"regions": regions, "unmatched": unmatched}
