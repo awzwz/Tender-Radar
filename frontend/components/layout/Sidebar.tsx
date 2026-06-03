@@ -11,8 +11,6 @@ import {
     Shield,
     Search,
     FileCheck2,
-    Users,
-    Building,
     ChevronLeft,
     ChevronRight,
     LogOut,
@@ -32,8 +30,6 @@ export type NavId =
     | "cases"
     | "specnorm"
     | "bidcheck"
-    | "suppliers"
-    | "customers"
     | "company-search"
     | "ai-assistant";
 
@@ -58,8 +54,6 @@ const NAV_ITEMS: NavItem[] = [
     { id: "dashboard", label: "Dashboard", icon: <LayoutDashboard className="h-5 w-5" />, hint: "Сводка рисков", group: "main" },
     { id: "risk-list", label: "Risk List", icon: <ListFilter className="h-5 w-5" />, hint: "Лоты · фильтры", group: "main" },
     { id: "tender-list", label: "Тендеры", icon: <ClipboardList className="h-5 w-5" />, hint: "Список тендеров", group: "main" },
-    { id: "suppliers", label: "Suppliers", icon: <Users className="h-5 w-5" />, hint: "Suppliers registry", group: "main" },
-    { id: "customers", label: "Customers", icon: <Building className="h-5 w-5" />, hint: "Customers registry", group: "main" },
     { id: "detail", label: "Lot Detail", icon: <FileText className="h-5 w-5" />, hint: "Причины риска", group: "main" },
     { id: "cases", label: "Cases", icon: <Briefcase className="h-5 w-5" />, hint: "Рабочее место", group: "main" },
     { id: "specnorm", label: "Tender Analysis", icon: <FileCheck2 className="h-5 w-5" />, hint: "Spec vs Norm · LLM", group: "tools", badge: "AI" },

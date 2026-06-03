@@ -24,8 +24,6 @@ import CasesView from "@/components/dashboard/CasesView";
 import AIAssistant from "@/components/dashboard/AIAssistant";
 import CompanyProfileView from "@/components/dashboard/CompanyProfileView";
 import TenderListView from "@/components/dashboard/TenderListView";
-import SuppliersListView from "@/components/dashboard/SuppliersListView";
-import CustomersListView from "@/components/dashboard/CustomersListView";
 import { money } from "@/components/shared/ui";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -283,8 +281,8 @@ export default function AIProcurePage() {
 
         {/* Content */}
         <main className="flex-1 p-5">
-          {/* Filter panel — shown on dashboard and risk-list views */}
-          {(nav === "dashboard" || nav === "risk-list") && (
+          {/* Filter panel — shown on risk-list view only */}
+          {nav === "risk-list" && (
             <div className="mb-5">
               <FilterPanel
                 search={search}
@@ -370,34 +368,6 @@ export default function AIProcurePage() {
             )}
             {nav === "tender-list" && (
               <TenderListView />
-            )}
-            {nav === "suppliers" && (
-              <div className="flex flex-col items-center justify-center py-24 text-center space-y-4">
-                <div className="h-16 w-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center">
-                  <ListFilter className="h-8 w-8 text-indigo-500" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-[var(--text-main)]">Реестр поставщиков</h3>
-                  <p className="mt-2 text-sm text-[var(--text-muted)] max-w-sm">
-                    Эта вкладка находится в процессе доработки.
-                  </p>
-                  <p className="mt-1 text-xs text-[var(--text-muted)]">Функционал скоро будет доступен</p>
-                </div>
-              </div>
-            )}
-            {nav === "customers" && (
-              <div className="flex flex-col items-center justify-center py-24 text-center space-y-4">
-                <div className="h-16 w-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center">
-                  <ListFilter className="h-8 w-8 text-indigo-500" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-[var(--text-main)]">Реестр заказчиков</h3>
-                  <p className="mt-2 text-sm text-[var(--text-muted)] max-w-sm">
-                    Эта вкладка находится в процессе доработки.
-                  </p>
-                  <p className="mt-1 text-xs text-[var(--text-muted)]">Функционал скоро будет доступен</p>
-                </div>
-              </div>
             )}
             {nav === "company-search" && (
               <CompanyProfileView />
