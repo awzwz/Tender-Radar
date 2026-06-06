@@ -11,6 +11,15 @@ function getToken(): string | null {
     return localStorage.getItem("token");
 }
 
+/** Session expired / invalid token: clear it and bounce to login (once). */
+function handleUnauthorized(): void {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem("token");
+    if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+    }
+}
+
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
     const token = getToken();
     const res = await fetch(`${API_BASE}${path}`, {
@@ -22,6 +31,10 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
         },
     });
     if (!res.ok) {
+        if (res.status === 401) {
+            handleUnauthorized();
+            throw new Error("Сессия истекла. Войдите снова.");
+        }
         const error = await res.json().catch(() => ({ detail: res.statusText }));
         throw new Error(error.detail || "API error");
     }
