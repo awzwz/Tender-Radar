@@ -471,6 +471,7 @@ class PriceBenchmark(Base):
     upper_fence = Column(Float, nullable=False)   # q3 + 1.5*iqr (overpricing fence)
     min_price = Column(Float)
     max_price = Column(Float)
+    median_count = Column(Float)   # typical quantity for the group (count-plausibility guard)
     updated_at = Column(DateTime)
 
     __table_args__ = (

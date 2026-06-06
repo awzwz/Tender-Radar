@@ -250,6 +250,10 @@ indicator_thresholds:
     threshold_pct: 1.0
   IDENTICAL_BID_PRICES:
     min_duplicate_groups: 1
+  OVERPRICED_UNIT:
+    min_samples: 5          # min competitive lots per product for a benchmark
+    min_count_ratio: 0.1    # lot.count must be >= 10% of group median count (unit-mismatch guard)
+    max_ratio: 50           # ratios above this are data-quality anomalies, not trusted overpricing
 
 # Combo boosters: bonus points when dangerous indicator combinations co-occur
 combo_boosters:

@@ -6,6 +6,7 @@ import { api, OverpricedLot, PriceStats } from "@/lib/api";
 import { money } from "@/components/shared/ui";
 import { StatCard } from "@/components/shared/ui";
 import { useI18n } from "@/components/providers/LanguageProvider";
+import ProductPriceModal from "@/components/dashboard/ProductPriceModal";
 
 const tenge = (n: number | null | undefined) =>
     n == null ? "—" : money(Number(n));
@@ -47,6 +48,7 @@ export default function PriceRadarView({ onOpenLot }: { onOpenLot?: (id: number)
     const [search, setSearch] = useState("");
     const [minRatio, setMinRatio] = useState(1.5);
     const [loading, setLoading] = useState(false);
+    const [product, setProduct] = useState<{ code: string; unit: string | null; lotId: number } | null>(null);
 
     useEffect(() => {
         api.priceStats().then(setStats).catch(() => setStats(null));
@@ -142,7 +144,9 @@ export default function PriceRadarView({ onOpenLot }: { onOpenLot?: (id: number)
                 {items.map((it) => (
                     <button
                         key={it.id}
-                        onClick={() => onOpenLot?.(it.id)}
+                        onClick={() => it.enstru_code
+                            ? setProduct({ code: it.enstru_code, unit: it.unit_code, lotId: it.id })
+                            : onOpenLot?.(it.id)}
                         className="w-full grid grid-cols-12 gap-2 px-4 py-3 text-sm border-b border-[var(--border)] last:border-0 hover:bg-[var(--surface-hover)] transition text-left items-center"
                     >
                         <div className="col-span-4 min-w-0">
@@ -188,6 +192,16 @@ export default function PriceRadarView({ onOpenLot }: { onOpenLot?: (id: number)
                     </button>
                 )}
             </div>
+
+            {product && (
+                <ProductPriceModal
+                    enstruCode={product.code}
+                    unitCode={product.unit}
+                    selectedLotId={product.lotId}
+                    onClose={() => setProduct(null)}
+                    onOpenLot={onOpenLot}
+                />
+            )}
         </div>
     );
 }

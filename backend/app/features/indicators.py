@@ -985,8 +985,10 @@ async def check_overpriced_unit(db: AsyncSession, lot_id: int) -> dict:
 
     Compares the lot's unit_price against the price_benchmark for its
     (enstru_code, unit_code). Flags when unit_price exceeds the upper IQR
-    fence (Q3 + 1.5*IQR). Requires the lot to be enriched and a benchmark
-    to exist for the product.
+    fence (Q3 + 1.5*IQR), with two data-quality guards: the lot quantity must
+    be plausible vs the group norm (count >= median_count * min_count_ratio)
+    and the ratio must be below max_ratio. Lots failing a guard are recorded
+    as data_quality_suspect (flag stays False).
     """
     result = await db.execute(
         select(Lot.unit_price, Lot.count, Lot.enstru_code, Lot.enstru_name, Lot.unit_code)
@@ -1005,10 +1007,19 @@ async def check_overpriced_unit(db: AsyncSession, lot_id: int) -> dict:
     if not b:
         return _EMPTY
 
+    min_count_ratio = _thr("OVERPRICED_UNIT", "min_count_ratio", 0.1)
+    max_ratio = _thr("OVERPRICED_UNIT", "max_ratio", 50)
+
     unit_price = float(row.unit_price)
     ratio = (unit_price / b.median_price) if b.median_price else None
-    flag = unit_price > b.upper_fence
-    overpay = (unit_price - b.median_price) * float(row.count) if (row.count and unit_price > b.median_price) else 0.0
+    count_ratio = (float(row.count) / b.median_count) if (row.count and b.median_count) else None
+
+    count_suspect = count_ratio is not None and count_ratio < min_count_ratio
+    ratio_suspect = ratio is not None and ratio > max_ratio
+    suspect = count_suspect or ratio_suspect
+
+    flag = (unit_price > b.upper_fence) and not suspect
+    overpay = (unit_price - b.median_price) * float(row.count) if (flag and row.count) else 0.0
 
     return {
         "flag": flag,
@@ -1022,6 +1033,15 @@ async def check_overpriced_unit(db: AsyncSession, lot_id: int) -> dict:
             "ratio_to_median": round(ratio, 2) if ratio is not None else None,
             "overpay_estimate": round(overpay, 2),
             "sample_size": b.n_samples,
+            "group_median_count": round(b.median_count, 3) if b.median_count is not None else None,
+            "lot_count": row.count,
+            "data_quality_suspect": suspect,
+            "suspect_reason": (
+                "count_and_ratio" if (count_suspect and ratio_suspect)
+                else "count_below_norm" if count_suspect
+                else "ratio_too_high" if ratio_suspect
+                else None
+            ),
             "enstru_code": row.enstru_code,
             "enstru_name": row.enstru_name,
             "unit_code": row.unit_code,
