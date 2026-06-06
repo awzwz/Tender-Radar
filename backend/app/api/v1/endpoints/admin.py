@@ -54,6 +54,28 @@ async def trigger_q1_2024_etl(
     return {"message": "Q1 2024 ETL started", "task_id": task.id}
 
 
+@router.post("/price/enrich")
+async def trigger_price_enrichment(
+    batch_size: int = 50,
+    _=Depends(require_admin),
+):
+    """Backfill lot quantity/ENSTRU/unit_price from OWS (Price Radar)."""
+    from app.etl.tasks import run_price_enrichment
+    task = run_price_enrichment.delay(batch_size=batch_size)
+    return {"message": "Price enrichment started", "task_id": task.id}
+
+
+@router.post("/price/rebuild")
+async def trigger_price_radar(
+    min_samples: int = 5,
+    _=Depends(require_admin),
+):
+    """Rebuild price benchmarks + OVERPRICED_UNIT flags (assumes lots enriched)."""
+    from app.etl.tasks import run_price_radar
+    task = run_price_radar.delay(min_samples=min_samples)
+    return {"message": "Price Radar rebuild started", "task_id": task.id}
+
+
 @router.get("/etl/status")
 async def get_etl_status(
     limit: int = 10,

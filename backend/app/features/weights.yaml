@@ -188,6 +188,12 @@ indicators:
     description: "Одинаковые банковские реквизиты у разных компаний"
     description_en: "Same bank details across different companies"
 
+  OVERPRICED_UNIT:
+    weight: 16
+    level_contribution: high
+    description: "Цена за единицу значительно выше рыночной по этому товару"
+    description_en: "Unit price is a market outlier for the same product (> Q3 + 1.5*IQR)"
+
 thresholds:
   # Градация: LOW 0-25, MEDIUM 26-45, HIGH 46+
   low_max: 25

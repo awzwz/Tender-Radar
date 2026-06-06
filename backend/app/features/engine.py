@@ -124,6 +124,7 @@ class FeatureEngine:
 
             # ── Lot-level indicators ──────────────────────────────────────────
             flags["DUMPING_FLAG"] = await ind.check_dumping_flag(db, lot_id)
+            flags["OVERPRICED_UNIT"] = await ind.check_overpriced_unit(db, lot_id)
 
             # ── Tender-level indicators ───────────────────────────────────────
             if lot.trd_buy_id:

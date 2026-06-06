@@ -176,11 +176,111 @@ export const api = {
             `/customers/${qs ? "?" + qs : ""}`
         );
     },
+
+    // ── Price Radar (overpricing detection) ───────────────────────────────────
+    priceStats: () => apiFetch<PriceStats>("/prices/stats"),
+
+    overpricedLots: (params: { page?: number; limit?: number; min_ratio?: number; search?: string }) => {
+        const p: Record<string, string> = {};
+        if (params.page) p.page = String(params.page);
+        if (params.limit) p.limit = String(params.limit);
+        if (params.min_ratio !== undefined) p.min_ratio = String(params.min_ratio);
+        if (params.search) p.search = params.search;
+        const qs = new URLSearchParams(p).toString();
+        return apiFetch<{ total: number; page: number; limit: number; items: OverpricedLot[] }>(
+            `/prices/overpriced${qs ? "?" + qs : ""}`
+        );
+    },
+
+    lotPriceComparison: (id: number) => apiFetch<LotPriceComparison>(`/prices/lot/${id}`),
+
+    productBenchmark: (code: string) =>
+        apiFetch<ProductBenchmark>(`/prices/product/${encodeURIComponent(code)}`),
 };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type RiskLevel = "LOW" | "MEDIUM" | "HIGH" | "UNKNOWN";
+
+// ── Price Radar ───────────────────────────────────────────────────────────────
+export interface PriceStats {
+    products_benchmarked: number;
+    lots_evaluated: number;
+    overpriced_lots: number;
+    total_overpay_estimate: number;
+}
+
+export interface OverpricedLot {
+    id: number;
+    name_ru: string | null;
+    enstru_name: string | null;
+    enstru_code: string | null;
+    unit_code: string | null;
+    customer_bin: string | null;
+    customer_name: string | null;
+    trd_buy_id: number | null;
+    amount: number | null;
+    count: number | null;
+    ratio: number | null;
+    unit_price: number | null;
+    median_market: number | null;
+    upper_fence: number | null;
+    overpay_estimate: number | null;
+    sample_size: number | null;
+}
+
+export interface LotPriceComparison {
+    found: boolean;
+    has_benchmark?: boolean;
+    id?: number;
+    name_ru?: string | null;
+    enstru_code?: string | null;
+    enstru_name?: string | null;
+    unit_code?: string | null;
+    amount?: number | null;
+    count?: number | null;
+    unit_price?: number | null;
+    median_price?: number | null;
+    q1?: number | null;
+    q3?: number | null;
+    upper_fence?: number | null;
+    min_price?: number | null;
+    max_price?: number | null;
+    n_samples?: number | null;
+    flag_bool?: boolean | null;
+    ratio?: number | null;
+    overpay_estimate?: number | null;
+}
+
+export interface ProductBenchmarkRow {
+    enstru_code: string;
+    unit_code: string;
+    enstru_name: string | null;
+    n_samples: number;
+    median_price: number;
+    q1: number;
+    q3: number;
+    iqr: number;
+    upper_fence: number;
+    min_price: number | null;
+    max_price: number | null;
+    updated_at: string | null;
+}
+
+export interface ProductBenchmark {
+    enstru_code: string;
+    benchmarks: ProductBenchmarkRow[];
+    lots: {
+        id: number;
+        name_ru: string | null;
+        customer_name: string | null;
+        unit_price: number | null;
+        count: number | null;
+        amount: number | null;
+        unit_code: string | null;
+        overpriced: boolean;
+    }[];
+}
 
 export interface DashboardItem {
     lot_id: number;

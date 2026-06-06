@@ -119,6 +119,14 @@ class Lot(Base):
     system_id = Column(Integer)
     last_update_at = Column(DateTime)
     is_deleted = Column(Boolean, default=False)
+    # ── Price Radar enrichment (from OWS Lots.Plans) ──────────────────────────
+    count = Column(Float)               # quantity ordered (for unit price)
+    enstru_code = Column(String(40), index=True)  # standardized product code
+    enstru_id = Column(BigInteger)
+    enstru_name = Column(Text)
+    unit_code = Column(String(10))      # unit of measure code
+    unit_price = Column(Float)          # amount / count
+    price_enriched_at = Column(DateTime)
 
     __table_args__ = (
         Index("ix_lots_trd_buy_id", "trd_buy_id"),
@@ -441,6 +449,33 @@ class GraphFeature(Base):
     __table_args__ = (
         Index("ix_graph_features_entity", "entity_type", "entity_id"),
         Index("ix_graph_features_version", "version"),
+    )
+
+
+class PriceBenchmark(Base):
+    """Per-product (ENSTRU + unit) unit-price distribution used by OVERPRICED_UNIT.
+
+    Built from competitive lots that buy the same product, following the
+    OCP / World Bank unit-price benchmarking methodology (quartiles + IQR fence).
+    """
+    __tablename__ = "price_benchmark"
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    enstru_code = Column(String(40), nullable=False)
+    unit_code = Column(String(10), nullable=False)
+    enstru_name = Column(Text)
+    n_samples = Column(Integer, nullable=False)
+    median_price = Column(Float, nullable=False)
+    q1 = Column(Float, nullable=False)
+    q3 = Column(Float, nullable=False)
+    iqr = Column(Float, nullable=False)
+    upper_fence = Column(Float, nullable=False)   # q3 + 1.5*iqr (overpricing fence)
+    min_price = Column(Float)
+    max_price = Column(Float)
+    updated_at = Column(DateTime)
+
+    __table_args__ = (
+        UniqueConstraint("enstru_code", "unit_code", name="uq_price_benchmark"),
+        Index("ix_price_benchmark_enstru", "enstru_code"),
     )
 
 

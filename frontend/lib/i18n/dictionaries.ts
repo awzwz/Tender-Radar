@@ -10,6 +10,7 @@ import { lotDetailDict } from "./parts/lotDetail";
 import { casesDict } from "./parts/cases";
 import { companyDict } from "./parts/company";
 import { mapDict } from "./parts/map";
+import { priceDict } from "./parts/price";
 
 export type { Lang } from "./types";
 
@@ -46,6 +47,8 @@ const core: LangDict = {
     "nav.company.hint": "Dossier by BIN / name",
     "nav.ai": "AI Assistant",
     "nav.ai.hint": "OpenAI assistant",
+    "nav.price": "Price Radar",
+    "nav.price.hint": "Overpricing detector",
 
     "action.collapse": "Collapse",
     "action.logout": "Log out",
@@ -119,6 +122,8 @@ const core: LangDict = {
     "nav.company.hint": "Досье по БИН / имени",
     "nav.ai": "AI-ассистент",
     "nav.ai.hint": "Ассистент OpenAI",
+    "nav.price": "Радар цен",
+    "nav.price.hint": "Детектор переплат",
 
     "action.collapse": "Свернуть",
     "action.logout": "Выйти",
@@ -192,6 +197,8 @@ const core: LangDict = {
     "nav.company.hint": "БСН / атау бойынша дерек",
     "nav.ai": "AI көмекші",
     "nav.ai.hint": "OpenAI көмекшісі",
+    "nav.price": "Баға радары",
+    "nav.price.hint": "Артық баға детекторы",
 
     "action.collapse": "Жию",
     "action.logout": "Шығу",
@@ -240,7 +247,7 @@ const core: LangDict = {
   },
 };
 
-const PARTS: LangDict[] = [dashboardDict, listsDict, lotDetailDict, casesDict, companyDict, mapDict];
+const PARTS: LangDict[] = [dashboardDict, listsDict, lotDetailDict, casesDict, companyDict, mapDict, priceDict];
 
 function build(): Record<Lang, Dict> {
   const out: Record<Lang, Dict> = { en: { ...core.en }, ru: { ...core.ru }, kk: { ...core.kk } };

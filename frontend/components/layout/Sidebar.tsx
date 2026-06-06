@@ -17,6 +17,7 @@ import {
     X,
     Building2,
     ClipboardList,
+    TrendingUp,
 } from "lucide-react";
 import Image from "next/image";
 import { useI18n } from "@/components/providers/LanguageProvider";
@@ -28,6 +29,7 @@ export type NavId =
     | "tender-list"
     | "detail"
     | "cases"
+    | "price-radar"
     | "specnorm"
     | "bidcheck"
     | "company-search"
@@ -56,6 +58,7 @@ const NAV_ITEMS: NavItem[] = [
     { id: "tender-list", labelKey: "nav.tenders", icon: <ClipboardList className="h-5 w-5" />, hintKey: "nav.tenders.hint", group: "main" },
     { id: "detail", labelKey: "nav.detail", icon: <FileText className="h-5 w-5" />, hintKey: "nav.detail.hint", group: "main" },
     { id: "cases", labelKey: "nav.cases", icon: <Briefcase className="h-5 w-5" />, hintKey: "nav.cases.hint", group: "main" },
+    { id: "price-radar", labelKey: "nav.price", icon: <TrendingUp className="h-5 w-5" />, hintKey: "nav.price.hint", group: "tools", badge: "New" },
     { id: "specnorm", labelKey: "nav.specnorm", icon: <FileCheck2 className="h-5 w-5" />, hintKey: "nav.specnorm.hint", group: "tools", badge: "AI" },
     { id: "bidcheck", labelKey: "nav.bidcheck", icon: <Shield className="h-5 w-5" />, hintKey: "nav.bidcheck.hint", group: "tools" },
     { id: "company-search", labelKey: "nav.company", icon: <Building2 className="h-5 w-5" />, hintKey: "nav.company.hint", group: "tools", badge: "Live" },

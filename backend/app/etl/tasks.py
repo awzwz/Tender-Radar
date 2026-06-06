@@ -33,6 +33,11 @@ celery_app.conf.update(
             "task": "app.etl.tasks.compute_graph_features",
             "schedule": crontab(hour=3, minute=30),
         },
+        # Price Radar: rebuild benchmarks + overpricing flags daily at 04:30
+        "daily-price-radar": {
+            "task": "app.etl.tasks.run_price_radar",
+            "schedule": crontab(hour=4, minute=30),
+        },
         # Weekly ML ensemble training (Sunday 06:00)
         "weekly-train-ml-ensemble": {
             "task": "app.etl.tasks.train_ml_ensemble",
@@ -239,3 +244,21 @@ def compute_graph_features(batch_size: int = 5000):
     summary = run_async(_compute(batch_size=batch_size))
     logger.info("Graph features complete: %s", summary)
     return summary
+
+
+@celery_app.task(name="app.etl.tasks.run_price_enrichment", bind=True, max_retries=2)
+def run_price_enrichment(self, batch_size: int = 50):
+    """Celery task: backfill count/ENSTRU/unit_price on lots from OWS (Price Radar)."""
+    from app.etl.price_enrichment import enrich_lots
+    try:
+        return run_async(enrich_lots(batch_size=batch_size))
+    except Exception as e:  # noqa: BLE001
+        logger.error("Price enrichment failed: %s", e)
+        raise self.retry(exc=e, countdown=60)
+
+
+@celery_app.task(name="app.etl.tasks.run_price_radar")
+def run_price_radar(min_samples: int = 5):
+    """Celery task: rebuild price benchmarks + OVERPRICED_UNIT flags."""
+    from app.features.price_benchmark import rebuild_price_radar
+    return run_async(rebuild_price_radar(min_samples=min_samples))

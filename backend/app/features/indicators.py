@@ -18,6 +18,7 @@ from sqlalchemy import select, func, and_, or_, text
 from app.models.procurement import (
     TrdBuy, Lot, TrdApp, TrdAppLot, Contract, Subject, Rnu,
     TreasuryPay, ContractAct, ContractPayment, ContractSpecSum,
+    PriceBenchmark,
 )
 
 logger = logging.getLogger(__name__)
@@ -974,4 +975,55 @@ async def check_bank_details_reuse(db: AsyncSession, supplier_biin: str) -> dict
         "flag": flag, "value": float(other_count),
         "evidence": {"supplier_biin": supplier_biin, "iik": bank.supplier_iik,
                      "bik": bank.supplier_bik, "other_suppliers_count": other_count},
+    }
+
+
+# ─── 32. OVERPRICED_UNIT ───────────────────────────────────────────────────────
+
+async def check_overpriced_unit(db: AsyncSession, lot_id: int) -> dict:
+    """Lot's unit price is an anomaly vs the market for the same product.
+
+    Compares the lot's unit_price against the price_benchmark for its
+    (enstru_code, unit_code). Flags when unit_price exceeds the upper IQR
+    fence (Q3 + 1.5*IQR). Requires the lot to be enriched and a benchmark
+    to exist for the product.
+    """
+    result = await db.execute(
+        select(Lot.unit_price, Lot.count, Lot.enstru_code, Lot.enstru_name, Lot.unit_code)
+        .where(Lot.id == lot_id)
+    )
+    row = result.first()
+    if not row or row.unit_price is None or row.unit_price <= 0 or not row.enstru_code or not row.unit_code:
+        return _EMPTY
+
+    bench = await db.execute(
+        select(PriceBenchmark)
+        .where(PriceBenchmark.enstru_code == row.enstru_code,
+               PriceBenchmark.unit_code == row.unit_code)
+    )
+    b = bench.scalar_one_or_none()
+    if not b:
+        return _EMPTY
+
+    unit_price = float(row.unit_price)
+    ratio = (unit_price / b.median_price) if b.median_price else None
+    flag = unit_price > b.upper_fence
+    overpay = (unit_price - b.median_price) * float(row.count) if (row.count and unit_price > b.median_price) else 0.0
+
+    return {
+        "flag": flag,
+        "value": round(ratio, 3) if ratio is not None else None,
+        "evidence": {
+            "unit_price": round(unit_price, 2),
+            "median_market": round(b.median_price, 2),
+            "q1": round(b.q1, 2),
+            "q3": round(b.q3, 2),
+            "upper_fence": round(b.upper_fence, 2),
+            "ratio_to_median": round(ratio, 2) if ratio is not None else None,
+            "overpay_estimate": round(overpay, 2),
+            "sample_size": b.n_samples,
+            "enstru_code": row.enstru_code,
+            "enstru_name": row.enstru_name,
+            "unit_code": row.unit_code,
+        },
     }

@@ -23,6 +23,7 @@ import CasesView from "@/components/dashboard/CasesView";
 import AIAssistant from "@/components/dashboard/AIAssistant";
 import CompanyProfileView from "@/components/dashboard/CompanyProfileView";
 import TenderListView from "@/components/dashboard/TenderListView";
+import PriceRadarView from "@/components/dashboard/PriceRadarView";
 import { money } from "@/components/shared/ui";
 import { useI18n } from "@/components/providers/LanguageProvider";
 
@@ -371,6 +372,9 @@ export default function AIProcurePage() {
             )}
             {nav === "company-search" && (
               <CompanyProfileView />
+            )}
+            {nav === "price-radar" && (
+              <PriceRadarView onOpenLot={openLot} />
             )}
           </div>
         </main>
