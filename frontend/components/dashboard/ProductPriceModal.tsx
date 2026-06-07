@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, ExternalLink, AlertTriangle } from "lucide-react";
 import { api, ProductBenchmark, ProductBenchmarkRow } from "@/lib/api";
 import { money } from "@/components/shared/ui";
@@ -99,7 +100,7 @@ export default function ProductPriceModal({
         return [...filtered].sort((a, b) => Number(b.unit_price) - Number(a.unit_price));
     }, [data, bench]);
 
-    return (
+    const modal = (
         <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={onClose}>
             <div
                 className="animate-scale-in w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl"
@@ -186,4 +187,7 @@ export default function ProductPriceModal({
             </div>
         </div>
     );
+
+    if (typeof document === "undefined") return null;
+    return createPortal(modal, document.body);
 }
