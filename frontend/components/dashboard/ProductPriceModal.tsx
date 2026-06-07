@@ -100,9 +100,9 @@ export default function ProductPriceModal({
     }, [data, bench]);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={onClose}>
+        <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={onClose}>
             <div
-                className="w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl"
+                className="animate-scale-in w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}

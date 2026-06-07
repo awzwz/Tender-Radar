@@ -234,8 +234,8 @@ export default function AIProcurePage() {
     <div className="min-h-screen bg-[var(--root-bg)] text-[var(--root-fg)] transition-colors">
       {/* Onboarding modal */}
       {onboardingOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-sm">
-          <div className="mx-4 max-w-md rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl">
+        <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-sm">
+          <div className="animate-scale-in mx-4 max-w-md rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-indigo-500 dark:text-indigo-300" />
@@ -299,7 +299,7 @@ export default function AIProcurePage() {
           )}
 
           {/* Main content area */}
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-5 min-w-0">
+          <div key={nav} className="animate-view rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-5 min-w-0">
             {nav === "dashboard" && (
               <DashboardView
                 items={filteredItems}

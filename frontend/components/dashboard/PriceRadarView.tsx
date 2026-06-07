@@ -132,7 +132,21 @@ export default function PriceRadarView({ onOpenLot }: { onOpenLot?: (id: number)
                 </div>
 
                 {loading && items.length === 0 && (
-                    <div className="py-16 text-center text-sm text-[var(--text-muted)]">{t("price.loading")}</div>
+                    <div>
+                        {Array.from({ length: 8 }).map((_, i) => (
+                            <div key={i} className="grid grid-cols-12 gap-2 px-4 py-3.5 border-b border-[var(--border)] last:border-0 items-center">
+                                <div className="col-span-4 space-y-2">
+                                    <div className="skeleton h-3.5 w-3/4" />
+                                    <div className="skeleton h-2.5 w-1/2" />
+                                </div>
+                                <div className="col-span-3"><div className="skeleton h-3 w-5/6" /></div>
+                                <div className="col-span-2 flex justify-end"><div className="skeleton h-3.5 w-16" /></div>
+                                <div className="col-span-1 flex justify-end"><div className="skeleton h-3 w-10" /></div>
+                                <div className="col-span-1 flex justify-center"><div className="skeleton h-5 w-12 rounded-full" /></div>
+                                <div className="col-span-1 flex justify-end"><div className="skeleton h-3 w-12" /></div>
+                            </div>
+                        ))}
+                    </div>
                 )}
                 {!loading && items.length === 0 && (
                     <div className="py-16 text-center text-sm text-[var(--text-muted)] flex flex-col items-center gap-2">
@@ -141,6 +155,7 @@ export default function PriceRadarView({ onOpenLot }: { onOpenLot?: (id: number)
                     </div>
                 )}
 
+                <div className="stagger">
                 {items.map((it) => (
                     <button
                         key={it.id}
@@ -177,6 +192,7 @@ export default function PriceRadarView({ onOpenLot }: { onOpenLot?: (id: number)
                         </div>
                     </button>
                 ))}
+                </div>
             </div>
 
             {/* Footer / load more */}
