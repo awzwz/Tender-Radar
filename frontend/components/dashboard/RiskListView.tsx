@@ -137,8 +137,20 @@ export default function RiskListView({
             </div>
 
             {loading && items.length === 0 ? (
-                <div className="flex items-center justify-center py-16 text-[var(--text-muted)]">
-                    <RefreshCw className="h-5 w-5 animate-spin mr-2" /> {t("riskList.loading")}
+                <div className="space-y-1.5">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3.5">
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex-1 space-y-2">
+                                    <div className="skeleton h-3.5 w-2/3" />
+                                    <div className="skeleton h-2.5 w-1/3" />
+                                </div>
+                                <div className="skeleton h-3 w-20" />
+                                <div className="skeleton h-6 w-20 rounded-full" />
+                                <div className="skeleton h-7 w-14 rounded-lg" />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : items.length === 0 ? (
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-8 text-sm text-[var(--text-muted)] text-center">
@@ -156,11 +168,11 @@ export default function RiskListView({
                     </div>
 
                     {/* Rows */}
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5 stagger">
                         {pageItems.map((l, idx) => (
                             <div
                                 key={`${l.lot_id}-${idx}`}
-                                className="group rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-hover)] hover:border-[var(--border-hover)] transition-all"
+                                className="group rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-hover)] hover:border-[var(--border-hover)] hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/5 transition-all duration-200"
                             >
                                 {/* Desktop row */}
                                 <div className="hidden md:grid grid-cols-[1fr_120px_120px_100px_80px] gap-3 items-center px-4 py-3">

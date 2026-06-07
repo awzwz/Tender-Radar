@@ -162,14 +162,18 @@ export default function TenderListView({ onOpenTender }: Props) {
                             </th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-[var(--border)]">
+                    <tbody className="divide-y divide-[var(--border)] stagger">
                         {loading && sorted.length === 0 ? (
-                            <tr>
-                                <td colSpan={6} className="px-4 py-12 text-center text-[var(--text-muted)]">
-                                    <RefreshCw className="h-5 w-5 animate-spin mx-auto mb-2" />
-                                    {t("tenderList.loading")}
-                                </td>
-                            </tr>
+                            Array.from({ length: 8 }).map((_, i) => (
+                                <tr key={i}>
+                                    <td className="px-4 py-3"><div className="skeleton h-3 w-24 mb-1.5" /><div className="skeleton h-2.5 w-40" /></td>
+                                    <td className="px-4 py-3"><div className="skeleton h-3 w-20" /></td>
+                                    <td className="px-4 py-3"><div className="skeleton h-3 w-16 ml-auto" /></td>
+                                    <td className="px-4 py-3"><div className="skeleton h-3 w-10 mx-auto" /></td>
+                                    <td className="px-4 py-3"><div className="skeleton h-4 w-16 mx-auto rounded-md" /></td>
+                                    <td className="px-4 py-3"><div className="skeleton h-3 w-10 ml-auto" /></td>
+                                </tr>
+                            ))
                         ) : sorted.length === 0 ? (
                             <tr>
                                 <td colSpan={6} className="px-4 py-12 text-center text-[var(--text-muted)]">

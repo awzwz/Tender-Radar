@@ -191,9 +191,9 @@ export default function DashboardView({
             </div>
 
             {/* ── Metric cards with sparklines ── */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 stagger">
                 {/* HIGH */}
-                <div className="group relative rounded-2xl border border-rose-500/20 bg-rose-500/8 p-4 transition-all hover:bg-rose-500/12">
+                <div className="group relative rounded-2xl border border-rose-500/20 bg-rose-500/8 p-4 transition-all duration-200 hover:bg-rose-500/12 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5">
                     <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                             <div className="h-2.5 w-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
@@ -206,7 +206,7 @@ export default function DashboardView({
                 </div>
 
                 {/* MEDIUM */}
-                <div className="group relative rounded-2xl border border-amber-500/20 bg-amber-500/8 p-4 transition-all hover:bg-amber-500/12">
+                <div className="group relative rounded-2xl border border-amber-500/20 bg-amber-500/8 p-4 transition-all duration-200 hover:bg-amber-500/12 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5">
                     <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                             <div className="h-2.5 w-2.5 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50" />
@@ -219,7 +219,7 @@ export default function DashboardView({
                 </div>
 
                 {/* LOW */}
-                <div className="group relative rounded-2xl border border-emerald-500/20 bg-emerald-500/8 p-4 transition-all hover:bg-emerald-500/12">
+                <div className="group relative rounded-2xl border border-emerald-500/20 bg-emerald-500/8 p-4 transition-all duration-200 hover:bg-emerald-500/12 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5">
                     <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                             <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
@@ -232,7 +232,7 @@ export default function DashboardView({
                 </div>
 
                 {/* Avg Risk */}
-                <div className="group relative rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-all hover:border-[var(--border-hover)] hover:bg-[var(--surface-hover)]">
+                <div className="group relative rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-200 hover:border-[var(--border-hover)] hover:bg-[var(--surface-hover)] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5">
                     <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                             <div className="h-2.5 w-2.5 rounded-full bg-slate-400" />
@@ -274,21 +274,32 @@ export default function DashboardView({
                 </div>
 
                 {(entityMode === "lots" && loading) || (entityMode === "tenders" && tenderLoading) ? (
-                    <div className="flex items-center justify-center py-12 text-[var(--text-muted)]">
-                        <RefreshCw className="h-5 w-5 animate-spin mr-2" /> {t("dash.loading")}
+                    <div className="space-y-2">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <div key={i} className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3">
+                                <div className="flex items-center justify-between gap-3">
+                                    <div className="flex-1 space-y-2">
+                                        <div className="skeleton h-3.5 w-2/3" />
+                                        <div className="skeleton h-2.5 w-2/5" />
+                                    </div>
+                                    <div className="skeleton h-6 w-20 rounded-full" />
+                                </div>
+                                <div className="skeleton h-1.5 w-full mt-2.5 rounded-full" />
+                            </div>
+                        ))}
                     </div>
                 ) : (entityMode === "lots" ? topLots : topTenders).length === 0 ? (
                     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 text-sm text-[var(--text-muted)] text-center">
                         {t("dash.empty")}
                     </div>
                 ) : (
-                    <div className="space-y-2">
+                    <div className="space-y-2 stagger">
                         {entityMode === "lots"
                             ? topLots.map((l, idx) => (
                                 <button
                                     key={`${l.lot_id}-${idx}`}
                                     onClick={() => onOpenLot(l.lot_id)}
-                                    className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-left hover:border-[var(--border-hover)] transition-all"
+                                    className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-left hover:border-[var(--border-hover)] hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/5 transition-all duration-200"
                                 >
                                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                                         <div className="flex-1 min-w-0">
