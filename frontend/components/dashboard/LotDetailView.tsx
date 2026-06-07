@@ -187,8 +187,40 @@ function LotDetailView({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64 text-[var(--text-muted)]">
-        <RefreshCw className="h-5 w-5 animate-spin mr-2" /> {t("lotDetail.loading")}
+      <div className="space-y-4">
+        <SectionTitle
+          icon={<FileText className="h-4 w-4 text-indigo-200" />}
+          title={t("lotDetail.title")}
+          hint={t("lotDetail.subtitle")}
+        />
+        {/* Header card skeleton */}
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 space-y-2.5">
+              <div className="skeleton h-5 w-3/5" />
+              <div className="skeleton h-3 w-2/5" />
+            </div>
+            <div className="skeleton h-8 w-24 rounded-full" />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="rounded-xl border border-[var(--border)] p-3 space-y-2">
+                <div className="skeleton h-2.5 w-1/2" />
+                <div className="skeleton h-4 w-3/4" />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Flags skeleton */}
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-2.5">
+          <div className="skeleton h-4 w-40 mb-1" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-center justify-between gap-3">
+              <div className="skeleton h-3.5 w-2/3" />
+              <div className="skeleton h-5 w-16 rounded-full" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -205,7 +237,7 @@ function LotDetailView({
   const triggeredFlags = flags.filter((f) => f.triggered);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-fade-in">
       <SectionTitle
         icon={<FileText className="h-4 w-4 text-indigo-200" />}
         title={t("lotDetail.title")}

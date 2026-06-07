@@ -777,7 +777,7 @@ ${narrativeHtml}
 
             {/* ── Loading ── */}
             {profileLoading && (
-                <div className="flex flex-col items-center justify-center py-16 space-y-4">
+                <div className="flex flex-col items-center justify-center py-16 space-y-4 animate-fade-in">
                     <div className="relative">
                         <div className="h-16 w-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
                             <Loader2 className="h-7 w-7 text-indigo-500 animate-spin" />
@@ -804,7 +804,7 @@ ${narrativeHtml}
 
             {/* ── Profile ── */}
             {profile && !profileLoading && (
-                <div className="space-y-5">
+                <div className="space-y-5 stagger">
                     {/* Company Header Card */}
                     <div className={`rounded-2xl border p-5 ${profile.rnu.is_blacklisted ? "border-rose-500/30 bg-rose-500/5" : "border-[var(--border)] bg-[var(--surface)]"}`}>
                         <div className="flex items-start gap-4 flex-wrap">
