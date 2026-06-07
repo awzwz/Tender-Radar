@@ -1,0 +1,8 @@
+# Caddy auto-provisions a Let's Encrypt TLS cert for $DOMAIN and reverse-proxies
+# HTTPS traffic to the FastAPI backend. $DOMAIN must resolve (A record) to this
+# instance's public IP, and ports 80/443 must be open in the security group.
+
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy backend:8000
+}
