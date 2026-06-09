@@ -43,13 +43,26 @@
   --text-muted: #8A99AF;
 }
 
-/* Smooth theme transitions (light <-> dark crossfade) */
+/* Smooth theme transitions (light <-> dark).
+   Only cheap, compositable props on the global selector — NO box-shadow / fill /
+   stroke (those repaint every frame and tank FPS when every element animates at
+   once during a theme toggle). */
 *,
 *::before,
 *::after {
-  transition-property: background-color, color, border-color, fill, stroke, box-shadow;
-  transition-duration: 260ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: background-color, color, border-color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+/* Exclude heavy SVG/chart internals (KZ map, ApexCharts = hundreds of nodes)
+   from theme transitions — they switch instantly, keeping the toggle smooth. */
+svg,
+svg *,
+canvas,
+.apexcharts-canvas,
+.apexcharts-canvas * {
+  transition: none !important;
 }
 
 body {
